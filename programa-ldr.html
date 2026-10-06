@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Programa LDR® — Lisi Del Ré</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --offwhite:#F7F2EC; --bege:#E8DCC9; --areia:#D1B89C; --terracota:#A67C5B;
+  --marrom:#6F4E37; --cafe:#3D2E26; --salvia:#7FA8A6; --eucalipto:#4F6E6B;
+  --serif:'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --sans:'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--offwhite);color:var(--marrom);font-family:var(--sans);font-weight:400;font-size:17px;line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+p{margin:0 0 1.3em}
+.wrap{width:min(1120px,100% - 3rem);margin-inline:auto}
+.narrow{width:min(680px,100% - 3rem);margin-inline:auto}
+section{position:relative}
+.pad{padding:clamp(5rem,12vw,9.5rem) 0}
+
+/* tipografia */
+h1,h2,h3{font-family:var(--serif);font-weight:500;color:var(--cafe);margin:0 0 .6em;letter-spacing:-.01em;line-height:1.1}
+h1{font-size:clamp(2.5rem,5.6vw,4.4rem)}
+h2{font-size:clamp(2.1rem,4.6vw,3.5rem)}
+h3{font-size:clamp(1.6rem,2.6vw,2rem)}
+.lead{font-size:clamp(1.05rem,1.4vw,1.18rem);color:var(--marrom)}
+.small{font-size:.82rem;line-height:1.6;color:var(--marrom);opacity:.85}
+.eyebrow{font-size:.74rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--terracota);margin-bottom:1.6rem;display:block}
+.serif-quote{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(1.5rem,2.6vw,2.1rem);line-height:1.35;color:var(--cafe)}
+.mark{font-family:var(--serif);font-size:clamp(1.9rem,3.6vw,2.8rem);line-height:1.2;color:var(--cafe);font-weight:500;border-top:1px solid var(--areia);padding-top:1.6rem;margin:3rem 0 0}
+
+/* botões */
+.btn{display:inline-block;background:var(--eucalipto);color:var(--offwhite);font-family:var(--sans);font-weight:500;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;padding:1.15rem 2.1rem;border:0;border-radius:2px;cursor:pointer;transition:background .25s}
+.btn:hover{background:var(--cafe)}
+.btn:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--eucalipto);outline-offset:3px}
+.btn-line{background:transparent;color:var(--eucalipto);border:1px solid var(--eucalipto)}
+.btn-line:hover{background:var(--eucalipto);color:var(--offwhite)}
+.quiet{display:inline-block;margin-top:1.6rem;font-size:.85rem;color:var(--marrom);text-decoration:underline;text-decoration-color:var(--areia);text-underline-offset:5px}
+.quiet:hover{color:var(--eucalipto)}
+
+/* fotografia / água — substitua .photo por <img> com a foto real */
+.photo{position:relative;overflow:hidden;background:linear-gradient(180deg,#e9e1d3 0%,#cfd8d1 46%,#a9c0bb 62%,#d9c7ac 100%)}
+.photo svg{position:absolute;inset:0;width:100%;height:100%}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.photo .slot{position:absolute;left:1rem;bottom:.8rem;font-size:.68rem;letter-spacing:.08em;color:var(--cafe);opacity:.55}
+.photo.has-img .slot{display:none}
+
+/* hero */
+.hero{min-height:100svh;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:stretch}
+.hero-text{padding:clamp(3rem,7vw,6rem) clamp(1.5rem,5vw,5rem) clamp(3rem,7vw,5rem) max(1.5rem,calc((100vw - 1120px)/2));display:flex;flex-direction:column;justify-content:center}
+.hero h1{margin-bottom:.7em}
+.hero .tri{font-family:var(--serif);font-size:1.6rem;font-style:italic;color:var(--cafe);margin:2rem 0 2.4rem}
+.hero .photo{min-height:60svh}
+.hero .stack p{margin-bottom:1em}
+
+/* separador de água */
+.wave{display:block;width:100%;height:46px;color:var(--areia)}
+
+.bege{background:var(--bege)}
+.bege-soft{background:#F0E8DC}
+
+/* desejo */
+.desire{display:grid;grid-template-columns:1fr;gap:0}
+.desire .photo{height:clamp(260px,42vw,520px)}
+.desire-list{list-style:none;padding:0;margin:2rem 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1rem 2rem}
+.desire-list li{font-family:var(--serif);font-size:1.5rem;color:var(--eucalipto);border-top:1px solid var(--areia);padding-top:.7rem;line-height:1.2}
+.plain-list{list-style:none;padding:0;margin:0 0 1.6em}
+.plain-list li{padding:.55rem 0 .55rem 1.6rem;position:relative}
+.plain-list li::before{content:"";position:absolute;left:0;top:1.28rem;width:.7rem;height:1px;background:var(--terracota)}
+
+/* depoimentos */
+.prints{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2rem;margin:3rem 0 2rem}
+.print{aspect-ratio:9/13;border:1px dashed var(--areia);display:flex;align-items:center;justify-content:center;text-align:center;font-size:.78rem;color:var(--terracota);letter-spacing:.08em;padding:1rem;background:rgba(255,255,255,.35)}
+.print img{width:100%;height:100%;object-fit:contain}
+
+/* método */
+.method{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:3.5rem 0 2rem;border-top:1px solid var(--areia)}
+.method article{padding:2.4rem 2rem 2.4rem 0;border-right:1px solid var(--areia);margin-right:2rem}
+.method article:last-child{border-right:0;margin-right:0;padding-right:0}
+.method .n{font-family:var(--serif);font-size:1.1rem;color:var(--terracota);display:block;margin-bottom:.8rem}
+.method h3{margin-bottom:.8rem}
+.method p{font-size:.97rem}
+.center{text-align:center}
+.center .eyebrow{display:block}
+
+/* 6 meses */
+.months{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2.5rem;margin:3rem 0}
+.months h3{font-size:1.5rem;margin-bottom:.4rem}
+.months p{font-size:.96rem;margin:0}
+.big-line{font-family:var(--serif);font-size:clamp(1.8rem,3.6vw,2.7rem);line-height:1.2;color:var(--cafe);margin-top:3rem}
+
+/* Lisi */
+.about{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(2rem,6vw,6rem);align-items:center}
+.about .photo{aspect-ratio:4/5}
+
+/* prova */
+.proof{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.8rem;margin:3rem 0 2rem}
+
+/* qualificação */
+.qual{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,6vw,5rem);margin-top:3rem}
+.qual h3{font-size:1.55rem}
+.qual .no{border-left:1px solid var(--areia);padding-left:clamp(2rem,6vw,5rem)}
+.qual .no .plain-list li::before{background:var(--areia)}
+
+/* aplicação */
+.apply{text-align:center}
+.apply .narrow p{text-align:left}
+.apply .btn{margin-top:1rem}
+.skip{margin-top:5rem;padding-top:3.5rem;border-top:1px solid var(--areia)}
+.skip h3{font-size:1.7rem}
+
+/* formulário */
+form{display:grid;gap:1.7rem;margin-top:2.5rem}
+label,legend{display:block;font-size:.92rem;color:var(--cafe);font-weight:500;margin-bottom:.5rem;line-height:1.5}
+input[type=text],input[type=tel],textarea,select{width:100%;font:inherit;font-size:1rem;color:var(--cafe);background:transparent;border:0;border-bottom:1px solid var(--areia);padding:.7rem 0;border-radius:0}
+textarea{min-height:92px;resize:vertical}
+input::placeholder,textarea::placeholder{color:var(--areia)}
+fieldset{border:0;margin:0;padding:0}
+.opts label{font-weight:400;display:flex;gap:.8rem;align-items:flex-start;margin-bottom:.6rem;cursor:pointer}
+.opts input{accent-color:var(--eucalipto);margin-top:.35rem}
+.range-row{display:flex;align-items:center;gap:1.2rem}
+.range-row input{flex:1;accent-color:var(--eucalipto)}
+.range-row output{font-family:var(--serif);font-size:1.8rem;color:var(--eucalipto);min-width:2ch;text-align:right}
+.qualq{background:var(--offwhite);padding:1.6rem;border-left:2px solid var(--terracota)}
+.qualq p{font-size:.95rem;margin-bottom:1rem}
+.thanks{display:none;text-align:center;padding:2rem 0}
+.thanks.on{display:block}
+.thanks h2{font-size:clamp(2rem,4vw,2.8rem)}
+
+footer{padding:3rem 0 4rem;text-align:center}
+
+@media(max-width:860px){
+  body{font-size:16px}
+  .hero{grid-template-columns:1fr}
+  .hero .photo{order:-1;min-height:46svh}
+  .hero-text{padding:3rem 1.5rem 4rem}
+  .about{grid-template-columns:1fr}
+  .method{grid-template-columns:1fr}
+  .method article{border-right:0;margin-right:0;padding-right:0;border-bottom:1px solid var(--areia)}
+  .method article:last-child{border-bottom:0}
+  .qual{grid-template-columns:1fr}
+  .qual .no{border-left:0;padding-left:0;border-top:1px solid var(--areia);padding-top:2rem}
+  .btn{display:block;text-align:center;padding:1.1rem 1.2rem}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+
+/* única animação: a água do hero */
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.drift{animation:drift 38s linear infinite;width:200%}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-text">
+    <span class="eyebrow">Programa LDR® | Experiência individual de 6 meses</span>
+    <h1>Você construiu muita coisa.<br>Agora talvez seja hora de construir uma vida que também faça sentido por dentro.</h1>
+    <div class="stack lead">
+      <p>Você aprendeu a decidir, liderar, resolver problemas e seguir em frente.</p>
+      <p>Mas talvez exista uma área da sua vida em que competência, inteligência e conhecimento já não sejam suficientes.</p>
+      <p style="margin-bottom:.3em">Uma decisão que você adia.<br>Um limite que ainda custa sustentar.<br>Uma relação que pede uma nova postura.<br>Uma fase profissional ou pessoal que você sabe que deseja viver — mas ainda não conseguiu atravessar.</p>
+    </div>
+    <p class="small" style="margin-top:1.4rem;max-width:34em">O Programa LDR® é um acompanhamento individual de 6 meses, conduzido por Lisi Del Ré, para mulheres que já chegaram longe e perceberam que o próximo movimento não é simplesmente fazer mais.</p>
+    <p class="small" style="max-width:34em">É olhar com profundidade para aquilo que ainda interfere na forma como vivem, escolhem e conduzem a própria história.</p>
+    <p class="tri">Localizar. Desbloquear. Reprogramar.</p>
+    <div>
+      <a class="btn" href="#aplicacao">Quero me candidatar ao Programa LDR®</a>
+      <p class="small" style="margin:.9rem 0 0">As aplicações são analisadas individualmente.</p>
+      <a class="quiet" href="#pular-fila" style="font-size:.78rem;margin-top:1.2rem">Sente que precisa agilizar esse processo? Fale com nossa equipe →</a>
+    </div>
+  </div>
+  <!-- FOTO 1: editorial forte da Lisi na praia. Troque o <svg> por <img src="..." alt="Lisi Del Ré na praia"> e adicione a classe has-img -->
+  <div class="photo" role="img" aria-label="Lisi Del Ré caminhando na praia">
+    <svg viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9cfc9"/><stop offset="1" stop-color="#7FA8A6"/></linearGradient>
+      </defs>
+      <rect width="600" height="800" fill="#ece4d6"/>
+      <rect y="300" width="600" height="260" fill="url(#sea)" opacity=".85"/>
+      <g class="drift" style="transform-origin:0 0">
+        <path d="M0 430 Q75 410 150 430 T300 430 T450 430 T600 430 T750 430 T900 430 T1050 430 T1200 430 V560 H0Z" fill="#4F6E6B" opacity=".18" transform="scale(1)"/>
+      </g>
+      <path d="M0 560 Q150 520 300 548 T600 540 V800 H0Z" fill="#D1B89C" opacity=".75"/>
+      <path d="M0 610 Q200 585 360 610 T600 600" fill="none" stroke="#F7F2EC" stroke-width="1.2" opacity=".7"/>
+      <path d="M0 650 Q220 630 400 652 T600 644" fill="none" stroke="#F7F2EC" stroke-width="1" opacity=".5"/>
+    </svg>
+    <span class="slot">foto principal · Lisi na praia</span>
+  </div>
+</header>
+
+<svg class="wave" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true"><path d="M0 23 Q75 6 150 23 T300 23 T450 23 T600 23 T750 23 T900 23 T1050 23 T1200 23" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+
+<!-- ============ A MULHER ============ -->
+<section class="pad">
+  <div class="narrow">
+    <h2>Este programa não foi criado para quem está começando a olhar para si.</h2>
+    <p class="serif-quote" style="margin-bottom:2.4rem">Ele foi criado para uma mulher que já construiu muita coisa.</p>
+    <p class="lead">Você pode ser empresária, profissional, líder ou ocupar uma posição em que muitas decisões passam por você.</p>
+    <p class="lead">Provavelmente já estudou, leu, buscou desenvolvimento pessoal, fez terapia ou passou por outros processos.</p>
+    <p class="lead">Você não precisa que alguém diga que é capaz.<br>Você já provou isso muitas vezes.</p>
+    <p class="lead">Mas talvez exista uma pergunta que ainda apareça:</p>
+    <p class="serif-quote" style="margin:2.4rem 0">“Por que algumas áreas da minha vida ainda não acompanham a mulher que eu me tornei?”</p>
+    <ul class="plain-list">
+      <li>Você pode ter crescido profissionalmente e ainda sentir dificuldade para sustentar determinadas escolhas.</li>
+      <li>Pode liderar pessoas e ainda pesar demais a opinião de quem ama.</li>
+      <li>Pode ter autonomia financeira e perceber que liberdade emocional é outra construção.</li>
+      <li>Pode compreender profundamente sua própria história e ainda perceber algumas formas de viver que já não combinam com você.</li>
+    </ul>
+    <p class="lead" style="margin-top:2.4rem">É para essa mulher que o Programa LDR® foi criado.</p>
+  </div>
+</section>
+
+<!-- ============ DESEJO / NOVO NÍVEL ============ -->
+<section class="bege">
+  <div class="desire">
+    <!-- FOTO 2: água/horizonte, suave -->
+    <div class="photo" role="img" aria-label="Horizonte sobre o mar">
+      <svg viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <rect width="1200" height="520" fill="#e6dccb"/>
+        <rect y="190" width="1200" height="180" fill="#9fbab5" opacity=".7"/>
+        <path d="M0 250 Q150 238 300 250 T600 250 T900 250 T1200 250" fill="none" stroke="#F7F2EC" stroke-width="1.2" opacity=".6"/>
+        <path d="M0 300 Q200 286 400 300 T800 300 T1200 300" fill="none" stroke="#F7F2EC" stroke-width="1" opacity=".5"/>
+        <path d="M0 370 Q300 340 600 366 T1200 360 V520 H0Z" fill="#D1B89C" opacity=".8"/>
+      </svg>
+      <span class="slot">imagem suave · água e horizonte</span>
+    </div>
+    <div class="narrow pad">
+      <h2 style="font-size:clamp(2.3rem,5vw,3.9rem)">Você não precisa abandonar a vida que construiu para desejar uma vida ainda mais sua.</h2>
+      <p class="lead" style="margin-top:2.4rem">Talvez o próximo nível não seja trabalhar mais.<br>Nem conquistar mais.<br>Nem provar mais.</p>
+      <p class="lead">Talvez seja conseguir viver tudo o que você construiu com:</p>
+      <ul class="desire-list">
+        <li>mais liberdade</li><li>mais autonomia</li><li>mais clareza</li><li>mais leveza</li>
+      </ul>
+      <ul class="plain-list">
+        <li>Tomar decisões sem precisar explicá-las para todo mundo.</li>
+        <li>Colocar limites sem passar dias questionando se fez algo errado.</li>
+        <li>Reconhecer quando uma fase terminou.</li>
+        <li>Permitir-se desejar algo diferente.</li>
+        <li>Receber ajuda sem sentir que isso diminui sua força.</li>
+        <li>E conseguir sustentar escolhas que façam sentido para a mulher que você é hoje.</li>
+      </ul>
+      <p class="mark">Crescer por fora é uma conquista.<br>Conseguir acompanhar esse crescimento por dentro é outra.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRIMEIROS DEPOIMENTOS ============ -->
+<section class="pad">
+  <div class="wrap">
+    <p class="serif-quote center" style="max-width:20em;margin-inline:auto">Algumas mulheres descrevem seus processos assim:</p>
+    <div class="prints" style="max-width:640px;margin-inline:auto">
+      <!-- Substitua pelo print real: <div class="print"><img src="print-01.jpg" alt="Depoimento de cliente"></div> -->
+      <div class="print">[print real 01]</div>
+      <div class="print">[print real 02]</div>
+    </div>
+    <p class="small center">Relatos individuais compartilhados por clientes sobre suas próprias experiências. Cada processo é único.</p>
+  </div>
+</section>
+
+<svg class="wave" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true"><path d="M0 23 Q75 40 150 23 T300 23 T450 23 T600 23 T750 23 T900 23 T1050 23 T1200 23" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+
+<!-- ============ TESE CENTRAL ============ -->
+<section class="pad">
+  <div class="narrow">
+    <h2 style="font-size:clamp(2rem,4.2vw,3.2rem)">Talvez não esteja faltando força.<br>Talvez parte dela esteja sendo consumida antes mesmo de você tentar.</h2>
+    <p class="lead" style="margin-top:2.6rem">Ao longo da vida, construímos maneiras de funcionar que em algum momento fizeram sentido.</p>
+    <p class="lead" style="line-height:2;color:var(--cafe)">Papéis familiares.<br>Responsabilidades assumidas.<br>Formas de se proteger.<br>Necessidade de controle.<br>Expectativas.<br>Crenças.</p>
+    <p class="lead">Respostas emocionais que continuam aparecendo mesmo quando racionalmente já pensamos diferente.</p>
+    <p class="lead">E é por isso que acumular mais informação nem sempre produz uma mudança equivalente.</p>
+    <p class="mark">Entender é diferente de conseguir mudar.</p>
+    <p class="lead" style="margin-top:1.6rem">O Programa LDR® trabalha justamente nessa distância.</p>
+  </div>
+</section>
+
+<!-- ============ MÉTODO ============ -->
+<section class="bege-soft pad">
+  <div class="wrap">
+    <span class="eyebrow">Uma jornada individual. Não um protocolo pronto.</span>
+    <h2>Localizar. Desbloquear. Reprogramar.</h2>
+    <div class="method">
+      <article>
+        <span class="n">01</span>
+        <h3>Localizar</h3>
+        <p>Antes de exigir mais de você, olhamos para o que hoje está consumindo seus recursos.</p>
+        <p>A partir da sua história e do momento atual, Lisi realiza um mapeamento para identificar os pontos prioritários do processo.</p>
+        <p>Não se trata de mexer em tudo.<br>Trata-se de entender onde faz sentido começar.</p>
+      </article>
+      <article>
+        <span class="n">02</span>
+        <h3>Desbloquear</h3>
+        <p>Com uma direção mais clara, o trabalho passa a ser direcionado aos fatores e padrões que podem estar relacionados àquilo que você deseja transformar.</p>
+        <p>Lisi integra os recursos do Método LDR® e práticas de sua trajetória de acordo com cada processo.</p>
+      </article>
+      <article>
+        <span class="n">03</span>
+        <h3>Reprogramar</h3>
+        <p>O objetivo não é sair de um encontro apenas com uma nova compreensão.</p>
+        <p>É construir novas referências e começar a levá-las para:<br><em style="font-family:var(--serif);font-size:1.2rem;color:var(--cafe)">decisões, limites, relações, posicionamento e vida prática.</em></p>
+      </article>
+    </div>
+    <p class="serif-quote center" style="margin:3rem auto 2.4rem;max-width:24em">Você não precisa se encaixar no programa. O processo é construído a partir da sua jornada.</p>
+    <p class="center"><a class="btn btn-line" href="#aplicacao">Quero preencher minha aplicação</a></p>
+  </div>
+</section>
+
+<!-- ============ POR QUE 6 MESES ============ -->
+<section class="pad">
+  <div class="wrap">
+    <div class="narrow" style="margin-left:0">
+      <h2>Porque uma decisão pode acontecer em um instante.<br>Sustentar uma nova forma de viver é outra história.</h2>
+      <p class="lead" style="margin-top:2.4rem">O Programa LDR® não foi pensado como uma experiência isolada.</p>
+      <p class="lead">Durante 6 meses, Lisi acompanha individualmente seu processo para que exista continuidade entre aquilo que aparece nos encontros e aquilo que acontece na sua vida.</p>
+      <p class="serif-quote" style="margin-top:2.4rem">1 encontro individual por semana.<br>Aproximadamente 24 encontros online e ao vivo ao longo da jornada.</p>
+    </div>
+    <p class="lead" style="margin-top:3rem;color:var(--cafe)">Além dos encontros, você terá:</p>
+    <div class="months">
+      <div><h3>Atividades direcionadas</h3><p>para aprofundar e levar o trabalho para sua realidade.</p></div>
+      <div><h3>Acesso aos e-books da Lisi</h3><p>como materiais complementares ao processo.</p></div>
+      <div><h3>Aplicação personalizada do Método LDR®</h3><p>de acordo com sua história, seu momento e aquilo que estiver sendo trabalhado.</p></div>
+    </div>
+    <p class="big-line">Não são 24 encontros isolados.<br>São 6 meses de acompanhamento, continuidade e profundidade.</p>
+  </div>
+</section>
+
+<!-- ============ LISI ============ -->
+<section class="bege pad">
+  <div class="wrap about">
+    <!-- FOTO 3: uma das melhores fotos reais da Lisi na praia -->
+    <div class="photo" role="img" aria-label="Lisi Del Ré">
+      <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <rect width="400" height="500" fill="#efe6d8"/>
+        <rect y="170" width="400" height="140" fill="#9fbab5" opacity=".7"/>
+        <path d="M0 220 Q100 208 200 220 T400 220" fill="none" stroke="#F7F2EC" stroke-width="1.2" opacity=".6"/>
+        <path d="M0 330 Q120 300 240 326 T400 318 V500 H0Z" fill="#D1B89C" opacity=".8"/>
+      </svg>
+      <span class="slot">foto da Lisi</span>
+    </div>
+    <div>
+      <span class="eyebrow">Quem vai acompanhar você</span>
+      <h2>Prazer, eu sou Lisi Del Ré.</h2>
+      <p>Sou Terapeuta Integrativa e criadora do Método LDR®.</p>
+      <p>Nasci em Monte Belo do Sul, no interior do Rio Grande do Sul, e sou filha de agricultores.</p>
+      <p>Minhas raízes me ensinaram muito sobre trabalho, responsabilidade, família e perseverança.</p>
+      <p>Minha trajetória profissional passou pelo mundo corporativo, pela liderança de equipes e, paralelamente, por mais de 26 anos de estudos e mais de 50 formações em práticas integrativas.</p>
+      <p>Durante muito tempo, esses dois mundos coexistiram.</p>
+      <p>Até que chegou um momento em que eu também precisei tomar decisões que mudariam a forma como viveria minha própria vida.</p>
+      <p>Hoje, liberdade é um dos valores centrais do meu trabalho.</p>
+      <p>Não a liberdade de negar de onde viemos.<br>Mas a liberdade de reconhecer nossa história, honrá-la e ainda assim decidir:</p>
+      <p class="serif-quote">“Daqui para frente, eu quero viver de outro jeito.”</p>
+      <p style="margin-top:1.6rem">É dessa experiência — pessoal e profissional — que também nasceu a forma como conduzo o Programa LDR®.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROVA PRINCIPAL ============ -->
+<section class="bege-soft pad">
+  <div class="wrap">
+    <div class="narrow" style="margin-left:0">
+      <h2>Mulheres diferentes. Histórias diferentes.</h2>
+      <p class="serif-quote">Mas algo em comum: elas não queriam continuar vivendo algumas coisas da mesma forma.</p>
+    </div>
+    <div class="proof">
+      <!-- 01 tranquilidade/leveza · 02 clareza ou decisão · 03 mudança na vida prática · 04 experiência de ser acompanhada pela Lisi -->
+      <div class="print">[depoimento 01<br>tranquilidade / leveza]</div>
+      <div class="print">[depoimento 02<br>clareza ou decisão]</div>
+      <div class="print">[depoimento 03<br>mudança na vida prática]</div>
+      <div class="print">[depoimento 04<br>ser acompanhada pela Lisi]</div>
+    </div>
+    <p class="small">Os relatos apresentados representam experiências individuais e não constituem promessa ou garantia de resultados.</p>
+  </div>
+</section>
+
+<!-- ============ QUALIFICAÇÃO ============ -->
+<section class="pad">
+  <div class="wrap">
+    <div class="narrow" style="margin-left:0">
+      <h2>O Programa LDR® não é para todas.</h2>
+      <p class="serif-quote">E essa é uma escolha intencional.</p>
+    </div>
+    <div class="qual">
+      <div>
+        <h3>Ele pode fazer sentido para você se:</h3>
+        <ul class="plain-list">
+          <li>Você é empresária, profissional, líder ou uma mulher que ocupa uma posição de responsabilidade.</li>
+          <li>Você já construiu muita coisa e sente que chegou a um novo momento da própria vida.</li>
+          <li>Já investiu em desenvolvimento pessoal e não procura apenas mais informação.</li>
+          <li>Valoriza acompanhamento individual, profundidade e personalização.</li>
+          <li>Está aberta a olhar para si com maturidade e assumir participação ativa no processo.</li>
+          <li>Consegue reservar espaço na agenda para um encontro semanal.</li>
+          <li>E deseja construir movimentos que façam sentido para sua realidade — sem fórmulas prontas.</li>
+        </ul>
+      </div>
+      <div class="no">
+        <h3>Provavelmente não é para você se…</h3>
+        <ul class="plain-list">
+          <li>Você está procurando uma solução rápida.</li>
+          <li>Espera que alguém diga exatamente como deve viver sua vida.</li>
+          <li>Busca uma promessa de transformação instantânea.</li>
+          <li>Ou não está disposta, neste momento, a se comprometer com um processo individual de seis meses.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="mark" style="text-align:center;border:0">Aqui, profundidade e compromisso importam mais do que pressa.</p>
+  </div>
+</section>
+
+<svg class="wave" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true"><path d="M0 23 Q75 6 150 23 T300 23 T450 23 T600 23 T750 23 T900 23 T1050 23 T1200 23" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+
+<!-- ============ APLICAÇÃO ============ -->
+<section class="apply pad" id="aplicacao">
+  <div class="narrow">
+    <span class="eyebrow" style="text-align:center">Próximo passo</span>
+    <h2 style="text-align:center">O Programa LDR® começa antes do primeiro encontro.</h2>
+    <p class="lead">Começa entendendo se existe alinhamento entre o momento que você está vivendo e o processo que Lisi conduz.</p>
+    <p>Por isso, a entrada no programa acontece através de uma aplicação individual.</p>
+    <p>Você responderá algumas perguntas sobre sua trajetória, o momento atual e aquilo que deseja trabalhar.</p>
+    <p>Sua aplicação será analisada e, caso exista alinhamento, nossa equipe entrará em contato para orientar você sobre os próximos passos e a possibilidade de uma conversa com a Lisi.</p>
+    <a class="btn" href="#formulario">Quero me candidatar ao Programa LDR®</a>
+    <p class="small" style="text-align:center;margin-top:1rem">Preenchimento aproximado: 3–5 minutos.</p>
+
+    <!-- PULAR A FILA -->
+    <div class="skip" id="pular-fila">
+      <h3 style="text-align:center">Sente que isso é urgente para você?</h3>
+      <p>Se você está vivendo um momento que sente que não quer mais adiar e prefere agilizar seu contato sobre o Programa LDR®, existe um caminho mais direto.</p>
+      <!-- Cláudio: substituir 5500000000000 pelo WhatsApp definido pela equipe -->
+      <a class="btn btn-line" id="wa-skip" href="https://wa.me/5500000000000?text=Oi!%20Conheci%20o%20Programa%20LDR%C2%AE%20pela%20p%C3%A1gina%20e%20sinto%20que%20estou%20vivendo%20um%20momento%20que%20n%C3%A3o%20quero%20mais%20adiar.%20Gostaria%20de%20pular%20a%20fila%20e%20conversar%20com%20a%20equipe%20sobre%20os%20pr%C3%B3ximos%20passos." target="_blank" rel="noopener">Pular a fila e falar com a equipe no WhatsApp →</a>
+      <p class="small" style="text-align:center;margin-top:1rem">Você será atendida por alguém da equipe da Lisi, que vai entender brevemente o seu momento e orientar você sobre os próximos passos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FORMULÁRIO ============ -->
+<section class="bege pad" id="formulario">
+  <div class="narrow">
+    <div id="form-area">
+      <h2>Antes de começarmos, queremos conhecer um pouco sobre você.</h2>
+      <p class="lead">Não existem respostas certas.</p>
+      <p>Esta aplicação existe para entendermos seu momento e avaliarmos se o Programa LDR® é adequado para aquilo que você está buscando.</p>
+
+      <form id="app-form" novalidate>
+        <div><label for="nome">Nome completo</label><input type="text" id="nome" name="nome" autocomplete="name" required></div>
+        <div><label for="whats">WhatsApp</label><input type="tel" id="whats" name="whatsapp" autocomplete="tel" placeholder="(DDD) 00000-0000" required></div>
+        <div><label for="insta">Instagram</label><input type="text" id="insta" name="instagram" placeholder="@seuperfil"></div>
+        <div><label for="ocup">Qual é a sua ocupação profissional atualmente?</label><input type="text" id="ocup" name="ocupacao"></div>
+        <fieldset class="opts">
+          <legend>Você é:</legend>
+          <label><input type="radio" name="perfil" value="Empresária"> Empresária</label>
+          <label><input type="radio" name="perfil" value="Profissional liberal"> Profissional liberal</label>
+          <label><input type="radio" name="perfil" value="Executiva ou líder"> Executiva ou líder</label>
+          <label><input type="radio" name="perfil" value="Autônoma"> Autônoma</label>
+          <label><input type="radio" name="perfil" value="Outra"> Outra</label>
+        </fieldset>
+        <div><label for="q1">Como você descreveria o momento que está vivendo hoje?</label><textarea id="q1" name="momento"></textarea></div>
+        <div><label for="q2">Se pudesse transformar uma área da sua vida nos próximos meses, qual seria?</label><textarea id="q2" name="area"></textarea></div>
+        <div><label for="q3">O que você sente que hoje dificulta esse movimento?</label><textarea id="q3" name="dificulta"></textarea></div>
+        <div><label for="q4">O que você já buscou ou experimentou para trabalhar essa questão?</label><textarea id="q4" name="buscou"></textarea></div>
+        <div><label for="q5">Por que sente que agora é o momento de olhar para isso com mais profundidade?</label><textarea id="q5" name="agora"></textarea></div>
+        <div>
+          <label for="disp">De 0 a 10, qual é sua disposição para se comprometer com um processo de 6 meses?</label>
+          <div class="range-row"><input type="range" id="disp" name="disposicao" min="0" max="10" value="5"><output id="disp-out" for="disp">5</output></div>
+        </div>
+        <fieldset class="opts">
+          <legend>Você consegue reservar espaço na sua agenda para um encontro individual por semana?</legend>
+          <label><input type="radio" name="agenda" value="Sim"> Sim</label>
+          <label><input type="radio" name="agenda" value="Preciso organizar minha agenda"> Preciso organizar minha agenda</label>
+          <label><input type="radio" name="agenda" value="Não neste momento"> Não neste momento</label>
+        </fieldset>
+        <fieldset class="opts qualq">
+          <p>Um acompanhamento individual como o Programa LDR® exige investimento financeiro, tempo e comprometimento. Caso perceba, após a conversa, que o programa é adequado ao seu momento, como você se sente hoje em relação a esse tipo de decisão?</p>
+          <label><input type="radio" name="investimento" value="Estou preparada para investir em um acompanhamento individual."> Estou preparada para investir em um acompanhamento individual.</label>
+          <label><input type="radio" name="investimento" value="Preciso conhecer melhor a proposta antes de decidir."> Preciso conhecer melhor a proposta antes de decidir.</label>
+          <label><input type="radio" name="investimento" value="Neste momento, provavelmente não seria uma prioridade."> Neste momento, provavelmente não seria uma prioridade.</label>
+        </fieldset>
+        <div><label for="q6">Existe algo importante sobre você ou sobre o momento que está vivendo que gostaria que a Lisi soubesse?</label><textarea id="q6" name="importante"></textarea></div>
+        <p id="form-error" class="small" role="alert" style="color:var(--terracota);display:none;margin:0">Preencha nome completo e WhatsApp para enviar sua aplicação.</p>
+        <div><button type="submit" class="btn">Enviar minha aplicação</button></div>
+      </form>
+    </div>
+
+    <!-- ============ OBRIGADO ============ -->
+    <div class="thanks" id="thanks" tabindex="-1">
+      <h2>Sua aplicação foi recebida. 🤎</h2>
+      <p class="lead">Obrigada por dedicar alguns minutos para compartilhar o momento que você está vivendo.</p>
+      <p>Nossa equipe analisará suas respostas e poderá entrar em contato pelo WhatsApp para orientar você sobre os próximos passos.</p>
+      <p class="serif-quote" style="margin:2.4rem 0 1rem">Quer agilizar esse contato?</p>
+      <p>Se sente que este é um momento que não deseja continuar adiando, você pode falar agora com alguém da equipe.</p>
+      <a class="btn" id="wa-thanks" href="#" target="_blank" rel="noopener">Falar com a equipe no WhatsApp →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <svg class="wave" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true" style="margin-bottom:2rem"><path d="M0 23 Q75 40 150 23 T300 23 T450 23 T600 23 T750 23 T900 23 T1050 23 T1200 23" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+  <p class="small" style="margin:0">Programa LDR® · Lisi Del Ré</p>
+</footer>
+
+<script>
+(function(){
+  // Cláudio: ajustar aqui o endpoint do formulário (CRM, planilha, webhook) e o WhatsApp da equipe
+  var WHATSAPP = "5500000000000";
+  var msg = "Oi! Conheci o Programa LDR® pela página e sinto que estou vivendo um momento que não quero mais adiar. Gostaria de pular a fila e conversar com a equipe sobre os próximos passos.";
+  var waUrl = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg);
+  var a1 = document.getElementById('wa-skip'); if(a1) a1.href = waUrl;
+  var a2 = document.getElementById('wa-thanks'); if(a2) a2.href = waUrl;
+
+  var range = document.getElementById('disp'), out = document.getElementById('disp-out');
+  range.addEventListener('input', function(){ out.textContent = range.value; });
+
+  var form = document.getElementById('app-form');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var err = document.getElementById('form-error');
+    var ok = form.nome.value.trim() && form.whatsapp.value.trim();
+    err.style.display = ok ? 'none' : 'block';
+    if(!ok) return;
+    // Aqui entra o envio real dos dados (fetch para o CRM/webhook da equipe).
+    document.getElementById('form-area').style.display = 'none';
+    var t = document.getElementById('thanks');
+    t.classList.add('on'); t.focus();
+    t.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+})();
+</script>
+</body>
+</html>
