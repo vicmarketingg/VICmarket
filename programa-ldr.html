@@ -65,7 +65,7 @@ h1 em,h2 em{font-weight:300;color:var(--terracota)}
 .top nav a{font-size:.66rem;letter-spacing:.28em;text-transform:uppercase;color:var(--cafe);text-decoration:none;border-bottom:1px solid var(--linha);padding-bottom:.3rem}
 .top nav a:hover{border-color:var(--cafe)}
 
-/* fotografia — substitua o <svg> por <img> com a foto real e adicione a classe has-img */
+/* fotografia */
 .photo{position:relative;overflow:hidden;background:#e6ddcf}
 .photo svg,.photo img{position:absolute;inset:0;width:100%;height:100%}
 .photo img{object-fit:cover}
@@ -217,9 +217,6 @@ footer p{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;margin:0
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
 
-/* única animação: a água do hero */
-@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.drift{animation:drift 42s linear infinite;width:200%}
 </style>
 </head>
 <body>
@@ -244,22 +241,8 @@ footer p{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;margin:0
       <p class="admit">Admissão mediante aplicação · Análise individual</p>
     </div>
   </div>
-  <!-- FOTO 1: editorial forte da Lisi na praia. Troque o <svg> por <img src="..." alt="Lisi Del Ré na praia"> e adicione a classe has-img -->
-  <div class="photo" role="img" aria-label="Lisi Del Ré caminhando na praia">
-    <svg viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9cfc9"/><stop offset="1" stop-color="#7FA8A6"/></linearGradient>
-      </defs>
-      <rect width="600" height="800" fill="#ece4d6"/>
-      <rect y="300" width="600" height="260" fill="url(#sea)" opacity=".85"/>
-      <g class="drift">
-        <path d="M0 430 Q75 410 150 430 T300 430 T450 430 T600 430 T750 430 T900 430 T1050 430 T1200 430 V560 H0Z" fill="#4F6E6B" opacity=".18"/>
-      </g>
-      <path d="M0 560 Q150 520 300 548 T600 540 V800 H0Z" fill="#D1B89C" opacity=".75"/>
-      <path d="M0 610 Q200 585 360 610 T600 600" fill="none" stroke="#F7F2EC" stroke-width="1.2" opacity=".7"/>
-      <path d="M0 650 Q220 630 400 652 T600 644" fill="none" stroke="#F7F2EC" stroke-width="1" opacity=".5"/>
-    </svg>
-    <span class="slot">foto principal · Lisi na praia</span>
+    <div class="photo has-img">
+    <img src="img/lisi-hero.jpg" alt="Lisi Del Ré na praia ao pôr do sol, com o rosto voltado para a luz" style="object-position:72% 30%" fetchpriority="high">
   </div>
 </header>
 
@@ -297,16 +280,8 @@ footer p{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;margin:0
 <!-- ============ DESEJO / NOVO NÍVEL ============ -->
 <section class="offwhite">
   <div class="desire">
-    <!-- FOTO 2: água/horizonte, suave -->
-    <div class="photo" role="img" aria-label="Horizonte sobre o mar">
-      <svg viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <rect width="1200" height="520" fill="#e6dccb"/>
-        <rect y="190" width="1200" height="180" fill="#9fbab5" opacity=".7"/>
-        <path d="M0 250 Q150 238 300 250 T600 250 T900 250 T1200 250" fill="none" stroke="#F7F2EC" stroke-width="1.2" opacity=".6"/>
-        <path d="M0 300 Q200 286 400 300 T800 300 T1200 300" fill="none" stroke="#F7F2EC" stroke-width="1" opacity=".5"/>
-        <path d="M0 370 Q300 340 600 366 T1200 360 V520 H0Z" fill="#D1B89C" opacity=".8"/>
-      </svg>
-      <span class="slot">imagem suave · água e horizonte</span>
+    <div class="photo has-img">
+      <img src="img/lisi-horizonte.jpg" alt="Lisi Del Ré de braços abertos sobre as pedras, diante do mar" style="object-position:50% 80%" loading="lazy">
     </div>
     <div class="narrow pad">
       <span class="eyebrow">O próximo nível</span>
@@ -408,16 +383,9 @@ footer p{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;margin:0
 <!-- ============ LISI ============ -->
 <section class="pad">
   <div class="wrap about">
-    <!-- FOTO 3: uma das melhores fotos reais da Lisi na praia -->
     <div class="frame">
-      <div class="photo" role="img" aria-label="Lisi Del Ré">
-        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <rect width="400" height="500" fill="#efe6d8"/>
-          <rect y="170" width="400" height="140" fill="#9fbab5" opacity=".7"/>
-          <path d="M0 220 Q100 208 200 220 T400 220" fill="none" stroke="#F7F2EC" stroke-width="1.2" opacity=".6"/>
-          <path d="M0 330 Q120 300 240 326 T400 318 V500 H0Z" fill="#D1B89C" opacity=".8"/>
-        </svg>
-        <span class="slot">foto da Lisi</span>
+      <div class="photo has-img">
+        <img src="img/lisi-retrato.jpg" alt="Retrato de Lisi Del Ré na praia, estendendo a mão" style="object-position:50% 40%" loading="lazy">
       </div>
     </div>
     <div>
