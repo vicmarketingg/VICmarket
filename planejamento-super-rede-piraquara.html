@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Super Rede Piraquara — Planejamento Estratégico</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red: #B11226;
+    --red-deep: #7A0C1A;
+    --gold: #D4AF37;
+    --gold-soft: #E8CD6D;
+    --white: #FFFFFF;
+    --bg-soft: #F8F8F8;
+    --ink: #1A1714;
+    --ink-soft: #5C5650;
+    --line: rgba(26,23,20,0.10);
+    --line-dark: rgba(255,255,255,0.14);
+    --ease: cubic-bezier(.16,.84,.32,1);
+    --dark-bg:
+      radial-gradient(circle at 12% 18%, rgba(212,175,55,0.16), transparent 45%),
+      radial-gradient(circle at 88% 85%, rgba(177,18,38,0.38), transparent 55%),
+      linear-gradient(150deg, #1A1714 0%, #2A1210 55%, #3A0E14 100%);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth; scroll-snap-type:y mandatory;}
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--white);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    letter-spacing:-0.015em;
+    line-height:1.04;
+  }
+  h2{ font-size:clamp(34px, 5vw, 64px); }
+  h2 em, h1 em{ font-style:italic; color:var(--red); }
+  .dark h2 em, .dark h1 em{ color:var(--gold-soft); }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--red);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{ content:''; width:28px; height:1px; background:var(--gold); }
+  .dark .eyebrow{ color:var(--gold-soft); }
+
+  .lead{
+    font-size:clamp(16px, 1.45vw, 20px);
+    line-height:1.6;
+    color:var(--ink-soft);
+    max-width:620px;
+  }
+  .dark .lead{ color:rgba(255,255,255,0.72); }
+
+  .closing-line{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:clamp(18px, 1.7vw, 23px);
+    line-height:1.4;
+    color:var(--ink);
+    border-left:2px solid var(--gold);
+    padding-left:20px;
+    max-width:720px;
+  }
+  .dark .closing-line{ color:var(--white); }
+
+  /* ---------- slides ---------- */
+  .slide{
+    position:relative;
+    min-height:100vh;
+    scroll-snap-align:start;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    padding:96px 0 88px;
+  }
+  .slide.soft{ background:var(--bg-soft); }
+  .slide.dark{ background:var(--dark-bg); color:var(--white); }
+  .wrap{
+    width:100%;
+    max-width:1220px;
+    margin:0 auto;
+    padding:0 48px;
+  }
+  .slide-foot{
+    position:absolute;
+    left:48px; right:48px; bottom:28px;
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    opacity:.7;
+  }
+  .dark .slide-foot{ color:rgba(255,255,255,0.6); }
+  .slide-foot b{ color:var(--red); font-weight:600; }
+  .dark .slide-foot b{ color:var(--gold-soft); }
+
+  /* barcode motif */
+  .barcode{ display:flex; align-items:flex-end; gap:3px; height:22px; opacity:.55; }
+  .barcode span{ display:block; width:2px; background:var(--gold); }
+
+  /* reveal */
+  .reveal{ opacity:0; transform:translateY(26px); transition:opacity 1s var(--ease), transform 1s var(--ease); }
+  .in .reveal{ opacity:1; transform:none; }
+  .in .reveal.d1{ transition-delay:.1s } .in .reveal.d2{ transition-delay:.2s }
+  .in .reveal.d3{ transition-delay:.3s } .in .reveal.d4{ transition-delay:.4s }
+
+  /* ---------- 01 capa ---------- */
+  .cover{ align-items:flex-end; }
+  .cover .wrap{ padding-bottom:40px; }
+  .cover-brand{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px; letter-spacing:0.3em; text-transform:uppercase;
+    color:var(--gold-soft); margin-bottom:28px;
+  }
+  .cover h1{
+    font-size:clamp(46px, 8.4vw, 124px);
+    font-weight:400;
+    line-height:.96;
+  }
+  .cover-sub{
+    margin-top:34px;
+    display:flex; flex-wrap:wrap; gap:18px 48px; align-items:flex-end; justify-content:space-between;
+    border-top:1px solid var(--line-dark); padding-top:28px;
+  }
+  .cover-sub p{ font-size:clamp(15px,1.3vw,18px); color:rgba(255,255,255,.75); max-width:460px; line-height:1.55; }
+  .cover-date{
+    font-family:'Fraunces', serif; font-size:clamp(30px,3.6vw,48px); color:var(--white); line-height:1;
+  }
+  .cover-date small{ display:block; font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.22em; color:var(--gold-soft); margin-bottom:10px; text-transform:uppercase; }
+  .stamp{
+    position:absolute; top:96px; right:48px;
+    width:150px; height:150px; border-radius:50%;
+    border:1px solid rgba(232,205,109,.55);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--gold-soft); line-height:1.6; transform:rotate(-10deg);
+  }
+  .stamp b{ display:block; font-family:'Fraunces', serif; font-style:italic; font-weight:500; font-size:22px; letter-spacing:0; text-transform:none; color:var(--white); }
+
+  /* ---------- grids / cards ---------- */
+  .two-col{ display:grid; grid-template-columns:1.05fr 1fr; gap:72px; align-items:center; }
+  .stack > * + *{ margin-top:22px; }
+
+  .objectives{ display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin:44px 0 40px; }
+  .objective{ background:var(--white); padding:30px 24px 32px; transition:background .4s var(--ease); }
+  .objective:hover{ background:#fff8f8; }
+  .objective .num{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--gold); letter-spacing:.1em; }
+  .objective h3{ font-size:26px; margin:14px 0 12px; color:var(--red); }
+  .objective p{ font-size:14.5px; line-height:1.55; color:var(--ink-soft); }
+
+  /* pilares */
+  .mix-bar{ display:flex; height:18px; border-radius:100px; overflow:hidden; margin:40px 0 34px; }
+  .mix-bar span{ display:block; height:100%; }
+  .pillars{ display:grid; grid-template-columns:40fr 30fr 20fr 14fr; gap:18px; }
+  .pillar{ border-top:2px solid var(--c); padding-top:20px; }
+  .pillar .pct{ font-family:'Fraunces', serif; font-size:clamp(40px,4.4vw,62px); line-height:1; color:var(--c); }
+  .pillar h3{ font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; margin:12px 0 10px; }
+  .pillar p{ font-size:14.5px; line-height:1.55; color:var(--ink-soft); }
+
+  /* frequência */
+  .stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line-dark); border:1px solid var(--line-dark); margin:44px 0 40px; }
+  .stat{ background:rgba(26,23,20,.55); padding:34px 26px; backdrop-filter:blur(4px); }
+  .stat .big{ font-family:'Fraunces', serif; font-size:clamp(46px,5vw,72px); line-height:1; color:var(--gold-soft); }
+  .stat .big small{ font-size:.42em; color:var(--white); margin-left:4px; }
+  .stat h3{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:.16em; text-transform:uppercase; margin:16px 0 10px; font-weight:500; }
+  .stat p{ font-size:14px; line-height:1.55; color:rgba(255,255,255,.68); }
+
+  /* campanhas da semana */
+  .week{ display:grid; grid-template-columns:repeat(6,1fr); gap:14px; margin:44px 0 40px; }
+  .day{
+    position:relative; background:var(--white); border:1px solid var(--line); border-radius:4px;
+    padding:26px 20px 28px; min-height:230px; display:flex; flex-direction:column;
+    transition:transform .5s var(--ease), box-shadow .5s var(--ease);
+  }
+  .day:hover{ transform:translateY(-6px); box-shadow:0 18px 40px rgba(122,12,26,.12); }
+  .day::before{ content:''; position:absolute; top:0; left:0; right:0; height:4px; background:var(--c, var(--red)); border-radius:4px 4px 0 0; }
+  .day .tag{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-soft); }
+  .day h3{ font-size:25px; margin:12px 0 14px; line-height:1.05; }
+  .day p{ font-size:14px; line-height:1.55; color:var(--ink-soft); margin-top:auto; }
+  .day.wide{ grid-column:span 1; background:var(--red); color:var(--white); border-color:var(--red); }
+  .day.wide .tag, .day.wide p{ color:rgba(255,255,255,.8); }
+  .day.wide::before{ background:var(--gold); }
+
+  /* setores */
+  .sectors{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin:40px 0 38px; }
+  .sector{ background:var(--white); padding:28px 24px; }
+  .sector .ico{ font-size:26px; line-height:1; }
+  .sector h3{ font-family:'JetBrains Mono', monospace; font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:600; margin:16px 0 10px; color:var(--red); }
+  .sector p{ font-size:14.5px; line-height:1.55; color:var(--ink-soft); }
+  .sector.highlight{ background:var(--ink); color:var(--white); display:flex; flex-direction:column; justify-content:center; }
+  .sector.highlight p{ font-family:'Fraunces', serif; font-style:italic; font-size:21px; line-height:1.35; color:var(--white); }
+
+  /* calendário sazonal */
+  .calendar{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:40px 0 0; }
+  .date-card{ border:1px solid var(--line); background:var(--white); padding:22px 22px 24px; border-radius:4px; display:flex; flex-direction:column; gap:10px; }
+  .date-card .when{ font-family:'Fraunces', serif; font-size:34px; line-height:1; color:var(--red); }
+  .date-card .when small{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.18em; color:var(--ink-soft); margin-left:6px; text-transform:uppercase; }
+  .date-card h3{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:600; }
+  .date-card p{ font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  .date-card.pink{ border-color:#E7A6BC; background:#FFF5F8; }
+  .date-card.pink .when{ color:#C2185B; }
+  .date-card.blue{ border-color:#9DB8E2; background:#F4F8FF; }
+  .date-card.blue .when{ color:#1F4E9C; }
+  .date-card.hot{ background:var(--red); border-color:var(--red); color:var(--white); }
+  .date-card.hot .when{ color:var(--gold-soft); }
+  .date-card.hot .when small, .date-card.hot p{ color:rgba(255,255,255,.8); }
+
+  /* super sexta */
+  .supersexta h2{ font-size:clamp(58px,9vw,132px); font-weight:400; line-height:.92; }
+  .supersexta .kicker{ font-family:'Fraunces', serif; font-style:italic; font-size:clamp(20px,2.2vw,30px); color:var(--gold-soft); margin-top:18px; }
+  .timeline{ position:relative; display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin:48px 0 40px; }
+  .timeline::before{ content:''; position:absolute; left:0; right:0; top:15px; height:1px; background:linear-gradient(90deg, rgba(232,205,109,.25), var(--gold-soft)); }
+  .step{ position:relative; padding-top:44px; }
+  .step::before{ content:''; position:absolute; top:8px; left:0; width:15px; height:15px; border-radius:50%; background:#2A1210; border:1px solid var(--gold-soft); }
+  .step.final::before{ background:var(--gold-soft); box-shadow:0 0 0 6px rgba(232,205,109,.18); }
+  .step .d{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:.16em; color:var(--gold-soft); }
+  .step h3{ font-size:clamp(20px,2vw,28px); margin:10px 0 10px; }
+  .step.final h3{ color:var(--gold-soft); }
+  .step p{ font-size:14px; line-height:1.55; color:rgba(255,255,255,.7); }
+
+  /* narrativas */
+  .stories{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin:42px 0 40px; }
+  .story{ position:relative; background:var(--white); border:1px solid var(--line); padding:32px 32px 30px 32px; border-radius:4px; }
+  .story .q{ font-family:'Fraunces', serif; font-size:clamp(23px,2.2vw,31px); line-height:1.1; color:var(--ink); }
+  .story .q::before{ content:'“'; color:var(--gold); margin-right:2px; }
+  .story .q::after{ content:'”'; color:var(--gold); margin-left:2px; }
+  .story p{ margin-top:14px; font-size:15px; line-height:1.55; color:var(--ink-soft); }
+  .story .n{ position:absolute; top:22px; right:26px; font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--red); letter-spacing:.14em; }
+
+  /* resultados */
+  .cycle{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 0; }
+  .cycle span{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; border:1px solid var(--red); color:var(--red); padding:8px 16px; border-radius:100px; }
+  .cycle span:last-child{ background:var(--red); color:var(--white); }
+  .kpis{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin:40px 0 36px; }
+  .kpi{ background:var(--white); border:1px solid var(--line); border-radius:4px; padding:28px 26px; }
+  .kpi h3{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:.16em; text-transform:uppercase; font-weight:600; color:var(--red); padding-bottom:16px; margin-bottom:16px; border-bottom:1px solid var(--line); }
+  .kpi ul{ list-style:none; }
+  .kpi li{ font-size:15px; line-height:1.5; padding:6px 0 6px 20px; position:relative; color:var(--ink); }
+  .kpi li::before{ content:''; position:absolute; left:0; top:15px; width:8px; height:1px; background:var(--gold); }
+
+  /* encerramento */
+  .ending h2{ font-size:clamp(38px,5.6vw,80px); font-weight:400; max-width:1000px; }
+  .triad{ display:flex; flex-wrap:wrap; gap:0; margin:44px 0 48px; border-top:1px solid var(--line-dark); border-bottom:1px solid var(--line-dark); }
+  .triad div{ flex:1 1 220px; padding:26px 0; font-family:'Fraunces', serif; font-size:clamp(22px,2.3vw,32px); }
+  .triad div + div{ border-left:1px solid var(--line-dark); padding-left:28px; }
+  .triad em{ color:var(--gold-soft); }
+  .sign{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:24px; }
+  .sign .name{ font-family:'Fraunces', serif; font-size:clamp(28px,3vw,42px); }
+  .sign .slogan{ font-family:'JetBrains Mono', monospace; font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:var(--gold-soft); margin-top:8px; }
+  .sign .meta{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.6); text-align:right; line-height:1.8; }
+
+  /* ---------- nav ---------- */
+  .pager{
+    position:fixed; right:22px; top:50%; transform:translateY(-50%); z-index:50;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .pager a{ width:8px; height:8px; border-radius:50%; background:rgba(120,110,100,.35); transition:all .4s var(--ease); }
+  .pager a.active{ background:var(--red); transform:scale(1.4); box-shadow:0 0 0 3px rgba(177,18,38,.18); }
+  .pager.on-dark a{ background:rgba(255,255,255,.3); }
+  .pager.on-dark a.active{ background:var(--gold-soft); box-shadow:0 0 0 3px rgba(232,205,109,.2); }
+  .print-btn{
+    position:fixed; right:22px; top:22px; z-index:50;
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    background:var(--white); color:var(--red); border:1px solid var(--red); padding:9px 16px; border-radius:100px; cursor:pointer;
+    transition:all .3s var(--ease);
+  }
+  .print-btn:hover{ background:var(--red); color:var(--white); }
+
+  /* ---------- responsive ---------- */
+  @media screen and (max-width:1100px){
+    .objectives{ grid-template-columns:repeat(3,1fr); }
+    .week{ grid-template-columns:repeat(3,1fr); }
+    .calendar{ grid-template-columns:repeat(2,1fr); }
+    .timeline{ grid-template-columns:repeat(3,1fr); row-gap:28px; }
+    .timeline::before{ display:none; }
+  }
+  @media screen and (max-width:820px){
+    html{ scroll-snap-type:none; }
+    .wrap{ padding:0 16px; }
+    .slide{ padding:80px 0 72px; min-height:auto; }
+    .slide.cover{ min-height:100vh; }
+    .slide-foot{ left:16px; right:16px; bottom:22px; }
+    .two-col{ grid-template-columns:1fr; gap:32px; }
+    .objectives, .stats, .sectors, .kpis{ grid-template-columns:1fr 1fr; }
+    .pillars{ grid-template-columns:1fr 1fr; row-gap:28px; }
+    .week{ grid-template-columns:1fr 1fr; }
+    .stories{ grid-template-columns:1fr; }
+    .stamp{ display:none; }
+    .pager{ display:none; }
+    .print-btn{ display:none; }
+    .triad div + div{ border-left:none; padding-left:0; border-top:1px solid var(--line-dark); }
+  }
+  @media screen and (max-width:520px){
+    .objectives, .stats, .sectors, .kpis, .week, .calendar, .timeline{ grid-template-columns:1fr; }
+    .day{ min-height:auto; }
+  }
+
+  /* ---------- print / PDF (16:9) ---------- */
+  @page{ size:1600px 900px; margin:0; }
+  @media print{
+    html{ scroll-snap-type:none; }
+    body{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .pager, .print-btn{ display:none !important; }
+    .slide{ height:900px; min-height:0; overflow:hidden; page-break-after:always; break-after:page; padding:56px 0 64px; }
+    .slide:last-of-type{ page-break-after:auto; break-after:auto; }
+    html{ font-size:15px; }
+    .reveal{ opacity:1 !important; transform:none !important; }
+    .wrap{ max-width:1500px; padding:0 70px; }
+    .slide-foot{ left:70px; right:70px; }
+    .day:hover{ transform:none; box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="pager" id="pager" aria-label="Páginas"></nav>
+<button class="print-btn" onclick="window.print()">Salvar PDF</button>
+
+<!-- ===================== 01 CAPA ===================== -->
+<section class="slide dark cover" id="p1" data-dark>
+  <div class="stamp"><div>Menor<b>Preço</b>Sempre!</div></div>
+  <div class="wrap">
+    <div class="cover-brand reveal">Super Rede Piraquara</div>
+    <h1 class="reveal d1">Mais que ofertas.<br><em>Uma estratégia</em><br>para vender mais.</h1>
+    <div class="cover-sub reveal d2">
+      <p>Planejamento estratégico de conteúdo e comunicação digital.</p>
+      <div class="cover-date"><small>Período</small>10.10 — 10.11.2026</div>
+    </div>
+  </div>
+  <div class="slide-foot"><span><b>01</b> / 12</span><span>Planejamento estratégico de conteúdo</span></div>
+</section>
+
+<!-- ===================== 02 VISÃO ===================== -->
+<section class="slide" id="p2">
+  <div class="wrap two-col">
+    <div>
+      <div class="eyebrow reveal">Nossa visão</div>
+      <h2 class="reveal d1">Cada conteúdo precisa ter <em>um propósito.</em></h2>
+    </div>
+    <div class="stack">
+      <p class="lead reveal d1">O Super Rede Piraquara faz parte da rotina de centenas de famílias.</p>
+      <p class="lead reveal d2">É onde o cliente encontra os produtos para abastecer a casa, prepara o churrasco do fim de semana, garante o almoço de domingo e encontra soluções para diferentes momentos do dia.</p>
+      <p class="lead reveal d2">Nossa comunicação precisa refletir tudo isso. Mais do que divulgar ofertas, queremos mostrar o valor de cada setor, despertar o desejo de compra e fortalecer a relação entre o supermercado e seus clientes.</p>
+      <p class="closing-line reveal d3">A estratégia é simples: transformar tudo o que o Super Rede oferece em motivos para o cliente voltar.</p>
+    </div>
+  </div>
+  <div class="slide-foot"><span><b>02</b> / 12</span><span>Nossa visão</span></div>
+</section>
+
+<!-- ===================== 03 OBJETIVOS ===================== -->
+<section class="slide soft" id="p3">
+  <div class="wrap">
+    <div class="eyebrow reveal">Nossos objetivos</div>
+    <h2 class="reveal d1">Presença digital com <em>foco em resultados.</em></h2>
+    <div class="objectives reveal d2">
+      <div class="objective"><span class="num">01</span><h3>Atrair</h3><p>Estimular visitas à loja por meio de ofertas, novidades e conteúdos que despertem interesse.</p></div>
+      <div class="objective"><span class="num">02</span><h3>Conectar</h3><p>Fortalecer o relacionamento com o público através de uma comunicação próxima, humanizada e participativa.</p></div>
+      <div class="objective"><span class="num">03</span><h3>Valorizar</h3><p>Dar visibilidade aos diferentes setores, produtos e serviços do supermercado.</p></div>
+      <div class="objective"><span class="num">04</span><h3>Converter</h3><p>Transformar o interesse gerado pelo conteúdo em oportunidades de compra e pedidos.</p></div>
+      <div class="objective"><span class="num">05</span><h3>Fidelizar</h3><p>Fazer do Super Rede uma escolha recorrente na rotina dos consumidores.</p></div>
+    </div>
+    <p class="closing-line reveal d3">Nosso foco não é apenas alcançar pessoas. É criar motivos reais para elas escolherem o Super Rede Piraquara.</p>
+  </div>
+  <div class="slide-foot"><span><b>03</b> / 12</span><span>Nossos objetivos</span></div>
+</section>
+
+<!-- ===================== 04 ESTRATÉGIA ===================== -->
+<section class="slide" id="p4">
+  <div class="wrap">
+    <div class="eyebrow reveal">Nossa estratégia</div>
+    <h2 class="reveal d1">Conteúdo que atrai.<br><em>Oferta que converte.</em></h2>
+    <p class="lead reveal d1" style="margin-top:20px">Para este período, nossa comunicação será organizada em quatro pilares estratégicos.</p>
+    <div class="mix-bar reveal d2" aria-hidden="true">
+      <span style="width:40%;background:var(--red)"></span>
+      <span style="width:30%;background:var(--red-deep)"></span>
+      <span style="width:20%;background:var(--gold)"></span>
+      <span style="width:10%;background:var(--ink)"></span>
+    </div>
+    <div class="pillars reveal d3">
+      <div class="pillar" style="--c:var(--red)"><div class="pct">40%</div><h3>Conteúdo comercial</h3><p>Ofertas, campanhas semanais, preços, oportunidades e chamadas para visitar a loja.</p></div>
+      <div class="pillar" style="--c:var(--red-deep)"><div class="pct">30%</div><h3>Produtos e experiências</h3><p>Apresentação dos setores, produtos diferenciados, alimentação pronta e serviços.</p></div>
+      <div class="pillar" style="--c:#B8921F"><div class="pct">20%</div><h3>Relacionamento</h3><p>Bastidores, enquetes, conteúdos leves, interação e aproximação com os clientes.</p></div>
+      <div class="pillar" style="--c:var(--ink)"><div class="pct">10%</div><h3>Institucional</h3><p>História, estrutura, equipe, diferenciais e reconhecimento da marca.</p></div>
+    </div>
+    <p class="closing-line reveal d4" style="margin-top:38px">Essa distribuição orienta a criação de conteúdo e poderá ser ajustada conforme os resultados.</p>
+  </div>
+  <div class="slide-foot"><span><b>04</b> / 12</span><span>Nossa estratégia</span></div>
+</section>
+
+<!-- ===================== 05 FREQUÊNCIA ===================== -->
+<section class="slide dark" id="p5" data-dark>
+  <div class="wrap">
+    <div class="eyebrow reveal">Nossa frequência</div>
+    <h2 class="reveal d1">Constância <em>com estratégia.</em></h2>
+    <p class="lead reveal d1" style="margin-top:20px">Durante 32 dias, vamos trabalhar com uma programação equilibrada entre vídeos e conteúdos diários.</p>
+    <div class="stats reveal d2">
+      <div class="stat"><div class="big">16</div><h3>Reels</h3><p>Publicações em dias alternados, com roteiros estratégicos, comunicação dinâmica e foco em diferentes objetivos.</p></div>
+      <div class="stat"><div class="big">32<small>dias</small></div><h3>De Stories</h3><p>Presença diária para divulgar ofertas, apresentar produtos, interagir com o público e estimular visitas.</p></div>
+      <div class="stat"><div class="big">10–15</div><h3>Stories por dia</h3><p>Conteúdos distribuídos ao longo do dia, acompanhando os diferentes momentos de consumo.</p></div>
+      <div class="stat"><div class="big">30–60<small>s</small></div><h3>Duração dos vídeos</h3><p>Priorizando retenção, clareza e comunicação comercial.</p></div>
+    </div>
+    <p class="closing-line reveal d3">Mais importante do que publicar muito é publicar com intenção.</p>
+  </div>
+  <div class="slide-foot"><span><b>05</b> / 12</span><span>Nossa frequência</span></div>
+</section>
+
+<!-- ===================== 06 CAMPANHAS DA SEMANA ===================== -->
+<section class="slide soft" id="p6">
+  <div class="wrap">
+    <div class="eyebrow reveal">Campanhas que movimentam a semana</div>
+    <h2 class="reveal d1">Cada dia, uma nova oportunidade <em>de economizar.</em></h2>
+    <div class="week reveal d2">
+      <div class="day" style="--c:var(--red)"><span class="tag">Segunda</span><h3>Segunda Show</h3><p>A semana começa com ofertas e oportunidades para abastecer a casa.</p></div>
+      <div class="day" style="--c:#D9822B"><span class="tag">Terça</span><h3>Terça Quente</h3><p>Destaque para padaria, laticínios e produtos que fazem parte do café da manhã.</p></div>
+      <div class="day" style="--c:#3E8E41"><span class="tag">Quarta</span><h3>Quarta Verde</h3><p>Frescor, variedade e economia no hortifruti.</p></div>
+      <div class="day" style="--c:var(--red-deep)"><span class="tag">Quinta</span><h3>Quinta do Açougue</h3><p>Cortes selecionados e ofertas para diferentes refeições.</p></div>
+      <div class="day" style="--c:#C76A7A"><span class="tag">Sexta</span><h3>Sexta Suína</h3><p>Produtos suínos, ingredientes para feijoada e oportunidades de economia.</p></div>
+      <div class="day wide"><span class="tag">Sábado e domingo</span><h3>Fim de Semana Maluco</h3><p>Ofertas em açougue e hortifruti para aproveitar o sábado e o domingo.</p></div>
+    </div>
+    <p class="closing-line reveal d3">As campanhas comerciais continuam sendo a base da nossa comunicação de vendas.</p>
+  </div>
+  <div class="slide-foot"><span><b>06</b> / 12</span><span>Campanhas da semana</span></div>
+</section>
+
+<!-- ===================== 07 SETORES ===================== -->
+<section class="slide" id="p7">
+  <div class="wrap">
+    <div class="eyebrow reveal">Muito além das prateleiras</div>
+    <h2 class="reveal d1">Tem muito mais Super Rede <em>para mostrar.</em></h2>
+    <p class="lead reveal d1" style="margin-top:20px;max-width:760px">O Super Rede Piraquara oferece uma experiência que vai além das compras tradicionais. Durante este planejamento, vamos ampliar a visibilidade de setores e serviços que fazem parte da estrutura da loja.</p>
+    <div class="sectors reveal d2">
+      <div class="sector"><div class="ico">🥐</div><h3>Lanchonete e padaria</h3><p>Café da manhã, pães, salgados e opções para diferentes momentos do dia.</p></div>
+      <div class="sector"><div class="ico">🥬</div><h3>Hortifruti</h3><p>Variedade, frescor e um ambiente climatizado com apresentação diferenciada dos produtos.</p></div>
+      <div class="sector"><div class="ico">🥩</div><h3>Açougue</h3><p>Cortes, qualidade, variedade e soluções para as refeições da família.</p></div>
+      <div class="sector"><div class="ico">🍕</div><h3>Pizzaria</h3><p>Pizzas, combos e praticidade para o jantar.</p></div>
+      <div class="sector"><div class="ico">🍗</div><h3>Alimentação pronta</h3><p>Marmitex, frango assado, doces e salgados.</p></div>
+      <div class="sector"><div class="ico">🌿</div><h3>Produtos naturais</h3><p>Chás, ervas, temperos, farinhas e outros produtos.</p></div>
+      <div class="sector"><div class="ico">🍺</div><h3>Experiências</h3><p>Churrasquinho, chopp e varandão climatizado.</p></div>
+      <div class="sector highlight"><p>Quanto mais o cliente conhece nossa estrutura, mais motivos encontra para consumir aqui.</p></div>
+    </div>
+  </div>
+  <div class="slide-foot"><span><b>07</b> / 12</span><span>Muito além das prateleiras</span></div>
+</section>
+
+<!-- ===================== 08 CALENDÁRIO ===================== -->
+<section class="slide soft" id="p8">
+  <div class="wrap">
+    <div class="eyebrow reveal">Calendário sazonal</div>
+    <h2 class="reveal d1">Conectados com o que acontece <em>fora da loja.</em></h2>
+    <p class="lead reveal d1" style="margin-top:20px;max-width:760px">Vamos utilizar datas comemorativas e oportunidades sazonais para criar campanhas relevantes e aproximar o supermercado do cotidiano dos clientes.</p>
+    <div class="calendar reveal d2">
+      <div class="date-card"><div class="when">12<small>out</small></div><h3>Dia das Crianças</h3><p>Produtos para comemorações, doces, guloseimas e experiências em família.</p></div>
+      <div class="date-card"><div class="when">15<small>out</small></div><h3>Dia dos Professores</h3><p>Homenagem e relacionamento com a comunidade.</p></div>
+      <div class="date-card"><div class="when">16<small>out</small></div><h3>Dia Mundial da Alimentação</h3><p>Valorização dos alimentos, hortifruti e variedade de produtos.</p></div>
+      <div class="date-card pink"><div class="when">Out<small>mês todo</small></div><h3>Outubro Rosa</h3><p>Conscientização e incentivo ao cuidado com a saúde.</p></div>
+      <div class="date-card hot"><div class="when">30<small>out</small></div><h3>Super Sexta</h3><p>Campanha comercial com aquecimento, contagem regressiva e divulgação intensiva de ofertas.</p></div>
+      <div class="date-card"><div class="when">31<small>out</small></div><h3>Halloween</h3><p>Conteúdos temáticos com doces e guloseimas.</p></div>
+      <div class="date-card blue"><div class="when">Nov<small>mês todo</small></div><h3>Novembro Azul</h3><p>Comunicação institucional voltada à conscientização sobre saúde masculina.</p></div>
+      <div class="date-card"><div class="when">02<small>nov</small></div><h3>Finados</h3><p>Comunicação de funcionamento e conveniência, conforme a operação da loja.</p></div>
+    </div>
+  </div>
+  <div class="slide-foot"><span><b>08</b> / 12</span><span>Calendário sazonal</span></div>
+</section>
+
+<!-- ===================== 09 SUPER SEXTA ===================== -->
+<section class="slide dark supersexta" id="p9" data-dark>
+  <div class="wrap">
+    <div class="eyebrow reveal">Nossa grande campanha · 30 de outubro de 2026</div>
+    <h2 class="reveal d1">Super <em>Sexta</em></h2>
+    <p class="kicker reveal d1">A última sexta do mês. A mais barata.</p>
+    <p class="lead reveal d2" style="margin-top:22px">Uma das principais oportunidades comerciais do período terá uma estratégia específica de comunicação.</p>
+    <div class="timeline reveal d3">
+      <div class="step"><span class="d">26/10</span><h3>Aquecimento</h3><p>Primeiro anúncio da chegada da Super Sexta.</p></div>
+      <div class="step"><span class="d">27/10</span><h3>Faltam 3 dias</h3><p>Início da contagem regressiva nos Stories.</p></div>
+      <div class="step"><span class="d">28/10</span><h3>Faltam 2 dias</h3><p>Reels de expectativa e preparação para as ofertas.</p></div>
+      <div class="step"><span class="d">29/10</span><h3>É amanhã</h3><p>Intensificação das chamadas e lembretes.</p></div>
+      <div class="step final"><span class="d">30/10</span><h3>É hoje!</h3><p>Reels principal, divulgação de ofertas e cobertura da loja ao longo do dia.</p></div>
+    </div>
+    <p class="closing-line reveal d4">Nosso objetivo é fazer com que o cliente se prepare para aproveitar a Super Sexta antes mesmo de ela começar.</p>
+  </div>
+  <div class="slide-foot"><span><b>09</b> / 12</span><span>Super Sexta</span></div>
+</section>
+
+<!-- ===================== 10 NARRATIVAS ===================== -->
+<section class="slide soft" id="p10">
+  <div class="wrap">
+    <div class="eyebrow reveal">Conteúdo que gera proximidade</div>
+    <h2 class="reveal d1">Queremos que o cliente <em>se veja</em> no nosso conteúdo.</h2>
+    <p class="lead reveal d1" style="margin-top:20px">Além das campanhas comerciais, vamos trabalhar narrativas que aproximam o público da marca.</p>
+    <div class="stories reveal d2">
+      <div class="story"><span class="n">01</span><div class="q">Você sabia que tem aqui?</div><p>Apresentação de produtos, serviços e setores que muitos clientes ainda não conhecem.</p></div>
+      <div class="story"><span class="n">02</span><div class="q">Do Super Rede para sua mesa</div><p>Sugestões de refeições, combinações de produtos e soluções para o dia a dia.</p></div>
+      <div class="story"><span class="n">03</span><div class="q">Uma voltinha pelo Super Rede</div><p>Conteúdos mostrando a estrutura da loja, novidades, bastidores e experiências.</p></div>
+      <div class="story"><span class="n">04</span><div class="q">Bateu aquela fome?</div><p>Vídeos que despertam desejo, valorizando os produtos preparados e serviços de alimentação.</p></div>
+    </div>
+    <p class="closing-line reveal d3">A ideia é criar uma comunicação que não apenas informe, mas desperte vontade de visitar, experimentar e comprar.</p>
+  </div>
+  <div class="slide-foot"><span><b>10</b> / 12</span><span>Conteúdo que gera proximidade</span></div>
+</section>
+
+<!-- ===================== 11 RESULTADOS ===================== -->
+<section class="slide" id="p11">
+  <div class="wrap">
+    <div class="eyebrow reveal">Como vamos acompanhar os resultados</div>
+    <h2 class="reveal d1">Planejar. Executar.<br>Analisar. <em>Evoluir.</em></h2>
+    <p class="lead reveal d1" style="margin-top:20px">Nossa estratégia será acompanhada por indicadores de produção e desempenho.</p>
+    <div class="kpis reveal d2">
+      <div class="kpi"><h3>Produção</h3><ul>
+        <li>Quantidade de conteúdos planejados</li><li>Conteúdos produzidos</li><li>Conteúdos aprovados</li><li>Publicações realizadas</li><li>Cumprimento do calendário</li>
+      </ul></div>
+      <div class="kpi"><h3>Desempenho digital</h3><ul>
+        <li>Alcance</li><li>Visualizações</li><li>Compartilhamentos</li><li>Salvamentos</li><li>Comentários</li><li>Interações nos Stories</li><li>Crescimento de seguidores</li>
+      </ul></div>
+      <div class="kpi"><h3>Oportunidades comerciais</h3><ul>
+        <li>Mensagens recebidas</li><li>Cliques em links</li><li>Interesse em produtos e campanhas</li><li>Pedidos atribuíveis às ações digitais, quando houver rastreamento</li>
+      </ul></div>
+    </div>
+    <p class="closing-line reveal d3">Os resultados serão avaliados a partir dos dados reais das publicações. A análise permitirá identificar os conteúdos que mais despertam interesse e aprimorar continuamente nossa comunicação.</p>
+  </div>
+  <div class="slide-foot"><span><b>11</b> / 12</span><span>Acompanhamento de resultados</span></div>
+</section>
+
+<!-- ===================== 12 ENCERRAMENTO ===================== -->
+<section class="slide dark ending" id="p12" data-dark>
+  <div class="wrap">
+    <div class="eyebrow reveal">Encerramento</div>
+    <h2 class="reveal d1">Nosso objetivo é fazer o Super Rede ser lembrado <em>todos os dias.</em></h2>
+    <p class="lead reveal d2" style="margin-top:26px;max-width:760px">O Super Rede Piraquara já faz parte da rotina dos clientes. Agora, queremos fortalecer ainda mais essa presença no ambiente digital. Com planejamento, criatividade, constância e foco comercial, vamos transformar cada setor, cada produto e cada campanha em novas oportunidades de conexão e venda.</p>
+    <div class="triad reveal d3">
+      <div>Mais <em>presença.</em></div>
+      <div>Mais <em>relacionamento.</em></div>
+      <div>Mais <em>oportunidades de venda.</em></div>
+    </div>
+    <div class="sign reveal d4">
+      <div>
+        <div class="name">Super Rede Piraquara</div>
+        <div class="slogan">Menor preço sempre!</div>
+      </div>
+      <div class="meta">Planejamento estratégico<br>Outubro — Novembro 2026</div>
+    </div>
+  </div>
+  <div class="slide-foot"><span><b>12</b> / 12</span><span>Super Rede Piraquara</span></div>
+</section>
+
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  const pager = document.getElementById('pager');
+
+  slides.forEach((s, i) => {
+    const a = document.createElement('a');
+    a.href = '#' + s.id;
+    a.setAttribute('aria-label', 'Página ' + (i + 1));
+    pager.appendChild(a);
+  });
+  const dots = [...pager.children];
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      const i = slides.indexOf(e.target);
+      dots.forEach((d, j) => d.classList.toggle('active', j === i));
+      pager.classList.toggle('on-dark', e.target.hasAttribute('data-dark'));
+    });
+  }, { threshold: 0.35 });
+  slides.forEach(s => io.observe(s));
+
+  // Navegação por teclado (apresentação)
+  document.addEventListener('keydown', e => {
+    const current = dots.findIndex(d => d.classList.contains('active'));
+    let next = null;
+    if (['ArrowDown', 'ArrowRight', 'PageDown', ' '].includes(e.key)) next = Math.min(current + 1, slides.length - 1);
+    if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) next = Math.max(current - 1, 0);
+    if (e.key === 'Home') next = 0;
+    if (e.key === 'End') next = slides.length - 1;
+    if (next !== null) { e.preventDefault(); slides[next].scrollIntoView({ behavior: 'smooth' }); }
+  });
+
+  window.addEventListener('beforeprint', () => slides.forEach(s => s.classList.add('in')));
+</script>
+</body>
+</html>
