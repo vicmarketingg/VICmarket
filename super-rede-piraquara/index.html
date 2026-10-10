@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Super Rede Piraquara — Marketing</title>
+<meta name="description" content="Dashboard de planejamento de marketing e apresentação executiva — Super Rede Piraquara, 10/10 a 10/11/2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <img class="brand-logo" id="brandLogo" alt="Logotipo Super Rede Piraquara" hidden>
+      <div>
+        <div class="brand-name">Super Rede Piraquara</div>
+        <div class="brand-sub">Marketing · 10/10 a 10/11/2026</div>
+      </div>
+    </div>
+    <nav class="nav" aria-label="Páginas">
+      <a href="#visao" data-page="visao"><span class="ico">◧</span>Visão geral</a>
+      <a href="#calendario" data-page="calendario"><span class="ico">▦</span>Calendário editorial</a>
+      <a href="#producao" data-page="producao"><span class="ico">☰</span>Produção</a>
+      <a href="#campanhas" data-page="campanhas"><span class="ico">◆</span>Campanhas</a>
+      <a href="#resultados" data-page="resultados"><span class="ico">▲</span>Indicadores e resultados</a>
+      <a href="#apresentacao" data-page="apresentacao"><span class="ico">▶</span>Apresentação executiva</a>
+    </nav>
+    <div class="sidebar-foot">
+      <button class="btn btn-ghost btn-block" id="btnData" type="button">Dados, backup e exportação</button>
+      <div class="save-state" id="saveState">Dados salvos neste navegador</div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Abrir menu">☰</button>
+      <div>
+        <h1 id="pageTitle">Visão geral</h1>
+        <div class="page-sub" id="pageSub"></div>
+      </div>
+      <div class="today-chip" id="todayChip"></div>
+    </header>
+    <main id="view" class="view"></main>
+  </div>
+</div>
+
+<!-- Modal de detalhes / edição -->
+<div class="modal-backdrop" id="modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <div>
+        <div class="modal-kicker" id="modalKicker"></div>
+        <h2 id="modalTitle"></h2>
+      </div>
+      <button class="icon-btn" type="button" data-close aria-label="Fechar">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot" id="modalFoot"></div>
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+<div class="toast" id="toast" hidden></div>
+<input type="file" id="importFile" accept="application/json,.json" hidden>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
