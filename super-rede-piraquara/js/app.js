@@ -1042,9 +1042,35 @@
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   }
 
+  // Confirmação dentro da página (janelas confirm() podem ser bloqueadas quando o painel está hospedado)
+  let confirmCb = null;
+  function askConfirm(title, text, yesLabel, onYes) {
+    confirmCb = onYes;
+    openModal('<span>Confirmação</span>', title, `<p>${esc(text)}</p>`,
+      `<button class="btn" type="button" data-close>Cancelar</button><button class="btn btn-primary" type="button" data-modal="confirm-yes">${esc(yesLabel)}</button>`);
+  }
+
+  // Exportação: tenta baixar o arquivo e sempre mostra o conteúdo para copiar
+  let pendingExport = null;
+  function showExport(title, name, content, type) {
+    pendingExport = { name, content, type };
+    openModal('<span>Exportação</span>', title, `
+      <p class="note" style="margin-bottom:10px">Clique em <b>Baixar arquivo</b>. Se o download não iniciar (alguns navegadores e a versão hospedada bloqueiam downloads), use <b>Copiar conteúdo</b> e cole em um arquivo de texto chamado <b>${esc(name)}</b>.</p>
+      <textarea class="textarea" id="exportText" readonly rows="12" style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px">${esc(content)}</textarea>`,
+      `<button class="btn" type="button" data-close>Fechar</button><button class="btn" type="button" data-modal="copy">Copiar conteúdo</button><button class="btn btn-primary" type="button" data-modal="dl">Baixar arquivo</button>`);
+  }
+
+  function importData(data) {
+    if (!data || !Array.isArray(data.items)) { toast('Backup inválido: use um JSON exportado por este dashboard.'); return; }
+    askConfirm('Importar backup', `Importar ${data.items.length} conteúdos? Os dados atuais deste navegador serão substituídos.`, 'Importar', () => {
+      state = normalize(data);
+      save('Backup importado com sucesso.');
+      render();
+    });
+  }
+
   function exportJSON() {
-    download(`super-rede-marketing-${TODAY}.json`, JSON.stringify(state, null, 2), 'application/json');
-    toast('Backup JSON exportado.');
+    showExport('Backup completo (JSON)', `super-rede-marketing-${TODAY}.json`, JSON.stringify(state, null, 2), 'application/json');
   }
 
   function exportCSV() {
@@ -1055,8 +1081,7 @@
       i.recordDate ? fullDate(i.recordDate) : '', i.approvalDate ? fullDate(i.approvalDate) : '', i.publishedDate ? fullDate(i.publishedDate) : '', i.link, i.notes, i.confirm,
       hasVal(i.storiesPublished) ? i.storiesPublished : '', ...METRIC_FIELDS.map(f => hasVal(i.metrics[f.id]) ? i.metrics[f.id] : '')]);
     const csv = '﻿' + [cols, ...rows].map(r => r.map(q).join(';')).join('\r\n');
-    download(`super-rede-calendario-${TODAY}.csv`, csv, 'text/csv;charset=utf-8');
-    toast('Calendário exportado em CSV.');
+    showExport('Calendário (CSV)', `super-rede-calendario-${TODAY}.csv`, csv, 'text/csv;charset=utf-8');
   }
 
   function openDataModal() {
@@ -1068,7 +1093,9 @@
           <button class="btn btn-primary btn-block" type="button" data-modal="export-json">Exportar backup (JSON)</button>
           <button class="btn btn-block" type="button" data-modal="export-csv" style="margin-top:8px">Exportar calendário (CSV)</button></div>
         <div class="card"><h3>Importar</h3><p class="note" style="margin-bottom:10px">Substitui os dados deste navegador por um backup JSON exportado anteriormente.</p>
-          <button class="btn btn-block" type="button" data-modal="import">Importar backup (JSON)</button></div>
+          <button class="btn btn-block" type="button" data-modal="import">Importar arquivo de backup (JSON)</button>
+          <textarea class="textarea" id="importText" rows="3" placeholder="…ou cole aqui o conteúdo do backup JSON" style="margin-top:8px"></textarea>
+          <button class="btn btn-block" type="button" data-modal="import-text" style="margin-top:6px">Importar texto colado</button></div>
         <div class="card"><h3>Logotipo oficial</h3><p class="note" style="margin-bottom:10px">Envie o arquivo do logotipo oficial do Super Rede Piraquara (PNG, JPG ou SVG, até 1 MB). Nenhuma marca foi criada para o protótipo.</p>
           ${logo ? `<img src="${esc(logo)}" alt="Logotipo atual" style="max-height:60px;margin-bottom:8px;display:block">` : ''}
           <input type="file" id="logoFile" accept="image/png,image/jpeg,image/svg+xml,image/webp" class="input">
@@ -1102,12 +1129,7 @@
     const r = new FileReader();
     r.onload = () => {
       try {
-        const data = JSON.parse(r.result);
-        if (!data || !Array.isArray(data.items)) throw new Error('formato');
-        if (!confirm(`Importar ${data.items.length} conteúdos? Os dados atuais deste navegador serão substituídos.`)) return;
-        state = normalize(data);
-        save('Backup importado com sucesso.');
-        closeModal(); render();
+        importData(JSON.parse(r.result));
       } catch (err) { toast('Arquivo inválido: use um backup JSON exportado por este dashboard.'); }
       e.target.value = '';
     };
@@ -1179,19 +1201,34 @@
     const a = m.dataset.modal;
     if (a === 'save') saveItem();
     else if (a === 'delete') {
-      if (confirm('Excluir este conteúdo do calendário? Esta ação não pode ser desfeita (exceto importando um backup).')) {
-        state.items = state.items.filter(i => i !== modalItem);
-        save('Conteúdo excluído.'); closeModal(); render();
-      }
+      const target = modalItem;
+      askConfirm('Excluir conteúdo', `Excluir “${target.title}” do calendário? Só é possível recuperar importando um backup.`, 'Excluir', () => {
+        state.items = state.items.filter(i => i !== target);
+        save('Conteúdo excluído.'); render();
+      });
     }
     else if (a === 'export-json') exportJSON();
     else if (a === 'export-csv') exportCSV();
     else if (a === 'import') $('#importFile').click();
     else if (a === 'logo-remove') { try { localStorage.removeItem(LOGO_KEY); } catch (err) { /* ignora */ } applyLogo(); openDataModal(); }
     else if (a === 'reset') {
-      if (confirm('Restaurar o planejamento original? Status, responsáveis, métricas e seguidores deste navegador serão apagados.')) {
-        state = buildSeed(); save('Planejamento original restaurado.'); closeModal(); render();
-      }
+      askConfirm('Restaurar planejamento original', 'Status, responsáveis, métricas e seguidores deste navegador serão apagados. Exporte um backup antes, se precisar.', 'Restaurar', () => {
+        state = buildSeed(); save('Planejamento original restaurado.'); render();
+      });
+    }
+    else if (a === 'confirm-yes') {
+      const cb = confirmCb; confirmCb = null; closeModal(); if (cb) cb();
+    }
+    else if (a === 'dl' && pendingExport) download(pendingExport.name, pendingExport.content, pendingExport.type);
+    else if (a === 'copy') {
+      const ta = $('#exportText');
+      const fallback = () => { ta.focus(); ta.select(); toast('Texto selecionado: use Ctrl+C (ou Copiar) para copiar.'); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(() => toast('Conteúdo copiado.'), fallback);
+      else fallback();
+    }
+    else if (a === 'import-text') {
+      try { importData(JSON.parse($('#importText').value)); }
+      catch (err) { toast('Texto inválido: cole o conteúdo completo de um backup JSON.'); }
     }
   });
 
