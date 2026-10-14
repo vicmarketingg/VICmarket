@@ -10,9 +10,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 <script>
-/* abre o quiz de boas-vindas antes de pintar a página (só na primeira visita) */
-try{ if(!localStorage.getItem('ldr-quiz-v1') && !location.hash) document.documentElement.classList.add('quiz-open'); }
-catch(e){ if(!location.hash) document.documentElement.classList.add('quiz-open'); }
+/* abre a aplicação de entrada antes de pintar a página (até ela ser enviada) */
+(function(){ var done = false;
+  try{ done = !!(JSON.parse(localStorage.getItem('ldr-app-v1') || '{}').applied); }catch(e){}
+  if(!done && !location.hash) document.documentElement.classList.add('quiz-open');
+})();
 </script>
 <style>
 :root{
@@ -167,8 +169,6 @@ h1 em,h2 em{font-weight:300;color:var(--terracota)}
 .priority p{margin:0}
 
 /* formulário */
-.form-head{text-align:center;margin-bottom:1rem}
-form{display:grid;gap:2.2rem;margin-top:3.5rem;background:var(--marfim);padding:clamp(2rem,5vw,4rem);border:1px solid var(--linha)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:2.2rem}
 label,legend{display:block;font-size:.88rem;color:var(--cafe);font-weight:500;margin-bottom:.6rem;line-height:1.55}
 input[type=text],input[type=tel],textarea{width:100%;font:inherit;font-size:1rem;color:var(--cafe);background:transparent;border:0;border-bottom:1px solid var(--areia);padding:.7rem 0;border-radius:0}
@@ -176,17 +176,7 @@ input[type=text]:focus,input[type=tel]:focus,textarea:focus{border-bottom-color:
 textarea{min-height:96px;resize:vertical}
 input::placeholder,textarea::placeholder{color:var(--areia)}
 fieldset{border:0;margin:0;padding:0}
-.opts label{font-weight:400;display:flex;gap:.9rem;align-items:flex-start;margin-bottom:.6rem;cursor:pointer}
-.opts input{accent-color:var(--cafe);margin-top:.4rem}
-.range-row{display:flex;align-items:center;gap:1.4rem}
-.range-row input{flex:1;accent-color:var(--cafe)}
-.range-row output{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--cafe);min-width:2ch;text-align:right}
-.qualq{background:var(--offwhite);padding:1.8rem;border-left:1px solid var(--ouro)}
-.qualq p{font-size:.93rem;margin-bottom:1.1rem}
-.confid{font-size:.72rem;letter-spacing:.06em;text-align:center;opacity:.7;margin:0}
-.thanks{display:none;text-align:center;padding:3rem 0}
-.thanks.on{display:block}
-.thanks h2{font-size:clamp(2.2rem,4vw,3.2rem)}
+.confid{font-size:.72rem;letter-spacing:.06em;opacity:.7;margin:1.4rem 0 0}
 
 footer{background:var(--noir);color:var(--areia);padding:5rem 0 calc(4rem + env(safe-area-inset-bottom,0px));text-align:center}
 footer .brand{color:var(--offwhite);display:inline-block;margin-bottom:1rem}
@@ -220,6 +210,16 @@ html.quiz-open body{overflow:hidden}
 .q-link{background:none;border:0;padding:0;font:inherit;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--marrom);cursor:pointer;text-decoration:underline;text-decoration-color:var(--areia);text-underline-offset:6px}
 .q-link:hover{color:var(--cafe)}
 .q-skip{display:inline-block;margin-top:1.8rem}
+.q-fields{display:grid;gap:1.8rem;margin-bottom:2.4rem}
+.q-step .q-opts+.q-fields{margin-top:2.2rem}
+.q-note{font-size:.93rem;max-width:36em;margin:-1rem 0 2rem;padding-left:1.2rem;border-left:1px solid var(--ouro)}
+.q-scale{display:grid;grid-template-columns:repeat(11,1fr);gap:.5rem}
+.q-scale .q-opt{justify-content:center;padding:1rem 0;font-family:var(--serif);font-size:1.35rem}
+.q-scale .q-opt::after{display:none}
+.q-scale-legend{display:flex;justify-content:space-between;font-size:.72rem;opacity:.7;margin-top:.7rem}
+.q-err{color:var(--terracota);font-size:.82rem;margin:-1rem 0 1.6rem}
+.q-close{position:relative}
+.adm-done .serif-quote{margin-bottom:1rem}
 .hero-personal{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(1.3rem,2vw,1.6rem);line-height:1.4;color:var(--terracota);margin:0 0 1.4rem;max-width:26em}
 
 @media(max-width:900px){
@@ -243,6 +243,7 @@ html.quiz-open body{overflow:hidden}
   .desire-list li:nth-child(n+3){border-top:1px solid var(--linha)}
   .priority{grid-template-columns:1fr;gap:2rem}
   .grid2{grid-template-columns:1fr}
+  .q-scale{grid-template-columns:repeat(6,1fr)}
   .btn{display:flex;width:100%;padding:1.3rem 1.2rem;letter-spacing:.2em}
   .frame::before{inset:-.6rem .6rem .6rem -.6rem}
 }
@@ -256,24 +257,42 @@ html.quiz-open body{overflow:hidden}
 </head>
 <body>
 
-<!-- ============ QUIZ DE BOAS-VINDAS ============
-     Perguntas para conhecer o momento de cada mulher (não filtram ninguém).
-     As respostas personalizam o topo da página e já preenchem o formulário. -->
+<!-- ============ APLICAÇÃO DE ENTRADA ============
+     A aplicação acontece antes da página. O contato (nome + WhatsApp) é enviado
+     logo no 1º passo, então nenhum lead se perde mesmo que ela não termine.
+     As respostas também personalizam o topo da página. -->
 <div class="quiz" id="quiz" role="dialog" aria-modal="true" aria-labelledby="q-title-0">
-  <div class="quiz-in">
+  <form class="quiz-in" id="app-form" novalidate>
+    <input type="hidden" name="perfil"><input type="hidden" name="area"><input type="hidden" name="momento"><input type="hidden" name="buscou">
+    <input type="hidden" name="disposicao"><input type="hidden" name="agenda"><input type="hidden" name="investimento">
+    <input type="hidden" name="lead_id"><input type="hidden" name="origem">
     <div class="quiz-top"><span class="brand">Lisi Del Ré</span><span class="quiz-count" id="quiz-count" aria-live="polite"></span></div>
     <div class="quiz-bar" aria-hidden="true"><span id="quiz-bar"></span></div>
     <div class="quiz-stage">
 
       <div class="q-step on" data-step="0">
-        <span class="eyebrow">Programa LDR®</span>
-        <h2 id="q-title-0" tabindex="-1">Antes de apresentarmos o programa, <em>queremos entender o seu momento.</em></h2>
-        <p class="lead">São quatro perguntas rápidas. Não existem respostas certas: elas só nos ajudam a conhecer você.</p>
-        <button type="button" class="btn" data-go="1">Começar</button><br>
-        <button type="button" class="q-link q-skip" data-skip>Prefiro ver a página direto</button>
+        <span class="eyebrow">Programa LDR® · Aplicação</span>
+        <h2 id="q-title-0" tabindex="-1">Antes de apresentarmos o programa, <em>queremos conhecer você.</em></h2>
+        <p class="lead">O Programa LDR® é um acompanhamento individual, e a entrada acontece por aplicação. São algumas perguntas sobre o seu momento. Não existem respostas certas.</p>
+        <button type="button" class="btn" data-next>Começar minha aplicação</button>
+        <p class="small" style="margin-top:1.2rem">Leva cerca de 3 minutos · Respostas confidenciais</p>
       </div>
 
-      <div class="q-step" data-step="1" data-key="perfil">
+      <div class="q-step" data-step="1">
+        <h2 tabindex="-1">Para começar, <em>como podemos falar com você?</em></h2>
+        <div class="q-fields">
+          <div><label for="nome">Nome completo</label><input type="text" id="nome" name="nome" autocomplete="name" required></div>
+          <div class="grid2">
+            <div><label for="whats">WhatsApp</label><input type="tel" id="whats" name="whatsapp" autocomplete="tel" inputmode="tel" placeholder="(DDD) 00000-0000" required></div>
+            <div><label for="insta">Instagram <span style="font-weight:400;opacity:.7">(opcional)</span></label><input type="text" id="insta" name="instagram" placeholder="@seuperfil"></div>
+          </div>
+        </div>
+        <p class="q-err" id="q-err" role="alert" hidden>Preencha seu nome e WhatsApp para continuar.</p>
+        <button type="button" class="btn" data-next data-contact>Continuar</button>
+        <p class="confid">Seus dados são confidenciais e usados apenas pela equipe da Lisi.</p>
+      </div>
+
+      <div class="q-step" data-step="2" data-key="perfil" data-manual>
         <h2 tabindex="-1">Hoje, você é:</h2>
         <div class="q-opts">
           <button type="button" class="q-opt" data-v="Empresária">Empresária</button>
@@ -282,9 +301,11 @@ html.quiz-open body{overflow:hidden}
           <button type="button" class="q-opt" data-v="Autônoma">Autônoma</button>
           <button type="button" class="q-opt" data-v="Outra">Outra</button>
         </div>
+        <div class="q-fields"><div><label for="ocup">Qual é a sua ocupação profissional atualmente?</label><input type="text" id="ocup" name="ocupacao"></div></div>
+        <button type="button" class="btn" data-next>Continuar</button>
       </div>
 
-      <div class="q-step" data-step="2" data-key="area">
+      <div class="q-step" data-step="3" data-key="area">
         <h2 tabindex="-1">Se pudesse transformar uma área da sua vida nos próximos meses, <em>qual seria?</em></h2>
         <div class="q-opts">
           <button type="button" class="q-opt" data-v="Decisões que venho adiando" data-k="decisoes">Decisões que venho adiando</button>
@@ -295,7 +316,7 @@ html.quiz-open body{overflow:hidden}
         </div>
       </div>
 
-      <div class="q-step" data-step="3" data-key="momento">
+      <div class="q-step" data-step="4" data-key="momento">
         <h2 tabindex="-1">Como você sente o momento que está vivendo?</h2>
         <div class="q-opts">
           <button type="button" class="q-opt" data-v="Algo que venho adiando há algum tempo">Algo que venho adiando há algum tempo</button>
@@ -305,8 +326,14 @@ html.quiz-open body{overflow:hidden}
         </div>
       </div>
 
-      <div class="q-step" data-step="4" data-key="buscou" data-multi>
-        <h2 tabindex="-1">O que você já buscou até aqui?</h2>
+      <div class="q-step" data-step="5">
+        <h2 tabindex="-1">O que você sente que hoje <em>dificulta esse movimento?</em></h2>
+        <div class="q-fields"><div><label for="q3" class="small">Escreva livremente, do seu jeito.</label><textarea id="q3" name="dificulta"></textarea></div></div>
+        <button type="button" class="btn" data-next>Continuar</button>
+      </div>
+
+      <div class="q-step" data-step="6" data-key="buscou" data-multi>
+        <h2 tabindex="-1">O que você já buscou ou experimentou para trabalhar essa questão?</h2>
         <p class="q-hint">Pode escolher mais de uma.</p>
         <div class="q-opts">
           <button type="button" class="q-opt" data-v="Terapia">Terapia</button>
@@ -314,18 +341,69 @@ html.quiz-open body{overflow:hidden}
           <button type="button" class="q-opt" data-v="Outras práticas integrativas">Outras práticas integrativas</button>
           <button type="button" class="q-opt" data-v="Ainda nada específico" data-only>Ainda nada específico</button>
         </div>
-        <button type="button" class="btn q-next" data-go="5">Continuar</button>
+        <button type="button" class="btn q-next" data-next>Continuar</button>
       </div>
 
-      <div class="q-step" data-step="5">
-        <span class="eyebrow">Obrigada</span>
-        <h2 tabindex="-1">Preparamos a apresentação do Programa LDR® <em>a partir do seu momento.</em></h2>
-        <button type="button" class="btn" data-finish>Conhecer o programa</button>
+      <div class="q-step" data-step="7">
+        <h2 tabindex="-1">Por que sente que agora é o momento de olhar para isso <em>com mais profundidade?</em></h2>
+        <div class="q-fields"><div><label for="q5" class="small">Escreva livremente, do seu jeito.</label><textarea id="q5" name="agora"></textarea></div></div>
+        <button type="button" class="btn" data-next>Continuar</button>
+      </div>
+
+      <div class="q-step" data-step="8" data-key="disposicao">
+        <h2 tabindex="-1">De 0 a 10, qual é a sua disposição para se comprometer com um processo de 6 meses?</h2>
+        <div class="q-opts q-scale">
+          <button type="button" class="q-opt" data-v="0">0</button>
+          <button type="button" class="q-opt" data-v="1">1</button>
+          <button type="button" class="q-opt" data-v="2">2</button>
+          <button type="button" class="q-opt" data-v="3">3</button>
+          <button type="button" class="q-opt" data-v="4">4</button>
+          <button type="button" class="q-opt" data-v="5">5</button>
+          <button type="button" class="q-opt" data-v="6">6</button>
+          <button type="button" class="q-opt" data-v="7">7</button>
+          <button type="button" class="q-opt" data-v="8">8</button>
+          <button type="button" class="q-opt" data-v="9">9</button>
+          <button type="button" class="q-opt" data-v="10">10</button>
+        </div>
+        <div class="q-scale-legend"><span>Pouca</span><span>Total</span></div>
+      </div>
+
+      <div class="q-step" data-step="9" data-key="agenda">
+        <h2 tabindex="-1">Você consegue reservar espaço na agenda para <em>um encontro individual por semana?</em></h2>
+        <div class="q-opts">
+          <button type="button" class="q-opt" data-v="Sim">Sim</button>
+          <button type="button" class="q-opt" data-v="Preciso organizar minha agenda">Preciso organizar minha agenda</button>
+          <button type="button" class="q-opt" data-v="Não neste momento">Não neste momento</button>
+        </div>
+      </div>
+
+      <div class="q-step" data-step="10" data-key="investimento">
+        <h2 tabindex="-1">Como você se sente hoje em relação a esse tipo de decisão?</h2>
+        <p class="q-note">Um acompanhamento individual como o Programa LDR® exige investimento financeiro, tempo e comprometimento. Caso perceba, após a conversa, que o programa é adequado ao seu momento:</p>
+        <div class="q-opts">
+          <button type="button" class="q-opt" data-v="Estou preparada para investir em um acompanhamento individual.">Estou preparada para investir em um acompanhamento individual.</button>
+          <button type="button" class="q-opt" data-v="Preciso conhecer melhor a proposta antes de decidir.">Preciso conhecer melhor a proposta antes de decidir.</button>
+          <button type="button" class="q-opt" data-v="Neste momento, provavelmente não seria uma prioridade.">Neste momento, provavelmente não seria uma prioridade.</button>
+        </div>
+      </div>
+
+      <div class="q-step" data-step="11">
+        <h2 tabindex="-1">Existe algo importante sobre você ou sobre o seu momento <em>que gostaria que a Lisi soubesse?</em></h2>
+        <div class="q-fields"><div><label for="q6" class="small">Opcional.</label><textarea id="q6" name="importante"></textarea></div></div>
+        <button type="submit" class="btn">Enviar minha aplicação</button>
+      </div>
+
+      <div class="q-step" data-step="12">
+        <span class="eyebrow">Aplicação recebida</span>
+        <h2 tabindex="-1">Obrigada por compartilhar <em>o seu momento.</em></h2>
+        <p class="lead">Sua aplicação será analisada individualmente. Havendo alinhamento, nossa equipe entrará em contato pelo WhatsApp para orientar os próximos passos. Enquanto isso, conheça o programa.</p>
+        <button type="button" class="btn" data-finish>Conhecer o Programa LDR®</button><br>
+        <a class="q-link q-skip" id="wa-quiz" href="#" target="_blank" rel="noopener">Prefere agilizar? Atendimento prioritário pelo WhatsApp</a>
       </div>
 
     </div>
-    <div class="q-foot"><button type="button" class="q-link" id="q-back" hidden>← Voltar</button></div>
-  </div>
+    <div class="q-foot"><button type="button" class="q-link" id="q-back" hidden>← Voltar</button><button type="button" class="q-link" id="q-close" hidden>Fechar</button></div>
+  </form>
 </div>
 
 <!-- ============ TOPO ============ -->
@@ -345,7 +423,7 @@ html.quiz-open body{overflow:hidden}
     <p class="hero-personal" id="hero-personal" hidden></p>
     <p class="tri"><span>Localizar</span><span>Desbloquear</span><span>Reprogramar</span></p>
     <div>
-      <a class="btn" href="#aplicacao">Solicitar minha aplicação</a>
+      <a class="btn js-cta" href="#aplicacao">Solicitar minha aplicação</a>
       <p class="admit">Admissão mediante aplicação · Análise individual</p>
     </div>
   </div>
@@ -466,7 +544,7 @@ html.quiz-open body{overflow:hidden}
       </article>
     </div>
     <p class="serif-quote center" style="margin:3.5rem auto 2.8rem;max-width:22em">Você não precisa se encaixar no programa. O processo é construído a partir da sua jornada.</p>
-    <p class="center"><a class="btn btn-line" href="#aplicacao">Solicitar minha aplicação</a></p>
+    <p class="center"><a class="btn btn-line js-cta" href="#aplicacao">Solicitar minha aplicação</a></p>
   </div>
 </section>
 
@@ -578,9 +656,13 @@ html.quiz-open body{overflow:hidden}
       <div><span class="n">II</span><h3>Análise individual</h3><p>Cada aplicação é lida com atenção, para avaliar se o programa é adequado ao que você busca.</p></div>
       <div><span class="n">III</span><h3>Conversa</h3><p>Havendo alinhamento, nossa equipe entra em contato para orientar os próximos passos e a possibilidade de uma conversa com a Lisi.</p></div>
     </div>
-    <div class="center">
-      <a class="btn btn-light" href="#formulario">Iniciar minha aplicação</a>
-      <p class="small" style="margin-top:1.2rem">Preenchimento aproximado: 3–5 minutos · Respostas tratadas com confidencialidade</p>
+    <div class="center" id="adm-todo">
+      <button type="button" class="btn btn-light" data-open-app>Iniciar minha aplicação</button>
+      <p class="small" style="margin-top:1.2rem">Preenchimento aproximado: 3 minutos · Respostas tratadas com confidencialidade</p>
+    </div>
+    <div class="center adm-done" id="adm-done" hidden>
+      <p class="serif-quote">Sua aplicação já foi recebida.</p>
+      <p>Nossa equipe analisará suas respostas e, havendo alinhamento, entrará em contato pelo WhatsApp.</p>
     </div>
 
     <!-- ATENDIMENTO PRIORITÁRIO -->
@@ -595,72 +677,6 @@ html.quiz-open body{overflow:hidden}
   </div>
 </section>
 
-<!-- ============ FORMULÁRIO ============ -->
-<section class="bege pad" id="formulario">
-  <div class="narrow" style="width:min(760px,100% - 3rem)">
-    <div id="form-area">
-      <div class="form-head">
-        <span class="eyebrow c">Aplicação · Programa LDR®</span>
-        <h2>Antes de começarmos, queremos conhecer você.</h2>
-        <p class="lead">Não existem respostas certas. Esta aplicação existe para entendermos seu momento e avaliarmos se o Programa LDR® é adequado para aquilo que você busca.</p>
-      </div>
-
-      <form id="app-form" novalidate>
-        <input type="hidden" name="quiz_perfil"><input type="hidden" name="quiz_area"><input type="hidden" name="quiz_momento"><input type="hidden" name="quiz_buscou">
-        <div><label for="nome">Nome completo</label><input type="text" id="nome" name="nome" autocomplete="name" required></div>
-        <div class="grid2">
-          <div><label for="whats">WhatsApp</label><input type="tel" id="whats" name="whatsapp" autocomplete="tel" placeholder="(DDD) 00000-0000" required></div>
-          <div><label for="insta">Instagram</label><input type="text" id="insta" name="instagram" placeholder="@seuperfil"></div>
-        </div>
-        <div><label for="ocup">Qual é a sua ocupação profissional atualmente?</label><input type="text" id="ocup" name="ocupacao"></div>
-        <fieldset class="opts">
-          <legend>Você é:</legend>
-          <label><input type="radio" name="perfil" value="Empresária"> Empresária</label>
-          <label><input type="radio" name="perfil" value="Profissional liberal"> Profissional liberal</label>
-          <label><input type="radio" name="perfil" value="Executiva ou líder"> Executiva ou líder</label>
-          <label><input type="radio" name="perfil" value="Autônoma"> Autônoma</label>
-          <label><input type="radio" name="perfil" value="Outra"> Outra</label>
-        </fieldset>
-        <div><label for="q1">Como você descreveria o momento que está vivendo hoje?</label><textarea id="q1" name="momento"></textarea></div>
-        <div><label for="q2">Se pudesse transformar uma área da sua vida nos próximos meses, qual seria?</label><textarea id="q2" name="area"></textarea></div>
-        <div><label for="q3">O que você sente que hoje dificulta esse movimento?</label><textarea id="q3" name="dificulta"></textarea></div>
-        <div><label for="q4">O que você já buscou ou experimentou para trabalhar essa questão?</label><textarea id="q4" name="buscou"></textarea></div>
-        <div><label for="q5">Por que sente que agora é o momento de olhar para isso com mais profundidade?</label><textarea id="q5" name="agora"></textarea></div>
-        <div>
-          <label for="disp">De 0 a 10, qual é sua disposição para se comprometer com um processo de 6 meses?</label>
-          <div class="range-row"><input type="range" id="disp" name="disposicao" min="0" max="10" value="5"><output id="disp-out" for="disp">5</output></div>
-        </div>
-        <fieldset class="opts">
-          <legend>Você consegue reservar espaço na sua agenda para um encontro individual por semana?</legend>
-          <label><input type="radio" name="agenda" value="Sim"> Sim</label>
-          <label><input type="radio" name="agenda" value="Preciso organizar minha agenda"> Preciso organizar minha agenda</label>
-          <label><input type="radio" name="agenda" value="Não neste momento"> Não neste momento</label>
-        </fieldset>
-        <fieldset class="opts qualq">
-          <p>Um acompanhamento individual como o Programa LDR® exige investimento financeiro, tempo e comprometimento. Caso perceba, após a conversa, que o programa é adequado ao seu momento, como você se sente hoje em relação a esse tipo de decisão?</p>
-          <label><input type="radio" name="investimento" value="Estou preparada para investir em um acompanhamento individual."> Estou preparada para investir em um acompanhamento individual.</label>
-          <label><input type="radio" name="investimento" value="Preciso conhecer melhor a proposta antes de decidir."> Preciso conhecer melhor a proposta antes de decidir.</label>
-          <label><input type="radio" name="investimento" value="Neste momento, provavelmente não seria uma prioridade."> Neste momento, provavelmente não seria uma prioridade.</label>
-        </fieldset>
-        <div><label for="q6">Existe algo importante sobre você ou sobre o momento que está vivendo que gostaria que a Lisi soubesse?</label><textarea id="q6" name="importante"></textarea></div>
-        <p id="form-error" class="small" role="alert" style="color:var(--terracota);display:none;margin:0">Preencha nome completo e WhatsApp para enviar sua aplicação.</p>
-        <div><button type="submit" class="btn" style="width:100%">Enviar minha aplicação</button></div>
-        <p class="confid">Suas respostas são confidenciais e lidas apenas pela equipe da Lisi.</p>
-      </form>
-    </div>
-
-    <!-- ============ OBRIGADO ============ -->
-    <div class="thanks" id="thanks" tabindex="-1">
-      <span class="eyebrow c">Aplicação recebida</span>
-      <h2>Obrigada por compartilhar o seu momento.</h2>
-      <p class="lead">Sua aplicação será analisada individualmente. Havendo alinhamento, nossa equipe entrará em contato pelo WhatsApp para orientar você sobre os próximos passos.</p>
-      <p class="serif-quote" style="margin:2.6rem 0 1rem">Prefere agilizar esse contato?</p>
-      <p>Se este é um momento que você não deseja continuar adiando, pode falar agora com alguém da equipe.</p>
-      <a class="btn" id="wa-thanks" href="#" target="_blank" rel="noopener">Atendimento prioritário</a>
-    </div>
-  </div>
-</section>
-
 <footer>
   <a class="brand" href="#">Lisi Del Ré</a>
   <p>Programa LDR® · Método LDR®</p>
@@ -668,26 +684,25 @@ html.quiz-open body{overflow:hidden}
 
 <script>
 (function(){
-  // Cláudio: ajustar aqui o endpoint do formulário (CRM, planilha, webhook) e o WhatsApp da equipe
+  // Cláudio: ajustar aqui o WhatsApp da equipe e o endpoint que recebe as aplicações
+  // (webhook do CRM, Make/Zapier, planilha). Ele recebe um POST em JSON com
+  // etapa = "contato" (assim que ela informa nome + WhatsApp), "parcial" (se sair no meio)
+  // ou "completa" (aplicação enviada). O lead_id é o mesmo nas três, para juntar no CRM.
   var WHATSAPP = "5500000000000";
+  var ENDPOINT = "";
+
   var msg = "Olá! Conheci o Programa LDR® pela página e estou vivendo um momento que não quero mais adiar. Gostaria de agilizar meu contato e conversar com a equipe sobre os próximos passos.";
   var waUrl = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg);
-  var a1 = document.getElementById('wa-skip'); if(a1) a1.href = waUrl;
-  var a2 = document.getElementById('wa-thanks'); if(a2) a2.href = waUrl;
+  ['wa-skip','wa-quiz'].forEach(function(id){ var a = document.getElementById(id); if(a) a.href = waUrl; });
 
-  var range = document.getElementById('disp'), out = document.getElementById('disp-out');
-  range.addEventListener('input', function(){ out.textContent = range.value; });
-
-  var form = document.getElementById('app-form');
-
-  // ---------- quiz de boas-vindas ----------
-  var QKEY = 'ldr-quiz-v1';
+  var KEY = 'ldr-app-v1';
   var root = document.documentElement;
   var quiz = document.getElementById('quiz');
+  var form = document.getElementById('app-form');
   var steps = [].slice.call(quiz.querySelectorAll('.q-step'));
-  var back = document.getElementById('q-back');
-  var answers = {perfil:'', area:'', areaKey:'', momento:'', buscou:[]};
-  var cur = 0;
+  var LAST_Q = 11, DONE = 12;
+  var back = document.getElementById('q-back'), closeBtn = document.getElementById('q-close');
+  var cur = 0, contactSent = false, completed = false;
   var PERSONAL = {
     decisoes: 'E talvez o próximo passo seja, enfim, sustentar as decisões que você vem adiando.',
     limites:  'E talvez o próximo passo seja colocar limites sem passar dias se questionando.',
@@ -696,78 +711,100 @@ html.quiz-open body{overflow:hidden}
     outra:    'E talvez o próximo passo seja olhar com profundidade para aquilo que ainda interfere na forma como você vive.'
   };
 
+  form.elements.lead_id.value = 'ldr-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  form.elements.origem.value = location.href;
+
+  function payload(etapa){
+    var data = {etapa: etapa, enviado_em: new Date().toISOString()};
+    new FormData(form).forEach(function(v, k){ data[k] = v; });
+    return JSON.stringify(data);
+  }
+  function sendLead(etapa, beacon){
+    var body = payload(etapa);
+    if(!ENDPOINT){ if(window.console) console.info('[Programa LDR] lead (' + etapa + '):', body); return; }
+    try{
+      if(beacon && navigator.sendBeacon){ navigator.sendBeacon(ENDPOINT, new Blob([body], {type:'text/plain'})); return; }
+      fetch(ENDPOINT, {method:'POST', headers:{'Content-Type':'application/json'}, body: body, keepalive: true}).catch(function(){});
+    }catch(e){}
+  }
+  // se ela sair no meio, envia o que já respondeu
+  document.addEventListener('visibilitychange', function(){
+    if(document.visibilityState === 'hidden' && contactSent && !completed) sendLead('parcial', true);
+  });
+
   function show(i){
     steps.forEach(function(s, j){ s.classList.toggle('on', j === i); });
     cur = i;
-    document.getElementById('quiz-count').textContent = (i >= 1 && i <= 4) ? ('0' + i + ' / 04') : '';
-    document.getElementById('quiz-bar').style.width = (i <= 1 ? 0 : Math.min(i - 1, 4) / 4 * 100) + '%';
-    back.hidden = !(i >= 1 && i <= 4);
+    var q = i >= 1 && i <= LAST_Q;
+    document.getElementById('quiz-count').textContent = q ? (('0' + i).slice(-2) + ' / ' + LAST_Q) : '';
+    document.getElementById('quiz-bar').style.width = (i === DONE ? 100 : q ? (i - 1) / LAST_Q * 100 : 0) + '%';
+    back.hidden = !(i >= 2 && i <= LAST_Q);
     var h = steps[i].querySelector('h2'); if(h) h.focus({preventScroll:true});
     quiz.scrollTop = 0;
   }
+  function open(){ root.classList.add('quiz-open', 'from-page'); closeBtn.hidden = completed; show(completed ? DONE : 0); }
   function close(){
     root.classList.remove('quiz-open');
-    window.scrollTo(0, 0);
-    var h1 = document.querySelector('.hero h1'); if(h1){ h1.setAttribute('tabindex','-1'); h1.focus({preventScroll:true}); }
+    if(!root.classList.contains('from-page')) window.scrollTo(0, 0);
+    var h1 = document.querySelector('.hero h1'); if(h1 && !root.classList.contains('from-page')){ h1.setAttribute('tabindex','-1'); h1.focus({preventScroll:true}); }
   }
-  function save(data){ try{ localStorage.setItem(QKEY, JSON.stringify(data)); }catch(e){} }
-  function fill(name, value){ var el = form.elements[name]; if(el && value && !el.value.trim()) el.value = value; }
-  function apply(a){
-    if(a.areaKey && PERSONAL[a.areaKey]){
-      var p = document.getElementById('hero-personal');
-      p.textContent = PERSONAL[a.areaKey]; p.hidden = false;
+  function personalize(areaKey){
+    if(areaKey && PERSONAL[areaKey]){ var p = document.getElementById('hero-personal'); p.textContent = PERSONAL[areaKey]; p.hidden = false; }
+  }
+  function markApplied(){
+    document.getElementById('adm-todo').hidden = true;
+    document.getElementById('adm-done').hidden = false;
+    [].forEach.call(document.querySelectorAll('.js-cta'), function(a){ a.textContent = 'Próximos passos'; });
+  }
+  function next(){
+    if(cur === 1){
+      var ok = form.elements.nome.value.trim() && form.elements.whatsapp.value.trim();
+      document.getElementById('q-err').hidden = !!ok;
+      if(!ok){ (form.elements.nome.value.trim() ? form.elements.whatsapp : form.elements.nome).focus(); return; }
+      if(!contactSent){ contactSent = true; sendLead('contato'); }
     }
-    if(a.perfil){ [].forEach.call(form.querySelectorAll('input[name=perfil]'), function(r){ r.checked = (r.value === a.perfil); }); }
-    fill('area', a.area); fill('momento', a.momento); fill('buscou', (a.buscou || []).join(', '));
-    form.elements.quiz_perfil.value = a.perfil || '';
-    form.elements.quiz_area.value = a.area || '';
-    form.elements.quiz_momento.value = a.momento || '';
-    form.elements.quiz_buscou.value = (a.buscou || []).join(', ');
+    if(cur === LAST_Q){
+      completed = true; sendLead('completa');
+      var areaBtn = quiz.querySelector('[data-key=area] .q-opt[aria-pressed=true]');
+      var areaKey = areaBtn ? areaBtn.getAttribute('data-k') : '';
+      try{ localStorage.setItem(KEY, JSON.stringify({applied: true, areaKey: areaKey})); }catch(e){}
+      personalize(areaKey); markApplied(); closeBtn.hidden = true;
+    }
+    show(cur + 1);
   }
 
   quiz.addEventListener('click', function(e){
-    var t = e.target.closest('button'); if(!t) return;
-    if(t.hasAttribute('data-go')){ show(+t.getAttribute('data-go')); return; }
-    if(t.hasAttribute('data-skip')){ save({skipped:true}); close(); return; }
-    if(t.hasAttribute('data-finish')){ save(answers); apply(answers); close(); return; }
+    var t = e.target.closest('button'); if(!t || t.type === 'submit') return;
+    if(t.hasAttribute('data-next')){ next(); return; }
+    if(t.hasAttribute('data-finish')){ close(); return; }
     if(t.classList.contains('q-opt')){
       var step = t.closest('.q-step'), key = step.getAttribute('data-key');
       var opts = [].slice.call(step.querySelectorAll('.q-opt'));
       if(step.hasAttribute('data-multi')){
         var on = t.getAttribute('aria-pressed') !== 'true';
-        if(on && t.hasAttribute('data-only')) opts.forEach(function(o){ o.setAttribute('aria-pressed','false'); });
-        if(on && !t.hasAttribute('data-only')) opts.forEach(function(o){ if(o.hasAttribute('data-only')) o.setAttribute('aria-pressed','false'); });
+        opts.forEach(function(o){ if(on && (t.hasAttribute('data-only') || o.hasAttribute('data-only'))) o.setAttribute('aria-pressed','false'); });
         t.setAttribute('aria-pressed', on ? 'true' : 'false');
-        answers[key] = opts.filter(function(o){ return o.getAttribute('aria-pressed') === 'true'; }).map(function(o){ return o.getAttribute('data-v'); });
+        form.elements[key].value = opts.filter(function(o){ return o.getAttribute('aria-pressed') === 'true'; }).map(function(o){ return o.getAttribute('data-v'); }).join(', ');
       } else {
         opts.forEach(function(o){ o.setAttribute('aria-pressed', o === t ? 'true' : 'false'); });
-        answers[key] = t.getAttribute('data-v');
-        if(t.hasAttribute('data-k')) answers.areaKey = t.getAttribute('data-k');
-        setTimeout(function(){ show(cur + 1); }, 320);
+        form.elements[key].value = t.getAttribute('data-v');
+        if(!step.hasAttribute('data-manual')) setTimeout(next, 320);
       }
     }
   });
-  back.addEventListener('click', function(){ if(cur > 1) show(cur - 1); else show(0); });
-
-  if(root.classList.contains('quiz-open')){
-    steps.forEach(function(s){ [].forEach.call(s.querySelectorAll('.q-opt'), function(o){ o.setAttribute('aria-pressed','false'); }); });
-    show(0);
-  } else {
-    try{ var saved = JSON.parse(localStorage.getItem(QKEY) || 'null'); if(saved && !saved.skipped) apply(saved); }catch(e){}
-  }
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    var err = document.getElementById('form-error');
-    var ok = form.nome.value.trim() && form.whatsapp.value.trim();
-    err.style.display = ok ? 'none' : 'block';
-    if(!ok) return;
-    // Aqui entra o envio real dos dados (fetch para o CRM/webhook da equipe).
-    document.getElementById('form-area').style.display = 'none';
-    var t = document.getElementById('thanks');
-    t.classList.add('on'); t.focus();
-    t.scrollIntoView({behavior:'smooth', block:'start'});
+  form.addEventListener('submit', function(e){ e.preventDefault(); if(cur === LAST_Q) next(); });
+  form.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' && e.target.tagName === 'INPUT'){ e.preventDefault(); next(); }
   });
+  back.addEventListener('click', function(){ show(Math.max(cur - 1, 1)); });
+  closeBtn.addEventListener('click', close);
+  [].forEach.call(document.querySelectorAll('[data-open-app]'), function(b){ b.addEventListener('click', open); });
+  [].forEach.call(quiz.querySelectorAll('.q-opt'), function(o){ o.setAttribute('aria-pressed','false'); });
+
+  var saved = null;
+  try{ saved = JSON.parse(localStorage.getItem(KEY) || 'null'); }catch(e){}
+  if(saved && saved.applied){ completed = true; personalize(saved.areaKey); markApplied(); }
+  if(root.classList.contains('quiz-open')) show(0);
 })();
 </script>
 </body>
