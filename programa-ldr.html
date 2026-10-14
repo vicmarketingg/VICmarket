@@ -685,7 +685,8 @@ html.quiz-open body{overflow:hidden}
 <script>
 (function(){
   // Cláudio: ajustar aqui o WhatsApp da equipe e o endpoint que recebe as aplicações
-  // (webhook do CRM, Make/Zapier, planilha). Ele recebe um POST em JSON com
+  // (URL do Google Apps Script — ver integracoes/planilha-google.gs —, ou webhook do CRM/Make/Zapier).
+  // Ele recebe um POST com o JSON no corpo (text/plain) e
   // etapa = "contato" (assim que ela informa nome + WhatsApp), "parcial" (se sair no meio)
   // ou "completa" (aplicação enviada). O lead_id é o mesmo nas três, para juntar no CRM.
   var WHATSAPP = "5500000000000";
@@ -724,7 +725,8 @@ html.quiz-open body{overflow:hidden}
     if(!ENDPOINT){ if(window.console) console.info('[Programa LDR] lead (' + etapa + '):', body); return; }
     try{
       if(beacon && navigator.sendBeacon){ navigator.sendBeacon(ENDPOINT, new Blob([body], {type:'text/plain'})); return; }
-      fetch(ENDPOINT, {method:'POST', headers:{'Content-Type':'application/json'}, body: body, keepalive: true}).catch(function(){});
+      // text/plain + no-cors: aceito pelo Google Apps Script e pela maioria dos webhooks, sem bloqueio de CORS
+      fetch(ENDPOINT, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: body, keepalive: true}).catch(function(){});
     }catch(e){}
   }
   // se ela sair no meio, envia o que já respondeu
