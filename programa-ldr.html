@@ -9,6 +9,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<script>
+/* abre o quiz de boas-vindas antes de pintar a página (só na primeira visita) */
+try{ if(!localStorage.getItem('ldr-quiz-v1') && !location.hash) document.documentElement.classList.add('quiz-open'); }
+catch(e){ if(!location.hash) document.documentElement.classList.add('quiz-open'); }
+</script>
 <style>
 :root{
   --offwhite:#F7F2EC; --marfim:#FBF8F4; --bege:#EDE3D4; --areia:#D1B89C; --terracota:#A67C5B;
@@ -187,6 +192,36 @@ footer{background:var(--noir);color:var(--areia);padding:5rem 0 calc(4rem + env(
 footer .brand{color:var(--offwhite);display:inline-block;margin-bottom:1rem}
 footer p{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;margin:0}
 
+/* quiz de boas-vindas */
+.quiz{display:none;position:fixed;inset:0;z-index:50;background:var(--offwhite);overflow-y:auto;-webkit-overflow-scrolling:touch}
+html.quiz-open .quiz{display:block}
+html.quiz-open body{overflow:hidden}
+.quiz-in{min-height:100%;display:flex;flex-direction:column;width:min(760px,100% - 3rem);margin-inline:auto;padding:calc(1.6rem + env(safe-area-inset-top,0px)) 0 calc(2rem + env(safe-area-inset-bottom,0px))}
+.quiz-top{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.quiz-count{font-size:.66rem;letter-spacing:.28em;text-transform:uppercase;color:var(--terracota)}
+.quiz-bar{height:1px;background:var(--linha);margin-top:1.4rem}
+.quiz-bar span{display:block;height:1px;width:0;background:var(--cafe);transition:width .6s ease}
+.quiz-stage{flex:1;display:flex;align-items:center;padding:3rem 0}
+.q-step{display:none;width:100%}
+.q-step.on{display:block;animation:qin .6s ease both}
+@keyframes qin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.q-step h2{font-size:clamp(2rem,4.4vw,3.3rem);margin-bottom:2.4rem;outline:none}
+.q-step .lead{max-width:32em;margin-bottom:2.6rem}
+.q-hint{font-size:.78rem;opacity:.75;margin:-1.6rem 0 1.8rem}
+.q-opts{display:grid;gap:.75rem}
+.q-opt{display:flex;justify-content:space-between;align-items:center;gap:1rem;width:100%;text-align:left;font:inherit;font-size:1rem;line-height:1.5;color:var(--cafe);background:transparent;border:1px solid var(--linha);border-radius:0;padding:1.1rem 1.4rem;cursor:pointer;transition:border-color .25s,background .25s,color .25s}
+.q-opt::after{content:"";flex:none;width:1.4rem;height:1px;background:currentColor;opacity:0;transition:opacity .25s}
+.q-opt:hover{border-color:var(--cafe)}
+.q-opt:hover::after,.q-opt[aria-pressed=true]::after{opacity:1}
+.q-opt[aria-pressed=true]{background:var(--cafe);border-color:var(--cafe);color:var(--offwhite)}
+.q-opt:focus-visible,.q-link:focus-visible{outline:1px solid var(--ouro);outline-offset:4px}
+.q-next{margin-top:2.2rem}
+.q-foot{display:flex;justify-content:space-between;align-items:center;min-height:2rem}
+.q-link{background:none;border:0;padding:0;font:inherit;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--marrom);cursor:pointer;text-decoration:underline;text-decoration-color:var(--areia);text-underline-offset:6px}
+.q-link:hover{color:var(--cafe)}
+.q-skip{display:inline-block;margin-top:1.8rem}
+.hero-personal{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(1.3rem,2vw,1.6rem);line-height:1.4;color:var(--terracota);margin:0 0 1.4rem;max-width:26em}
+
 @media(max-width:900px){
   .hero{grid-template-columns:1fr}
   .hero .photo{order:-1;min-height:58svh}
@@ -221,6 +256,78 @@ footer p{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;margin:0
 </head>
 <body>
 
+<!-- ============ QUIZ DE BOAS-VINDAS ============
+     Perguntas para conhecer o momento de cada mulher (não filtram ninguém).
+     As respostas personalizam o topo da página e já preenchem o formulário. -->
+<div class="quiz" id="quiz" role="dialog" aria-modal="true" aria-labelledby="q-title-0">
+  <div class="quiz-in">
+    <div class="quiz-top"><span class="brand">Lisi Del Ré</span><span class="quiz-count" id="quiz-count" aria-live="polite"></span></div>
+    <div class="quiz-bar" aria-hidden="true"><span id="quiz-bar"></span></div>
+    <div class="quiz-stage">
+
+      <div class="q-step on" data-step="0">
+        <span class="eyebrow">Programa LDR®</span>
+        <h2 id="q-title-0" tabindex="-1">Antes de apresentarmos o programa, <em>queremos entender o seu momento.</em></h2>
+        <p class="lead">São quatro perguntas rápidas. Não existem respostas certas: elas só nos ajudam a conhecer você.</p>
+        <button type="button" class="btn" data-go="1">Começar</button><br>
+        <button type="button" class="q-link q-skip" data-skip>Prefiro ver a página direto</button>
+      </div>
+
+      <div class="q-step" data-step="1" data-key="perfil">
+        <h2 tabindex="-1">Hoje, você é:</h2>
+        <div class="q-opts">
+          <button type="button" class="q-opt" data-v="Empresária">Empresária</button>
+          <button type="button" class="q-opt" data-v="Profissional liberal">Profissional liberal</button>
+          <button type="button" class="q-opt" data-v="Executiva ou líder">Executiva ou líder</button>
+          <button type="button" class="q-opt" data-v="Autônoma">Autônoma</button>
+          <button type="button" class="q-opt" data-v="Outra">Outra</button>
+        </div>
+      </div>
+
+      <div class="q-step" data-step="2" data-key="area">
+        <h2 tabindex="-1">Se pudesse transformar uma área da sua vida nos próximos meses, <em>qual seria?</em></h2>
+        <div class="q-opts">
+          <button type="button" class="q-opt" data-v="Decisões que venho adiando" data-k="decisoes">Decisões que venho adiando</button>
+          <button type="button" class="q-opt" data-v="Os limites que preciso sustentar" data-k="limites">Os limites que preciso sustentar</button>
+          <button type="button" class="q-opt" data-v="Minhas relações" data-k="relacoes">Minhas relações</button>
+          <button type="button" class="q-opt" data-v="Uma nova fase profissional ou pessoal" data-k="fase">Uma nova fase profissional ou pessoal</button>
+          <button type="button" class="q-opt" data-v="Outra área" data-k="outra">Outra área</button>
+        </div>
+      </div>
+
+      <div class="q-step" data-step="3" data-key="momento">
+        <h2 tabindex="-1">Como você sente o momento que está vivendo?</h2>
+        <div class="q-opts">
+          <button type="button" class="q-opt" data-v="Algo que venho adiando há algum tempo">Algo que venho adiando há algum tempo</button>
+          <button type="button" class="q-opt" data-v="Uma fase de transição">Uma fase de transição</button>
+          <button type="button" class="q-opt" data-v="Sinto que cheguei a um limite">Sinto que cheguei a um limite</button>
+          <button type="button" class="q-opt" data-v="Estou bem, mas sinto que posso viver mais">Estou bem, mas sinto que posso viver mais</button>
+        </div>
+      </div>
+
+      <div class="q-step" data-step="4" data-key="buscou" data-multi>
+        <h2 tabindex="-1">O que você já buscou até aqui?</h2>
+        <p class="q-hint">Pode escolher mais de uma.</p>
+        <div class="q-opts">
+          <button type="button" class="q-opt" data-v="Terapia">Terapia</button>
+          <button type="button" class="q-opt" data-v="Cursos, livros e mentorias">Cursos, livros e mentorias</button>
+          <button type="button" class="q-opt" data-v="Outras práticas integrativas">Outras práticas integrativas</button>
+          <button type="button" class="q-opt" data-v="Ainda nada específico" data-only>Ainda nada específico</button>
+        </div>
+        <button type="button" class="btn q-next" data-go="5">Continuar</button>
+      </div>
+
+      <div class="q-step" data-step="5">
+        <span class="eyebrow">Obrigada</span>
+        <h2 tabindex="-1">Preparamos a apresentação do Programa LDR® <em>a partir do seu momento.</em></h2>
+        <button type="button" class="btn" data-finish>Conhecer o programa</button>
+      </div>
+
+    </div>
+    <div class="q-foot"><button type="button" class="q-link" id="q-back" hidden>← Voltar</button></div>
+  </div>
+</div>
+
 <!-- ============ TOPO ============ -->
 <div class="top">
   <div class="wrap">
@@ -235,6 +342,7 @@ footer p{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;margin:0
     <span class="eyebrow">Programa LDR® · Acompanhamento individual</span>
     <h1>Você construiu muita coisa.<br><em>Agora, uma vida que também faça sentido por dentro.</em></h1>
     <p class="lead">Seis meses de acompanhamento individual com Lisi Del Ré, para mulheres que já chegaram longe e perceberam que o próximo movimento não é simplesmente fazer mais.</p>
+    <p class="hero-personal" id="hero-personal" hidden></p>
     <p class="tri"><span>Localizar</span><span>Desbloquear</span><span>Reprogramar</span></p>
     <div>
       <a class="btn" href="#aplicacao">Solicitar minha aplicação</a>
@@ -498,6 +606,7 @@ footer p{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;margin:0
       </div>
 
       <form id="app-form" novalidate>
+        <input type="hidden" name="quiz_perfil"><input type="hidden" name="quiz_area"><input type="hidden" name="quiz_momento"><input type="hidden" name="quiz_buscou">
         <div><label for="nome">Nome completo</label><input type="text" id="nome" name="nome" autocomplete="name" required></div>
         <div class="grid2">
           <div><label for="whats">WhatsApp</label><input type="tel" id="whats" name="whatsapp" autocomplete="tel" placeholder="(DDD) 00000-0000" required></div>
@@ -570,6 +679,83 @@ footer p{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;margin:0
   range.addEventListener('input', function(){ out.textContent = range.value; });
 
   var form = document.getElementById('app-form');
+
+  // ---------- quiz de boas-vindas ----------
+  var QKEY = 'ldr-quiz-v1';
+  var root = document.documentElement;
+  var quiz = document.getElementById('quiz');
+  var steps = [].slice.call(quiz.querySelectorAll('.q-step'));
+  var back = document.getElementById('q-back');
+  var answers = {perfil:'', area:'', areaKey:'', momento:'', buscou:[]};
+  var cur = 0;
+  var PERSONAL = {
+    decisoes: 'E talvez o próximo passo seja, enfim, sustentar as decisões que você vem adiando.',
+    limites:  'E talvez o próximo passo seja colocar limites sem passar dias se questionando.',
+    relacoes: 'E talvez o próximo passo seja ocupar uma nova postura nas suas relações.',
+    fase:     'E talvez o próximo passo seja atravessar a fase que você já sabe que deseja viver.',
+    outra:    'E talvez o próximo passo seja olhar com profundidade para aquilo que ainda interfere na forma como você vive.'
+  };
+
+  function show(i){
+    steps.forEach(function(s, j){ s.classList.toggle('on', j === i); });
+    cur = i;
+    document.getElementById('quiz-count').textContent = (i >= 1 && i <= 4) ? ('0' + i + ' / 04') : '';
+    document.getElementById('quiz-bar').style.width = (i <= 1 ? 0 : Math.min(i - 1, 4) / 4 * 100) + '%';
+    back.hidden = !(i >= 1 && i <= 4);
+    var h = steps[i].querySelector('h2'); if(h) h.focus({preventScroll:true});
+    quiz.scrollTop = 0;
+  }
+  function close(){
+    root.classList.remove('quiz-open');
+    window.scrollTo(0, 0);
+    var h1 = document.querySelector('.hero h1'); if(h1){ h1.setAttribute('tabindex','-1'); h1.focus({preventScroll:true}); }
+  }
+  function save(data){ try{ localStorage.setItem(QKEY, JSON.stringify(data)); }catch(e){} }
+  function fill(name, value){ var el = form.elements[name]; if(el && value && !el.value.trim()) el.value = value; }
+  function apply(a){
+    if(a.areaKey && PERSONAL[a.areaKey]){
+      var p = document.getElementById('hero-personal');
+      p.textContent = PERSONAL[a.areaKey]; p.hidden = false;
+    }
+    if(a.perfil){ [].forEach.call(form.querySelectorAll('input[name=perfil]'), function(r){ r.checked = (r.value === a.perfil); }); }
+    fill('area', a.area); fill('momento', a.momento); fill('buscou', (a.buscou || []).join(', '));
+    form.elements.quiz_perfil.value = a.perfil || '';
+    form.elements.quiz_area.value = a.area || '';
+    form.elements.quiz_momento.value = a.momento || '';
+    form.elements.quiz_buscou.value = (a.buscou || []).join(', ');
+  }
+
+  quiz.addEventListener('click', function(e){
+    var t = e.target.closest('button'); if(!t) return;
+    if(t.hasAttribute('data-go')){ show(+t.getAttribute('data-go')); return; }
+    if(t.hasAttribute('data-skip')){ save({skipped:true}); close(); return; }
+    if(t.hasAttribute('data-finish')){ save(answers); apply(answers); close(); return; }
+    if(t.classList.contains('q-opt')){
+      var step = t.closest('.q-step'), key = step.getAttribute('data-key');
+      var opts = [].slice.call(step.querySelectorAll('.q-opt'));
+      if(step.hasAttribute('data-multi')){
+        var on = t.getAttribute('aria-pressed') !== 'true';
+        if(on && t.hasAttribute('data-only')) opts.forEach(function(o){ o.setAttribute('aria-pressed','false'); });
+        if(on && !t.hasAttribute('data-only')) opts.forEach(function(o){ if(o.hasAttribute('data-only')) o.setAttribute('aria-pressed','false'); });
+        t.setAttribute('aria-pressed', on ? 'true' : 'false');
+        answers[key] = opts.filter(function(o){ return o.getAttribute('aria-pressed') === 'true'; }).map(function(o){ return o.getAttribute('data-v'); });
+      } else {
+        opts.forEach(function(o){ o.setAttribute('aria-pressed', o === t ? 'true' : 'false'); });
+        answers[key] = t.getAttribute('data-v');
+        if(t.hasAttribute('data-k')) answers.areaKey = t.getAttribute('data-k');
+        setTimeout(function(){ show(cur + 1); }, 320);
+      }
+    }
+  });
+  back.addEventListener('click', function(){ if(cur > 1) show(cur - 1); else show(0); });
+
+  if(root.classList.contains('quiz-open')){
+    steps.forEach(function(s){ [].forEach.call(s.querySelectorAll('.q-opt'), function(o){ o.setAttribute('aria-pressed','false'); }); });
+    show(0);
+  } else {
+    try{ var saved = JSON.parse(localStorage.getItem(QKEY) || 'null'); if(saved && !saved.skipped) apply(saved); }catch(e){}
+  }
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
     var err = document.getElementById('form-error');
