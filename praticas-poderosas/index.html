@@ -168,6 +168,45 @@
   .guarantee h3{font-weight:600;font-size:22px;line-height:1.15}
   .guarantee p{margin:4px 0 0;font-size:14px}
 
+  /* planos */
+  .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:32px;align-items:center;text-align:left}
+  .plan{position:relative;border-radius:24px;padding:30px 28px 32px;min-width:0}
+  .plan-basic{background:var(--cream);border:1px solid var(--line)}
+  .plan-full{background:var(--sage);color:var(--sand);padding:40px 30px 36px;box-shadow:0 30px 70px rgba(61,46,38,0.28)}
+  .plan-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--cream);font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;padding:7px 16px;border-radius:999px;white-space:nowrap}
+  .plan-name{font-family:var(--serif);font-weight:600;font-size:32px;line-height:1.1;color:var(--ink)}
+  .plan-full .plan-name{color:var(--cream)}
+  .plan-sub{margin:4px 0 0;font-size:14px}
+  .plan-from{margin-top:18px;font-size:14px}
+  .plan-from s{font-family:var(--serif);font-size:20px;font-weight:600}
+  .plan .price{justify-content:flex-start;align-items:baseline;margin-top:10px;font-variant-numeric:lining-nums}
+  .plan .price small{line-height:1}
+  .plan-from s{font-variant-numeric:lining-nums}
+  .plan-basic .price b{font-size:64px}
+  .plan-full .price{color:var(--cream)}
+  .plan-note{font-size:13px;margin-top:2px}
+  .plan-list{list-style:none;margin:20px 0 0;padding:0}
+  .plan-list li{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.45}
+  .plan-full .plan-list li{border-color:rgba(232,220,201,0.28)}
+  .plan-list svg{flex:0 0 18px;margin-top:1px}
+  .plan-list span{flex:1;min-width:0}
+  .plan-list em{color:inherit;font-variant-numeric:lining-nums;font-style:normal;font-family:var(--serif);font-weight:600;font-size:17px;opacity:.75;white-space:nowrap}
+  .plan-basic .yes{color:var(--ink)}
+  .plan-basic .yes svg{color:var(--sage)}
+  .plan-basic .no{color:var(--clay);opacity:.75}
+  .plan-basic .no span{text-decoration:line-through}
+  .plan-full .yes{color:var(--cream)}
+  .plan-full .yes svg{color:var(--line)}
+  .plan .btn{margin-top:24px}
+  .btn-ghost{background:transparent;color:var(--sage);border:1.5px solid var(--sage)}
+  .btn-ghost:hover{background:var(--sage);color:var(--cream)}
+  .btn-light{background:var(--cream);color:var(--ink)}
+  .btn-light:hover{background:var(--white);color:var(--ink)}
+  .plan-extra{text-align:center;font-size:13px;margin-top:12px;color:var(--sand)}
+  #oferta .fine{margin-top:22px}
+  #oferta .guarantee{max-width:600px;margin-left:auto;margin-right:auto}
+  @media (max-width:720px){.plan-full{order:-1}.plans{gap:28px}}
+
   /* entrega */
   .entrega{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;margin-top:36px;counter-reset:e}
   .entrega > div{text-align:center;padding:0 8px}
@@ -264,7 +303,7 @@
 <div class="strip">
   <ul>
     <li>13 práticas guiadas</li>
-    <li>2 bônus para imprimir</li>
+    <li>A partir de R$ 17</li>
     <li>Acesso imediato em PDF</li>
     <li>Garantia de 7 dias</li>
   </ul>
@@ -384,7 +423,7 @@
       <div class="pratica"><i>13</i><span>Plano de Ação Espiritual para 2026/2027</span></div>
     </div>
     <div class="bonus">
-      <div class="eyebrow">Bônus para quem levar hoje</div>
+      <div class="eyebrow">Bônus do plano Completo</div>
       <div class="bonus-grid">
         <div>
           <h3>Caderno de afirmações e acompanhamento</h3>
@@ -445,25 +484,49 @@
   </div>
 </section>
 
-<!-- 09 · OFERTA (ancoragem + preço + garantia) -->
+<!-- 09 · OFERTA (dois planos + garantia) -->
 <section id="oferta" class="bg-sand">
-  <div class="wrap-sm center">
+  <div class="wrap-md center">
     <div class="eyebrow">Sua virada de chave começa aqui</div>
-    <h2>Tudo isso por um valor único</h2>
-    <div class="offer">
-      <div class="row"><span>E-book Práticas Poderosas (13 práticas guiadas)</span><span>R$ 97,00</span></div>
-      <div class="row"><span>Bônus: Caderno de afirmações e acompanhamento</span><span>R$ 37,00</span></div>
-      <div class="row"><span>Bônus: Cartões de fala para recortar</span><span>R$ 27,00</span></div>
-      <div class="row total"><span>Valor total de referência</span><span>R$ 161,00</span></div>
-      <div class="price"><small>R$</small><b>47</b></div>
-      <div style="font-size:14px;margin-top:4px">pagamento único · acesso imediato em PDF</div>
-      <a id="checkout" href="#checkout" class="btn btn-block">Sim, eu quero as Práticas Poderosas</a>
-      <div class="fine">Compra segura · Receba no seu e-mail após a confirmação do pagamento</div>
+    <h2>Escolha como você quer começar</h2>
+    <div class="plans">
+      <div class="plan plan-basic">
+        <div class="plan-name">Essencial</div>
+        <p class="plan-sub">Só as práticas, para começar</p>
+        <div class="price"><small>R$</small><b>17</b></div>
+        <div class="plan-note">pagamento único · PDF</div>
+        <ul class="plan-list">
+          <li class="yes"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span>E-book Práticas Poderosas com as 13 práticas guiadas</span></li>
+          <li class="yes"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span>Frases de poder de cada prática</span></li>
+          <li class="no"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg><span>Caderno de afirmações e acompanhamento</span></li>
+          <li class="no"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg><span>Diário da gratidão e planner semanal</span></li>
+          <li class="no"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg><span>Cartões de fala para recortar</span></li>
+        </ul>
+        <a id="checkout-essencial" href="#checkout-essencial" class="btn btn-block btn-ghost">Quero só o e-book</a>
+      </div>
+      <div class="plan plan-full">
+        <div class="plan-badge">Recomendado</div>
+        <div class="plan-name">Completo</div>
+        <p class="plan-sub">As práticas, o caderno e os cartões</p>
+        <div class="plan-from">De <s>R$ 161,00</s> por</div>
+        <div class="price"><small>R$</small><b>47</b></div>
+        <div class="plan-note">pagamento único · PDF com acesso imediato</div>
+        <ul class="plan-list">
+          <li class="yes"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span>E-book Práticas Poderosas com as 13 práticas guiadas</span><em>R$ 97</em></li>
+          <li class="yes"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span>Frases de poder de cada prática</span></li>
+          <li class="yes"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span>Caderno de afirmações e acompanhamento</span><em>R$ 37</em></li>
+          <li class="yes"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span>Diário da gratidão, conquistas e planner semanal</span></li>
+          <li class="yes"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span>Cartões de fala para recortar</span><em>R$ 27</em></li>
+        </ul>
+        <a id="checkout" href="#checkout" class="btn btn-block btn-light">Sim, quero o Completo</a>
+        <div class="plan-extra">Por só R$ 30 a mais, você leva o caderno e os cartões.</div>
+      </div>
     </div>
+    <div class="fine">Compra segura · Receba no seu e-mail após a confirmação do pagamento</div>
     <div class="guarantee">
       <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="#4F6E6B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 6L38 11V23C38 33 31 40 24 43C17 40 10 33 10 23V11Z"/><path d="M17 24l5 5 9-10"/></svg>
       <div>
-        <h3>Garantia de 7 dias</h3>
+        <h3>Garantia de 7 dias nos dois planos</h3>
         <p>Se você abrir o material e sentir que não é para você, peça o reembolso em até 7 dias após a compra.</p>
       </div>
     </div>
@@ -531,8 +594,8 @@
   <div class="wrap-sm">
     <div class="eyebrow" style="color:var(--line)">A escolha é sua</div>
     <h2>Daqui a um ano, você quer estar repetindo as mesmas frases, ou <em>praticando novas?</em></h2>
-    <p class="lead">13 práticas guiadas, o caderno de afirmações e os cartões de fala, por um valor único e com 7 dias de garantia.</p>
-    <a href="#oferta" class="btn">Quero as Práticas Poderosas por R$ 47</a>
+    <p class="lead">Comece pelas 13 práticas guiadas por R$ 17, ou leve o kit completo com o caderno e os cartões de fala por R$ 47. Os dois com 7 dias de garantia.</p>
+    <a href="#oferta" class="btn">Escolher o meu plano</a>
     <small>PDF com acesso imediato · Pagamento único</small>
     <div class="ps">
       <b>P.S.</b> Se você leu até aqui, é porque alguma coisa nessa página conversou com você. Não precisa mudar tudo de uma vez. Comece por uma prática, hoje, e veja como se sente.
@@ -548,7 +611,7 @@
 
 <!-- CTA fixo (celular) -->
 <div class="sticky" id="sticky" aria-hidden="true">
-  <div>Hoje por<b>R$ 47</b></div>
+  <div>A partir de<b>R$ 17</b></div>
   <a href="#oferta" class="btn" tabindex="-1">Quero as práticas</a>
 </div>
 
