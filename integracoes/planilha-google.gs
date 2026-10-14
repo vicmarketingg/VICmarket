@@ -8,10 +8,17 @@
  *    Executar como: Eu  ·  Quem pode acessar: Qualquer pessoa  → Implantar → autorize.
  *    (Se aparecer "o Google não verificou este app": Avançado → Acessar. É o seu próprio script.)
  * 4. Copie a "URL do app da Web" (termina em /exec) e cole em ENDPOINT, no script da página.
+ *    Teste: abra essa URL no navegador com ?teste=1 no final — deve gravar uma linha de teste.
+ * Depois de alterar este código: Implantar → Gerenciar implantações → lápis → Versão: Nova versão → Implantar
+ * (a URL continua a mesma).
  *
  * Cada aplicação vira uma linha. As etapas "contato", "parcial" e "completa" de uma mesma
  * pessoa têm o mesmo lead_id, então a linha dela é atualizada em vez de duplicada.
  */
+
+// ID da planilha (o trecho entre /d/ e /edit no link dela). Assim funciona mesmo que o script
+// não tenha sido criado pelo menu Extensões → Apps Script da própria planilha.
+const SPREADSHEET_ID = '1WSsYIbLZP6K8Ft8Ya29gYOcvomEUSn9NnXBfB4FNn34';
 
 // Opcional: e-mail que recebe um aviso a cada aplicação completa (deixe '' para não avisar).
 const NOTIFY_EMAIL = '';
@@ -58,8 +65,19 @@ function doPost(e) {
   }
 }
 
+// Teste pelo navegador: abra a URL /exec para ver se está ligado;
+// abra a URL /exec?teste=1 para gravar uma linha de teste na planilha.
+function doGet(e) {
+  const sheet = getSheet_();
+  if (e && e.parameter && e.parameter.teste) {
+    sheet.appendRow(['teste-' + Date.now(), 'teste', new Date().toISOString(), 'TESTE (pode apagar)']);
+    return ContentService.createTextOutput('OK! Linha de teste gravada na aba "' + SHEET_NAME + '" da planilha "' + sheet.getParent().getName() + '".');
+  }
+  return ContentService.createTextOutput('Conectado à planilha "' + sheet.getParent().getName() + '". Para gravar uma linha de teste, adicione ?teste=1 no fim do endereço.');
+}
+
 function getSheet_() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SPREADSHEET_ID ? SpreadsheetApp.openById(SPREADSHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
   let sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
