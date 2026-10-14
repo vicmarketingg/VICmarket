@@ -238,6 +238,19 @@ html.quiz-open body{overflow:hidden}
 .q-link{background:none;border:0;padding:0;font:inherit;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--marrom);cursor:pointer;text-decoration:underline;text-decoration-color:var(--areia);text-underline-offset:6px}
 .q-link:hover{color:var(--cafe)}
 .q-skip{display:inline-block;margin-top:1.8rem}
+/* foto na tela de abertura da aplicação */
+.quiz-photo{display:none}
+.quiz.at-intro .quiz-photo{display:block;position:fixed;top:0;left:0;bottom:0;width:46%;overflow:hidden;background:var(--noir)}
+.quiz-photo img{width:100%;height:100%;object-fit:cover;object-position:62% 30%;animation:qzoom 7s var(--ease) both}
+@keyframes qzoom{from{transform:scale(1.08)}to{transform:none}}
+.quiz-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(36,26,21,.55) 0%,rgba(36,26,21,0) 30%)}
+.quiz-photo .brand{display:none;position:absolute;z-index:1;top:calc(1.6rem + env(safe-area-inset-top,0px));left:1.5rem;color:var(--offwhite)}
+.quiz-photo-cap{position:absolute;z-index:1;left:clamp(1.5rem,3vw,2.6rem);bottom:clamp(1.5rem,3vw,2.4rem);font-size:.66rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(247,242,236,.85)}
+.quiz.at-intro .quiz-in{width:auto;max-width:640px;margin-left:calc(46% + clamp(2.5rem,6vw,6.5rem));margin-right:clamp(1.5rem,5vw,5rem)}
+.q-intro{max-width:34em;margin-bottom:2.4rem}
+.q-intro p{margin-bottom:1.1em}
+.q-intro .lead{margin-bottom:1.3em}
+.q-intro-cta{font-family:var(--serif);font-style:italic;font-size:1.3rem;color:var(--cafe);margin:1.8rem 0 0!important}
 .q-fields{display:grid;gap:1.8rem;margin-bottom:2.4rem}
 .q-step .q-opts+.q-fields{margin-top:2.2rem}
 .q-note{font-size:.93rem;max-width:36em;margin:-1rem 0 2rem;padding-left:1.2rem;border-left:1px solid var(--ouro)}
@@ -295,6 +308,13 @@ html.js.hero-in .hero-text > :nth-child(6){transition-delay:.75s}
   .grid2{grid-template-columns:1fr}
   .voices{grid-template-columns:1fr}
   .q-scale{grid-template-columns:repeat(6,1fr)}
+  .quiz.at-intro .quiz-photo{position:relative;width:auto;height:46svh;min-height:300px}
+  .quiz.at-intro .quiz-photo::after{background:linear-gradient(180deg,rgba(36,26,21,.55) 0%,rgba(36,26,21,0) 22%,rgba(36,26,21,0) 60%,var(--offwhite) 100%)}
+  .quiz-photo .brand{display:block}
+  .quiz-photo-cap{display:none}
+  .quiz.at-intro .quiz-in{width:min(760px,100% - 3rem);margin:0 auto;padding-top:0;min-height:0}
+  .quiz.at-intro .quiz-top,.quiz.at-intro .quiz-bar{display:none}
+  .quiz.at-intro .quiz-stage{padding:.5rem 0 2rem}
   .btn{display:flex;width:100%;padding:1.3rem 1.2rem;letter-spacing:.2em}
   .frame::before{inset:-.6rem .6rem .6rem -.6rem}
 }
@@ -313,6 +333,7 @@ html.js.hero-in .hero-text > :nth-child(6){transition-delay:.75s}
      logo no 1º passo, então nenhum lead se perde mesmo que ela não termine.
      As respostas também personalizam o topo da página. -->
 <div class="quiz" id="quiz" role="dialog" aria-modal="true" aria-labelledby="q-title-0">
+  <div class="quiz-photo" aria-hidden="true"><img alt=""><span class="brand">Lisi Del Ré</span><span class="quiz-photo-cap">Lisi Del Ré · Terapeuta Integrativa</span></div>
   <form class="quiz-in" id="app-form" novalidate>
     <input type="hidden" name="perfil"><input type="hidden" name="area"><input type="hidden" name="momento"><input type="hidden" name="buscou">
     <input type="hidden" name="disposicao"><input type="hidden" name="agenda"><input type="hidden" name="investimento">
@@ -323,9 +344,14 @@ html.js.hero-in .hero-text > :nth-child(6){transition-delay:.75s}
 
       <div class="q-step on" data-step="0">
         <span class="eyebrow">Programa LDR® · Aplicação</span>
-        <h2 id="q-title-0" tabindex="-1">Antes de apresentarmos o programa, <em>queremos conhecer você.</em></h2>
-        <p class="lead">O Programa LDR® é um acompanhamento individual, e a entrada acontece por aplicação. São algumas perguntas sobre o seu momento. Não existem respostas certas.</p>
-        <button type="button" class="btn" data-next>Começar minha aplicação</button>
+        <h2 id="q-title-0" tabindex="-1">Antes de conhecer o Programa LDR®, <em>queremos entender você.</em></h2>
+        <div class="q-intro">
+          <p class="lead">Esse é o primeiro passo para entendermos o seu momento e como o Programa LDR® pode te ajudar.</p>
+          <p>Responda às perguntas a seguir com sinceridade. Queremos conhecer o que você está vivendo, quais desafios enfrenta e o que deseja transformar.</p>
+          <p>Não existem respostas certas ou erradas. O importante é que você seja verdadeira com a sua história.</p>
+          <p class="q-intro-cta">Clique no botão abaixo e dê o primeiro passo.</p>
+        </div>
+        <button type="button" class="btn" data-next>Quero dar o primeiro passo</button>
         <p class="small" style="margin-top:1.2rem">Leva cerca de 3 minutos · Respostas confidenciais</p>
       </div>
 
@@ -807,6 +833,10 @@ html.js.hero-in .hero-text > :nth-child(6){transition-delay:.75s}
   var waUrl = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg);
   ['wa-skip','wa-quiz'].forEach(function(id){ var a = document.getElementById(id); if(a) a.href = waUrl; });
 
+  // a foto da abertura reaproveita a foto da capa (sem duplicar a imagem no arquivo)
+  var qImg = document.querySelector('.quiz-photo img'), coverImg = document.querySelector('.hero .photo img');
+  if(qImg && coverImg) qImg.src = coverImg.src;
+
   var KEY = 'ldr-app-v1';
   var root = document.documentElement;
   var quiz = document.getElementById('quiz');
@@ -847,6 +877,7 @@ html.js.hero-in .hero-text > :nth-child(6){transition-delay:.75s}
 
   function show(i){
     steps.forEach(function(s, j){ s.classList.toggle('on', j === i); });
+    quiz.classList.toggle('at-intro', i === 0);
     cur = i;
     var q = i >= 1 && i <= LAST_Q;
     document.getElementById('quiz-count').textContent = q ? (('0' + i).slice(-2) + ' / ' + LAST_Q) : '';
