@@ -621,8 +621,7 @@ body.gated{overflow:hidden}
     <div class="skip" id="pular-fila">
       <h3 style="text-align:center">Atendimento prioritário</h3>
       <p>Se você está vivendo um momento que sente que não quer mais adiar e prefere agilizar seu contato sobre o Programa LDR®, existe um caminho mais direto.</p>
-      <!-- Cláudio: substituir 5500000000000 pelo WhatsApp definido pela equipe -->
-      <a class="btn btn-line" id="wa-skip" href="https://wa.me/5500000000000?text=Oi!%20Conheci%20o%20Programa%20LDR%C2%AE%20pela%20p%C3%A1gina%20e%20sinto%20que%20estou%20vivendo%20um%20momento%20que%20n%C3%A3o%20quero%20mais%20adiar.%20Gostaria%20de%20um%20atendimento%20priorit%C3%A1rio%20para%20conversar%20com%20a%20equipe%20sobre%20os%20pr%C3%B3ximos%20passos." target="_blank" rel="noopener">Falar com a equipe no WhatsApp →</a>
+      <a class="btn btn-line" id="wa-skip" href="https://wa.me/555496272701?text=Oi!%20Conheci%20o%20Programa%20LDR%C2%AE%20pela%20p%C3%A1gina%20e%20sinto%20que%20estou%20vivendo%20um%20momento%20que%20n%C3%A3o%20quero%20mais%20adiar.%20Gostaria%20de%20um%20atendimento%20priorit%C3%A1rio%20para%20conversar%20com%20a%20equipe%20sobre%20os%20pr%C3%B3ximos%20passos." target="_blank" rel="noopener">Falar com a equipe no WhatsApp →</a>
       <p class="small" style="text-align:center;margin-top:1rem">Você será atendida por alguém da equipe da Lisi, que vai entender brevemente o seu momento e orientar você sobre os próximos passos.</p>
     </div>
   </div>
@@ -701,8 +700,8 @@ body.gated{overflow:hidden}
 
 <script>
 (function(){
-  // Cláudio: ajustar aqui o endpoint do formulário (CRM, planilha, webhook) e o WhatsApp da equipe
-  var WHATSAPP = "5500000000000";
+  // Cláudio: ajustar aqui o endpoint do formulário (CRM, planilha, webhook). WhatsApp da equipe: +55 54 9627-2701
+  var WHATSAPP = "555496272701";
   var msg = "Oi! Conheci o Programa LDR® pela página e sinto que estou vivendo um momento que não quero mais adiar. Gostaria de um atendimento prioritário para conversar com a equipe sobre os próximos passos.";
   var waUrl = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg);
   var a1 = document.getElementById('wa-skip'); if(a1) a1.href = waUrl;
