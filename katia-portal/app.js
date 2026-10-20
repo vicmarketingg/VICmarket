@@ -37,10 +37,43 @@
 
   let statusMap = store.get(STATUS_KEY, {});
   const getStatus = (id) => (statusIds.includes(statusMap[id]) ? statusMap[id] : "a-fazer");
+  // Quando a página roda como Artifact no claude.ai, o status fica num
+  // banco compartilhado: quem tem acesso de edição vê as mesmas marcações.
+  let statusCol = null;
+
   const setStatus = (id, st) => {
+    const antes = statusMap;
     statusMap = Object.assign({}, statusMap, { [id]: st });
     store.set(STATUS_KEY, statusMap);
+    if (statusCol) {
+      statusCol.doc(String(id)).set({ status: st, atualizadoEm: new Date().toISOString() }).catch(() => {
+        statusMap = antes;
+        store.set(STATUS_KEY, statusMap);
+        render({ animar: false, manterScroll: true });
+        toast("Status não salvo: falta acesso de edição");
+      });
+    }
   };
+
+  async function ligarStatusCompartilhado() {
+    if (!window.claude || typeof window.claude.use !== "function") return;
+    let db = null;
+    try { db = await window.claude.use("db"); } catch (e) { db = null; }
+    if (!db) return;
+    statusCol = db.collection("status");
+    document.body.classList.add("is-shared");
+    statusCol.onSnapshot((snap) => {
+      const novo = {};
+      snap.docs.forEach((d) => {
+        const v = d.data();
+        if (v && statusIds.includes(v.status)) novo[d.id] = v.status;
+      });
+      if (JSON.stringify(novo) === JSON.stringify(statusMap)) return;
+      statusMap = novo;
+      store.set(STATUS_KEY, statusMap);
+      render({ animar: false, manterScroll: true });
+    }, () => { statusCol = null; document.body.classList.remove("is-shared"); });
+  }
 
   let fonte = store.get(FONTE_KEY, 1);
   const filtros = { formato: "todos", status: "todos" };
@@ -581,6 +614,7 @@
       <div class="sheet-grip"></div>
       <h2 id="sheetTitle">Status do conteúdo</h2>
       <p class="sheet-sub">${dataCurta(c)} · ${FORMATOS[c.formato]} — ${esc(c.tema)}</p>
+      <p class="sheet-note">${statusCol ? "Status compartilhado: quem tem acesso a este portal vê a mesma marcação." : "Status salvo apenas neste aparelho."}</p>
       <ol class="status-list">
         ${P.status.map((s, i) => `
           <li><button class="status-opt st-${s.id}${s.id === atual ? " is-on" : ""}" data-set-status="${s.id}" data-id="${c.id}" aria-pressed="${s.id === atual}">
@@ -823,4 +857,5 @@
   });
 
   render();
+  ligarStatusCompartilhado();
 })();
