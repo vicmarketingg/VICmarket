@@ -701,7 +701,9 @@ body.gated{overflow:hidden}
 
 <script>
 (function(){
-  // Cláudio: ajustar aqui o endpoint do formulário (CRM, planilha, webhook). WhatsApp da equipe: +55 54 9627-2701
+  // Link do App Script da planilha (ver planilha-aplicacoes.gs). Cole entre as aspas.
+  var PLANILHA_URL = "";
+  // WhatsApp da equipe: +55 54 9627-2701
   var WHATSAPP = "555496272701";
   var msg = "Oi! Conheci o Programa LDR® pela página e sinto que estou vivendo um momento que não quero mais adiar. Gostaria de um atendimento prioritário para conversar com a equipe sobre os próximos passos.";
   var waUrl = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg);
@@ -789,11 +791,19 @@ body.gated{overflow:hidden}
     var ok = form.nome.value.trim() && form.whatsapp.value.trim();
     err.style.display = ok ? 'none' : 'block';
     if(!ok) return;
-    // Aqui entra o envio real dos dados (fetch para o CRM/webhook da equipe).
-    document.getElementById('form-area').style.display = 'none';
-    var t = document.getElementById('thanks');
-    t.classList.add('on'); t.focus();
-    t.scrollIntoView({behavior:'smooth', block:'start'});
+    var btn = form.querySelector('button[type=submit]');
+    btn.disabled = true; btn.textContent = 'Enviando…';
+    var dados = new URLSearchParams(new FormData(form));
+    dados.append('pagina', location.href);
+    var envio = PLANILHA_URL
+      ? fetch(PLANILHA_URL, {method:'POST', mode:'no-cors', body:dados}).catch(function(){})
+      : Promise.resolve(console.warn('PLANILHA_URL vazia: aplicação não foi enviada.'));
+    envio.then(function(){
+      document.getElementById('form-area').style.display = 'none';
+      var t = document.getElementById('thanks');
+      t.classList.add('on'); t.focus();
+      t.scrollIntoView({behavior:'smooth', block:'start'});
+    });
   });
 })();
 </script>
