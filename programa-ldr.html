@@ -54,6 +54,7 @@ h3{font-size:clamp(1.6rem,2.6vw,2rem)}
 .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .photo .slot{position:absolute;left:1rem;bottom:.8rem;font-size:.68rem;letter-spacing:.08em;color:var(--cafe);opacity:.55}
 .photo.has-img .slot{display:none}
+.photo img+.slot,.photo .slot:has(+img){display:none}
 
 /* hero */
 .hero{min-height:100svh;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:stretch}
@@ -139,31 +140,24 @@ fieldset{border:0;margin:0;padding:0}
 
 footer{padding:3rem 0 4rem;text-align:center}
 
-/* faixa superior */
-.topbar{background:var(--cafe);color:var(--bege);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;text-align:center;padding:.75rem 1rem}
-.topbar span{color:var(--areia);margin:0 .6em}
+@media(max-width:860px){
+  body{font-size:16px}
+  .hero{grid-template-columns:1fr}
+  .hero .photo{order:-1;min-height:46svh}
+  .hero-text{padding:3rem 1.5rem 4rem}
+  .about{grid-template-columns:1fr}
+  .method{grid-template-columns:1fr}
+  .method article{border-right:0;margin-right:0;padding-right:0;border-bottom:1px solid var(--areia)}
+  .method article:last-child{border-bottom:0}
+  .qual{grid-template-columns:1fr}
+  .qual .no{border-left:0;padding-left:0;border-top:1px solid var(--areia);padding-top:2rem}
+  .btn{display:block;text-align:center;padding:1.1rem 1.2rem}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
 
-/* seção escura premium */
-.dark{background:var(--cafe);color:var(--bege)}
-.dark h2,.dark h3{color:var(--offwhite)}
-.dark .eyebrow{color:var(--areia)}
-.dark .serif-quote{color:var(--offwhite)}
-.dark .lead,.dark p{color:var(--bege)}
-.incl{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:0 3rem;margin:3.5rem 0 1rem;border-top:1px solid rgba(209,184,156,.35)}
-.incl div{padding:2rem 0;border-bottom:1px solid rgba(209,184,156,.35)}
-.incl h3{font-size:1.45rem;margin-bottom:.5rem}
-.incl p{font-size:.95rem;margin:0;opacity:.85}
-
-/* admissão */
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.5rem,4vw,3rem);margin:3rem 0}
-.steps .n{font-family:var(--serif);font-size:2.6rem;color:var(--terracota);line-height:1;display:block;margin-bottom:1rem}
-.steps h3{font-size:1.5rem;margin-bottom:.5rem}
-.steps p{font-size:.95rem;margin:0}
-.invest{border:1px solid var(--areia);padding:clamp(1.6rem,4vw,2.6rem);margin-top:1rem;background:rgba(255,255,255,.35)}
-.invest h3{font-size:1.6rem}
-.invest p:last-child{margin-bottom:0}
-@media(max-width:860px){.steps{grid-template-columns:1fr}}
-
+/* única animação: a água do hero */
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.drift{animation:drift 38s linear infinite;width:200%}
 /* ============ PORTÃO DE QUALIFICAÇÃO ============ */
 body.gated{overflow:hidden}
 .gate{position:fixed;inset:0;z-index:100;background:var(--offwhite);display:flex;flex-direction:column;overflow-y:auto;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
@@ -205,6 +199,11 @@ body.gated{overflow:hidden}
 /* única animação: a água do hero */
 @keyframes drift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .drift{animation:drift 38s linear infinite;width:200%}
+.gate-intro{width:min(1040px,100%);display:none;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(2rem,5vw,4.5rem);align-items:center}
+.gate-intro.on{display:grid;animation:fade .45s ease}
+.gate-intro .photo{aspect-ratio:4/5}
+@media(max-width:860px){.gate-intro{grid-template-columns:1fr}.gate-intro .photo{aspect-ratio:4/3}}
+
 </style>
 </head>
 <body class="gated">
@@ -218,13 +217,23 @@ body.gated{overflow:hidden}
   <div class="gate-progress" aria-hidden="true"><i id="gate-bar"></i></div>
   <div class="gate-body">
 
-    <div class="gate-step on" data-step="intro">
-      <span class="eyebrow">Acesso mediante qualificação</span>
-      <h1 id="gate-title">Antes de apresentar o Programa LDR®, queremos conhecer o seu momento.</h1>
-      <p class="lead">O programa é um acompanhamento individual de 6 meses, com vagas limitadas por ciclo. Por isso, ele é apresentado apenas para mulheres com o perfil e o momento compatíveis com esse processo.</p>
-      <p>São 5 perguntas rápidas. Leva menos de um minuto.</p>
-      <button type="button" class="btn" data-next>Começar</button>
-      <p class="gate-note">Suas respostas são confidenciais e usadas apenas para entender se o programa faz sentido para você.</p>
+    <div class="gate-step gate-intro on" data-step="intro">
+      <!-- FOTO DA CAPA: suba a foto da Lisi na mesma pasta do site com o nome lisi-capa.jpg -->
+      <div class="photo" role="img" aria-label="Lisi Del Ré">
+        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="400" height="500" fill="#efe6d8"/>
+          <rect y="170" width="400" height="140" fill="#9fbab5" opacity=".7"/>
+          <path d="M0 330 Q120 300 240 326 T400 318 V500 H0Z" fill="#D1B89C" opacity=".8"/>
+        </svg>
+        <img src="lisi-capa.jpg" alt="Lisi Del Ré" onerror="this.remove()">
+      </div>
+      <div>
+        <span class="eyebrow">Programa LDR® · Experiência individual de 6 meses</span>
+        <h1 id="gate-title">Antes de conhecer o Programa LDR®, queremos entender o seu momento.</h1>
+        <p class="lead">São 5 perguntas rápidas. Leva menos de um minuto.</p>
+        <button type="button" class="btn" data-next>Começar</button>
+        <p class="gate-note">Suas respostas são confidenciais e usadas apenas para entender se o programa faz sentido para você.</p>
+      </div>
     </div>
 
     <div class="gate-step" data-step="q" data-key="perfil">
@@ -309,12 +318,10 @@ body.gated{overflow:hidden}
 
 <div id="page" inert>
 
-<div class="topbar">Aplicações abertas<span>·</span>Vagas limitadas por ciclo<span>·</span>Admissão por seleção</div>
-
 <!-- ============ HERO ============ -->
 <header class="hero">
   <div class="hero-text">
-    <span class="eyebrow">Programa LDR® · Acompanhamento individual e reservado · 6 meses</span>
+    <span class="eyebrow">Programa LDR® | Experiência individual de 6 meses</span>
     <h1>Você construiu muita coisa.<br>Agora talvez seja hora de construir uma vida que também faça sentido por dentro.</h1>
     <div class="stack lead">
       <p>Você aprendeu a decidir, liderar, resolver problemas e seguir em frente.</p>
@@ -325,9 +332,9 @@ body.gated{overflow:hidden}
     <p class="small" style="max-width:34em">É olhar com profundidade para aquilo que ainda interfere na forma como vivem, escolhem e conduzem a própria história.</p>
     <p class="tri">Localizar. Desbloquear. Reprogramar.</p>
     <div>
-      <a class="btn" href="#aplicacao">Solicitar minha aplicação</a>
-      <p class="small" style="margin:.9rem 0 0">Admissão mediante aplicação e conversa de alinhamento. Vagas limitadas por ciclo.</p>
-      <a class="quiet" href="#pular-fila" style="font-size:.78rem;margin-top:1.2rem">Prefere um atendimento prioritário? Fale com nossa equipe →</a>
+      <a class="btn" href="#aplicacao">Quero me candidatar ao Programa LDR®</a>
+      <p class="small" style="margin:.9rem 0 0">As aplicações são analisadas individualmente.</p>
+      <a class="quiet" href="#pular-fila" style="font-size:.78rem;margin-top:1.2rem">Sente que precisa agilizar esse processo? Fale com nossa equipe →</a>
     </div>
   </div>
   <!-- FOTO 1: editorial forte da Lisi na praia. Troque o <svg> por <img src="..." alt="Lisi Del Ré na praia"> e adicione a classe has-img -->
@@ -346,6 +353,7 @@ body.gated{overflow:hidden}
       <path d="M0 650 Q220 630 400 652 T600 644" fill="none" stroke="#F7F2EC" stroke-width="1" opacity=".5"/>
     </svg>
     <span class="slot">foto principal · Lisi na praia</span>
+    <img src="lisi-capa.jpg" alt="Lisi Del Ré na praia" onerror="this.remove()">
   </div>
 </header>
 
@@ -384,6 +392,7 @@ body.gated{overflow:hidden}
         <path d="M0 370 Q300 340 600 366 T1200 360 V520 H0Z" fill="#D1B89C" opacity=".8"/>
       </svg>
       <span class="slot">imagem suave · água e horizonte</span>
+    <img src="mar.jpg" alt="Horizonte sobre o mar" onerror="this.remove()">
     </div>
     <div class="narrow pad">
       <h2 style="font-size:clamp(2.3rem,5vw,3.9rem)">Você não precisa abandonar a vida que construiu para desejar uma vida ainda mais sua.</h2>
@@ -460,7 +469,7 @@ body.gated{overflow:hidden}
       </article>
     </div>
     <p class="serif-quote center" style="margin:3rem auto 2.4rem;max-width:24em">Você não precisa se encaixar no programa. O processo é construído a partir da sua jornada.</p>
-    <p class="center"><a class="btn btn-line" href="#aplicacao">Solicitar minha aplicação</a></p>
+    <p class="center"><a class="btn btn-line" href="#aplicacao">Quero preencher minha aplicação</a></p>
   </div>
 </section>
 
@@ -483,26 +492,6 @@ body.gated{overflow:hidden}
   </div>
 </section>
 
-<!-- ============ EXPERIÊNCIA RESERVADA ============ -->
-<section class="dark pad">
-  <div class="wrap">
-    <div class="narrow" style="margin-left:0">
-      <span class="eyebrow">Uma experiência reservada</span>
-      <h2>Poucas mulheres por ciclo.<br>Toda a atenção da Lisi em cada processo.</h2>
-      <!-- Cláudio/Lisi: se quiserem, informar aqui o número exato de vagas por ciclo -->
-      <p class="lead" style="margin-top:2rem">O Programa LDR® recebe um número reduzido de clientes por ciclo. É essa escolha que permite preservar a profundidade, a continuidade e a personalização de cada jornada.</p>
-    </div>
-    <div class="incl">
-      <div><h3>Conduzido pessoalmente pela Lisi</h3><p>Do primeiro ao último encontro. Sem equipe intermediária no seu processo.</p></div>
-      <div><h3>24 encontros individuais ao vivo</h3><p>Um por semana, online, ao longo de 6 meses.</p></div>
-      <div><h3>Mapeamento da sua história</h3><p>Para identificar onde faz sentido começar — e o que hoje consome seus recursos.</p></div>
-      <div><h3>Método LDR® aplicado a você</h3><p>Personalizado de acordo com seu momento e aquilo que estiver sendo trabalhado.</p></div>
-      <div><h3>Atividades direcionadas</h3><p>Para levar o que aparece nos encontros para decisões, limites e relações reais.</p></div>
-      <div><h3>Biblioteca de e-books da Lisi</h3><p>Materiais complementares que acompanham a jornada.</p></div>
-    </div>
-  </div>
-</section>
-
 <!-- ============ LISI ============ -->
 <section class="bege pad">
   <div class="wrap about">
@@ -515,6 +504,7 @@ body.gated{overflow:hidden}
         <path d="M0 330 Q120 300 240 326 T400 318 V500 H0Z" fill="#D1B89C" opacity=".8"/>
       </svg>
       <span class="slot">foto da Lisi</span>
+    <img src="lisi-sobre.jpg" alt="Lisi Del Ré" onerror="this.remove()">
     </div>
     <div>
       <span class="eyebrow">Quem vai acompanhar você</span>
@@ -585,25 +575,6 @@ body.gated{overflow:hidden}
   </div>
 </section>
 
-<!-- ============ ADMISSÃO ============ -->
-<section class="bege-soft pad">
-  <div class="wrap">
-    <div class="narrow" style="margin-left:0">
-      <span class="eyebrow">Como funciona a admissão</span>
-      <h2>A entrada no Programa LDR® acontece em três etapas.</h2>
-    </div>
-    <div class="steps">
-      <div><span class="n">01</span><h3>Aplicação</h3><p>Você compartilha sua trajetória, seu momento e aquilo que deseja trabalhar. Cada aplicação é lida individualmente.</p></div>
-      <div><span class="n">02</span><h3>Conversa de alinhamento</h3><p>Se houver alinhamento, nossa equipe entra em contato para agendar uma conversa e entender seu momento com mais profundidade.</p></div>
-      <div><span class="n">03</span><h3>Convite e início</h3><p>Havendo sintonia de ambos os lados, você recebe o convite para iniciar sua jornada no próximo ciclo disponível.</p></div>
-    </div>
-    <div class="invest">
-      <h3>Sobre o investimento</h3>
-      <p>O Programa LDR® é um acompanhamento individual premium. O investimento é apresentado pessoalmente na conversa de alinhamento — somente quando existe clareza, dos dois lados, de que este é o processo certo para o seu momento.</p>
-    </div>
-  </div>
-</section>
-
 <svg class="wave" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true"><path d="M0 23 Q75 6 150 23 T300 23 T450 23 T600 23 T750 23 T900 23 T1050 23 T1200 23" fill="none" stroke="currentColor" stroke-width="1"/></svg>
 
 <!-- ============ APLICAÇÃO ============ -->
@@ -615,14 +586,14 @@ body.gated{overflow:hidden}
     <p>Por isso, a entrada no programa acontece através de uma aplicação individual.</p>
     <p>Você responderá algumas perguntas sobre sua trajetória, o momento atual e aquilo que deseja trabalhar.</p>
     <p>Sua aplicação será analisada e, caso exista alinhamento, nossa equipe entrará em contato para orientar você sobre os próximos passos e a possibilidade de uma conversa com a Lisi.</p>
-    <a class="btn" href="#formulario">Iniciar minha aplicação</a>
+    <a class="btn" href="#formulario">Quero me candidatar ao Programa LDR®</a>
     <p class="small" style="text-align:center;margin-top:1rem">Preenchimento aproximado: 3–5 minutos.</p>
 
     <!-- PULAR A FILA -->
     <div class="skip" id="pular-fila">
-      <h3 style="text-align:center">Atendimento prioritário</h3>
+      <h3 style="text-align:center">Sente que isso é urgente para você?</h3>
       <p>Se você está vivendo um momento que sente que não quer mais adiar e prefere agilizar seu contato sobre o Programa LDR®, existe um caminho mais direto.</p>
-      <a class="btn btn-line" id="wa-skip" href="https://wa.me/555496272701?text=Oi!%20Conheci%20o%20Programa%20LDR%C2%AE%20pela%20p%C3%A1gina%20e%20sinto%20que%20estou%20vivendo%20um%20momento%20que%20n%C3%A3o%20quero%20mais%20adiar.%20Gostaria%20de%20um%20atendimento%20priorit%C3%A1rio%20para%20conversar%20com%20a%20equipe%20sobre%20os%20pr%C3%B3ximos%20passos." target="_blank" rel="noopener">Falar com a equipe no WhatsApp →</a>
+      <a class="btn btn-line" id="wa-skip" href="https://wa.me/555496272701?text=Oi!%20Conheci%20o%20Programa%20LDR%C2%AE%20pela%20p%C3%A1gina%20e%20sinto%20que%20estou%20vivendo%20um%20momento%20que%20n%C3%A3o%20quero%20mais%20adiar.%20Gostaria%20de%20pular%20a%20fila%20e%20conversar%20com%20a%20equipe%20sobre%20os%20pr%C3%B3ximos%20passos." target="_blank" rel="noopener">Pular a fila e falar com a equipe no WhatsApp →</a>
       <p class="small" style="text-align:center;margin-top:1rem">Você será atendida por alguém da equipe da Lisi, que vai entender brevemente o seu momento e orientar você sobre os próximos passos.</p>
     </div>
   </div>
@@ -682,9 +653,9 @@ body.gated{overflow:hidden}
 
     <!-- ============ OBRIGADO ============ -->
     <div class="thanks" id="thanks" tabindex="-1">
-      <h2>Sua aplicação foi recebida.</h2>
+      <h2>Sua aplicação foi recebida. 🤎</h2>
       <p class="lead">Obrigada por dedicar alguns minutos para compartilhar o momento que você está vivendo.</p>
-      <p>Ela será lida com atenção. Caso exista alinhamento, nossa equipe entrará em contato pelo WhatsApp para agendar sua conversa de alinhamento.</p>
+      <p>Nossa equipe analisará suas respostas e poderá entrar em contato pelo WhatsApp para orientar você sobre os próximos passos.</p>
       <p class="serif-quote" style="margin:2.4rem 0 1rem">Quer agilizar esse contato?</p>
       <p>Se sente que este é um momento que não deseja continuar adiando, você pode falar agora com alguém da equipe.</p>
       <a class="btn" id="wa-thanks" href="#" target="_blank" rel="noopener">Falar com a equipe no WhatsApp →</a>
@@ -705,7 +676,7 @@ body.gated{overflow:hidden}
   var PLANILHA_URL = "https://script.google.com/macros/s/AKfycbwSpbCQhzld8BXYQsDUeup5F6G6-7Cc6UZfQyqho-Pnycd-AjBLms6Txy6J2coSnUMcvw/exec";
   // WhatsApp da equipe: +55 54 9627-2701
   var WHATSAPP = "555496272701";
-  var msg = "Oi! Conheci o Programa LDR® pela página e sinto que estou vivendo um momento que não quero mais adiar. Gostaria de um atendimento prioritário para conversar com a equipe sobre os próximos passos.";
+  var msg = "Oi! Conheci o Programa LDR® pela página e sinto que estou vivendo um momento que não quero mais adiar. Gostaria de pular a fila e conversar com a equipe sobre os próximos passos.";
   var waUrl = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg);
   var a1 = document.getElementById('wa-skip'); if(a1) a1.href = waUrl;
   var a2 = document.getElementById('wa-thanks'); if(a2) a2.href = waUrl;
