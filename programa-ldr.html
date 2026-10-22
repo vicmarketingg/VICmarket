@@ -211,7 +211,8 @@ body.gated{overflow:hidden}
 
 <!-- ============ PORTÃO DE QUALIFICAÇÃO ============
      Aparece antes da página. Quem já passou não vê de novo (salvo no navegador).
-     Para pular o portão (ex.: link enviado pela equipe), use ?direto=1 no fim da URL. -->
+     Para pular o portão (ex.: link enviado pela equipe), use ?direto=1 no fim da URL.
+     Para ver as perguntas de novo depois de já ter passado, use ?perguntas=1 no fim da URL. -->
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
   <div class="gate-head"><span>Programa LDR® · Lisi Del Ré</span><span id="gate-count" aria-live="polite"></span></div>
   <div class="gate-progress" aria-hidden="true"><i id="gate-bar"></i></div>
@@ -772,6 +773,8 @@ body.gated{overflow:hidden}
   document.getElementById('gate-enter').addEventListener('click', openPage);
   document.getElementById('gate-anyway').addEventListener('click', openPage);
 
+  // ?perguntas=1 apaga a resposta salva e mostra as perguntas de novo (útil para testar)
+  if(/[?&]perguntas=1/.test(location.search)){ try{ localStorage.removeItem(KEY); }catch(e){} }
   var prev = store(true);
   if(/[?&]direto=1/.test(location.search) || (prev && prev.status === 'qualificada')){ prefill(prev); openPage(); }
   else show(0);
