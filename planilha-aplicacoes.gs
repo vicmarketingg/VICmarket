@@ -1,23 +1,20 @@
 /**
  * Programa LDR® — recebe as aplicações da página e grava na planilha.
- * Como instalar: veja o passo a passo enviado junto (Extensões > Apps Script).
+ * Cada pessoa ocupa UMA linha: a linha é criada quando ela informa nome e WhatsApp
+ * e é atualizada conforme ela avança (contato → parcial → completa).
  */
 var ABA = 'Aplicações';
 
-// Ordem e nome das colunas na planilha
 var COLUNAS = [
-  ['data', 'Data'],
-  ['qualif_status', 'Qualificação'],
-  ['qualif_pontuacao', 'Pontuação (0-10)'],
+  ['enviado_em', 'Data'],
+  ['etapa', 'Etapa'],
   ['nome', 'Nome'],
   ['whatsapp', 'WhatsApp'],
   ['instagram', 'Instagram'],
-  ['ocupacao', 'Ocupação'],
   ['perfil', 'Perfil'],
-  ['qualif_busca', 'O que procura'],
-  ['qualif_historico', 'Já investiu em desenvolvimento'],
-  ['momento', 'Momento atual'],
+  ['ocupacao', 'Ocupação'],
   ['area', 'Área que quer transformar'],
+  ['momento', 'Momento atual'],
   ['dificulta', 'O que dificulta'],
   ['buscou', 'O que já buscou'],
   ['agora', 'Por que agora'],
@@ -25,13 +22,18 @@ var COLUNAS = [
   ['agenda', 'Agenda semanal'],
   ['investimento', 'Investimento'],
   ['importante', 'Algo importante'],
-  ['pagina', 'Página de origem']
+  ['origem', 'Página de origem'],
+  ['lead_id', 'ID']
 ];
 
 function doPost(e) {
   var lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
+    var d = {};
+    try { d = JSON.parse(e.postData.contents); } catch (err) { d = e.parameter || {}; }
+    d.enviado_em = Utilities.formatDate(new Date(), 'America/Sao_Paulo', 'dd/MM/yyyy HH:mm');
+
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var aba = ss.getSheetByName(ABA) || ss.insertSheet(ABA);
     if (aba.getLastRow() === 0) {
@@ -39,9 +41,17 @@ function doPost(e) {
       aba.setFrozenRows(1);
       aba.getRange(1, 1, 1, COLUNAS.length).setFontWeight('bold');
     }
-    var p = (e && e.parameter) || {};
-    p.data = Utilities.formatDate(new Date(), 'America/Sao_Paulo', 'dd/MM/yyyy HH:mm');
-    aba.appendRow(COLUNAS.map(function (c) { return p[c[0]] || ''; }));
+    var linha = COLUNAS.map(function (c) { return d[c[0]] || ''; });
+
+    // se a mesma pessoa já tem linha (mesmo ID), atualiza; senão, cria
+    var colId = COLUNAS.length, n = aba.getLastRow() - 1, alvo = 0;
+    if (d.lead_id && n > 0) {
+      var ids = aba.getRange(2, colId, n, 1).getValues();
+      for (var i = 0; i < ids.length; i++) if (ids[i][0] === d.lead_id) { alvo = i + 2; break; }
+    }
+    if (alvo) aba.getRange(alvo, 1, 1, linha.length).setValues([linha]);
+    else aba.appendRow(linha);
+
     return ContentService.createTextOutput('ok');
   } finally {
     lock.releaseLock();
