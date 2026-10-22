@@ -745,7 +745,9 @@ body.gated{overflow:hidden}
   }
   function openPage(){
     gate.hidden = true; document.body.classList.remove('gated'); page.removeAttribute('inert');
-    window.scrollTo(0,0);
+    // se o link tiver #aplicacao (ou outra seção), vai direto para ela
+    var alvo = location.hash && document.getElementById(location.hash.slice(1));
+    if(alvo) alvo.scrollIntoView(); else window.scrollTo(0,0);
   }
   function prefill(r){
     if(!r || !r.answers) return;
