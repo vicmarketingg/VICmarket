@@ -2,11 +2,10 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<title>Portfólio Visual</title>
+<title>Victoria Benevides — Portfólio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  /* Edite aqui os dados de contato e o nome profissional (marcados com [ ]) */
   :root {
     --off: #F5F0E8;
     --beige: #E6DACA;
@@ -23,192 +22,243 @@
 
   .page {
     width: 297mm; height: 210mm; position: relative; overflow: hidden;
-    page-break-after: always; break-after: page;
-    padding: 18mm 22mm;
+    break-after: page;
+    padding: 20mm 22mm;
     background: var(--off);
   }
-  .page:last-child { page-break-after: auto; break-after: auto; }
+  .page:last-child { break-after: auto; }
 
-  .eyebrow { font: 500 7.5pt/1 var(--sans); letter-spacing: .28em; text-transform: uppercase; color: var(--muted); }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 300; }
+  em { font-style: italic; }
+  .eyebrow { font: 500 9pt/1 var(--sans); letter-spacing: .26em; text-transform: uppercase; color: var(--muted); }
   .folio {
     position: absolute; left: 22mm; right: 22mm; bottom: 10mm;
     display: flex; justify-content: space-between;
-    font: 400 6.5pt/1 var(--sans); letter-spacing: .24em; text-transform: uppercase; color: var(--muted);
+    font: 400 7.5pt/1 var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--muted);
   }
-  h1, h2, h3 { font-family: var(--serif); font-weight: 400; }
+  .dark .folio, .dark .eyebrow { color: var(--sand); }
 
-  /* Capa */
+  /* 1 · Capa */
   .cover { background: var(--brown); color: var(--off); display: flex; flex-direction: column; justify-content: space-between; }
-  .cover .eyebrow { color: var(--sand); }
-  .cover h1 { font-size: 64pt; line-height: .95; font-weight: 300; letter-spacing: -.01em; }
-  .cover h1 em { font-style: italic; color: var(--sand); }
-  .cover .sub { margin-top: 8mm; font: 300 10pt/1.5 var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--beige); }
-  .cover .rule { width: 28mm; height: 1px; background: var(--sand); margin-bottom: 8mm; }
-  .cover .foot { display: flex; justify-content: space-between; font: 400 7pt/1 var(--sans); letter-spacing: .24em; text-transform: uppercase; color: var(--sand); }
+  .cover .rule { width: 28mm; height: 1px; background: var(--sand); margin-bottom: 9mm; }
+  .cover h1 { font-size: 72pt; line-height: .95; letter-spacing: -.01em; }
+  .cover h1 em { color: var(--sand); }
+  .cover .sub { margin-top: 8mm; font: 400 11pt/1.4 var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--beige); }
+  .cover .tagline { font-family: var(--serif); font-style: italic; font-size: 19pt; line-height: 1.35; color: var(--beige); max-width: 175mm; }
 
-  /* Sobre */
-  .about { display: grid; grid-template-columns: 1fr 1.25fr; gap: 20mm; align-items: center; }
-  .about .big { font-family: var(--serif); font-size: 46pt; line-height: 1; font-weight: 300; }
-  .about .big em { color: var(--muted); }
-  .about p { font: 300 12pt/1.75 var(--sans); color: var(--ink); max-width: 120mm; }
-  .about .areas { margin-top: 10mm; display: flex; gap: 8mm; font: 500 7.5pt/1 var(--sans); letter-spacing: .24em; text-transform: uppercase; color: var(--brown); }
-  .about .areas span { border-top: 1px solid var(--sand); padding-top: 3mm; }
+  /* 2 · Quem sou */
+  .about { display: grid; grid-template-columns: 1fr 1.3fr; gap: 22mm; align-items: center; }
+  .about h2 { font-size: 58pt; line-height: 1; margin-top: 6mm; }
+  .about h2 em { color: var(--muted); }
+  .about p { font: 300 14pt/1.7 var(--sans); }
+  .about .areas { margin-top: 12mm; display: flex; gap: 8mm; font: 500 8.5pt/1 var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--brown); }
+  .about .areas span { border-top: 1px solid var(--sand); padding-top: 3.5mm; }
 
-  /* Índice */
-  .index { background: var(--beige); display: grid; grid-template-columns: 1fr 1.4fr; gap: 20mm; align-items: center; }
-  .index h2 { font-size: 46pt; line-height: 1; font-weight: 300; }
-  .index ol { list-style: none; }
-  .index li { display: grid; grid-template-columns: 16mm 1fr auto; align-items: baseline; padding: 5mm 0; border-bottom: 1px solid var(--sand); }
-  .index li:first-child { border-top: 1px solid var(--sand); }
-  .index .n { font: 400 8pt/1 var(--sans); letter-spacing: .2em; color: var(--muted); }
-  .index .t { font-family: var(--serif); font-size: 21pt; }
-  .index .k { font: 400 7pt/1 var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+  /* 3 · Serviços */
+  .services { background: var(--beige); display: grid; grid-template-columns: 82mm 1fr; gap: 18mm; }
+  .services h2 { font-size: 38pt; line-height: 1.05; margin-top: 6mm; }
+  .services .note { margin-top: 10mm; font: 300 10pt/1.55 var(--sans); color: var(--muted); max-width: 70mm; }
+  .services ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; column-gap: 12mm; align-content: center; }
+  .services li { display: grid; grid-template-columns: 11mm 1fr; padding: 6.5mm 0; border-top: 1px solid var(--sand); font: 400 12.5pt/1.4 var(--sans); }
+  .services li b { font: 400 9pt/1.9 var(--sans); letter-spacing: .14em; color: var(--muted); }
+  .services > div:first-child { display: flex; flex-direction: column; justify-content: center; }
 
-  /* Projetos */
-  .project { display: grid; grid-template-columns: 62mm 1fr; gap: 12mm; }
-  .project .meta { display: flex; flex-direction: column; justify-content: space-between; padding-bottom: 6mm; }
-  .project .num { font-family: var(--serif); font-size: 54pt; line-height: 1; font-weight: 300; color: var(--sand); }
-  .project h3 { font-size: 27pt; line-height: 1.05; margin-top: 4mm; }
-  .project .desc { font: 300 8.5pt/1.6 var(--sans); color: var(--ink); margin-top: 5mm; }
-  .project .meta .eyebrow { margin-bottom: 2mm; }
+  /* 4 · Processo */
+  .process h2 { font-size: 40pt; line-height: 1; margin-top: 5mm; }
+  .process ol { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 12mm; margin-top: 12mm; }
+  .process li { border-top: 1px solid var(--sand); padding: 6mm 0 9mm; }
+  .process .n { font-family: var(--serif); font-size: 30pt; line-height: 1; color: var(--sand); }
+  .process h3 { font-size: 20pt; line-height: 1.1; margin-top: 3mm; font-weight: 400; }
+  .process p { font: 300 11pt/1.5 var(--sans); margin-top: 2.5mm; color: #3a302a; }
 
-  .stage { display: flex; gap: 8mm; align-items: center; justify-content: center; height: 174mm; }
+  /* 5–8 · Cases */
+  .project { display: grid; grid-template-columns: 66mm 1fr; gap: 12mm; padding-bottom: 16mm; }
+  .project .meta { display: flex; flex-direction: column; justify-content: space-between; }
+  .project .num { font-family: var(--serif); font-size: 56pt; line-height: 1; color: var(--sand); }
+  .project h3 { font-size: 30pt; line-height: 1.05; margin-top: 4mm; }
+  .project .desc { font: 300 11pt/1.55 var(--sans); margin-top: 6mm; }
+  .stage { display: flex; gap: 8mm; align-items: center; justify-content: center; height: 100%; }
   .stage figure { display: flex; flex-direction: column; }
-  .stage img { display: block; height: var(--h, 150mm); width: auto; object-fit: contain; box-shadow: 0 1.5mm 5mm rgba(62,44,33,.14); }
-  .stage figcaption { font: 500 7.5pt/1 var(--sans); letter-spacing: .3em; text-transform: uppercase; color: var(--brown); margin-bottom: 3.5mm; }
+  .stage img { display: block; height: var(--h, 150mm); width: auto; box-shadow: 0 1.5mm 5mm rgba(62,44,33,.14); }
+  .stage figcaption { font: 500 9pt/1 var(--sans); letter-spacing: .3em; text-transform: uppercase; color: var(--brown); margin-bottom: 4mm; }
   .stage .before figcaption { color: var(--muted); }
+  .stage.single figure { width: 100%; align-items: center; }
+  .stage.single img { height: auto; width: 100%; max-height: 168mm; object-fit: contain; }
 
-  .stage.single img { height: auto; width: 100%; max-height: 166mm; }
-  .stage.single figure { width: 100%; height: auto; align-items: center; }
+  /* 9 · O que muda */
+  .change { background: var(--brown); color: var(--off); display: grid; grid-template-columns: 1fr 1.15fr; gap: 20mm; align-items: center; }
+  .change h2 { font-size: 46pt; line-height: 1.02; margin-top: 6mm; }
+  .change h2 em { color: var(--sand); }
+  .change ul { list-style: none; }
+  .change li { font-family: var(--serif); font-size: 21pt; line-height: 1.2; padding: 5mm 0; border-bottom: 1px solid rgba(205,184,156,.35); }
+  .change li:first-child { border-top: 1px solid rgba(205,184,156,.35); }
+  .change .close { margin-top: 9mm; font: 300 12pt/1.6 var(--sans); color: var(--beige); }
 
-  /* Contato */
-  .contact { background: var(--ink); color: var(--off); display: grid; grid-template-columns: 1.1fr 1fr; gap: 20mm; align-items: center; }
-  .contact .eyebrow { color: var(--sand); }
-  .contact h2 { font-size: 54pt; line-height: .98; font-weight: 300; margin-top: 6mm; }
+  /* 10 · Encerramento */
+  .contact { background: var(--ink); color: var(--off); display: grid; grid-template-columns: 1.15fr 1fr; gap: 20mm; align-items: center; }
+  .contact h2 { font-size: 40pt; line-height: 1.08; margin-top: 6mm; }
   .contact h2 em { color: var(--sand); }
-  .contact dl { display: grid; grid-template-columns: 30mm 1fr; row-gap: 0; }
-  .contact dt, .contact dd { padding: 5.5mm 0; border-bottom: 1px solid rgba(205,184,156,.35); }
-  .contact dt { font: 500 7pt/1.6 var(--sans); letter-spacing: .26em; text-transform: uppercase; color: var(--sand); }
-  .contact dd { font-family: var(--serif); font-size: 17pt; line-height: 1; }
-  .contact .folio { color: var(--sand); }
+  .contact p { margin-top: 8mm; font: 300 12pt/1.65 var(--sans); color: var(--beige); max-width: 125mm; }
+  .contact .name { font-family: var(--serif); font-size: 30pt; line-height: 1; margin-bottom: 8mm; }
+  .contact dl { display: grid; grid-template-columns: 30mm 1fr; }
+  .contact dt, .contact dd { padding: 5.5mm 0; border-top: 1px solid rgba(205,184,156,.35); }
+  .contact dt { font: 500 8pt/1.9 var(--sans); letter-spacing: .24em; text-transform: uppercase; color: var(--sand); }
+  .contact dd { font: 400 13pt/1.4 var(--sans); }
 </style>
 </head>
 <body>
 
 <!-- 1 · Capa -->
-<section class="page cover">
-  <div class="eyebrow">Portfólio · 2026</div>
+<section class="page cover dark">
+  <div class="eyebrow">Portfólio</div>
   <div>
     <div class="rule"></div>
-    <h1>[Nome<br><em>Profissional]</em></h1>
-    <div class="sub">Portfólio | Estratégia Digital, Design &amp; Conteúdo</div>
+    <h1>Victoria<br><em>Benevides</em></h1>
+    <div class="sub">Estratégia, Gestão Digital &amp; Conteúdo</div>
   </div>
-  <div class="foot"><span>Seleção de trabalhos</span><span>[@instagram]</span></div>
+  <p class="tagline">Uma presença digital bonita chama atenção.<br>Uma presença estratégica constrói valor.</p>
 </section>
 
-<!-- 2 · Sobre mim -->
+<!-- 2 · Quem sou -->
 <section class="page about">
   <div>
-    <div class="eyebrow">Sobre mim</div>
-    <div class="big" style="margin-top:6mm">Estética,<br>clareza &amp;<br><em>intenção.</em></div>
+    <div class="eyebrow">Quem sou</div>
+    <h2>Posicionamento,<br>planejamento<br>&amp; <em>criação.</em></h2>
   </div>
   <div>
-    <p>Sou estrategista digital, designer e criadora de conteúdo. Desenvolvo materiais e experiências de comunicação que unem estética, clareza e intenção estratégica. Meu trabalho passa pela construção de identidades visuais, conteúdos para redes sociais e narrativas que valorizam a essência de cada marca.</p>
+    <p>Sou Victoria Benevides, estrategista digital, designer e criadora de conteúdo. Trabalho unindo posicionamento, planejamento e criação para construir uma comunicação visual coerente com a essência e os objetivos de cada marca.</p>
     <div class="areas"><span>Estratégia digital</span><span>Design</span><span>Conteúdo</span></div>
   </div>
-  <div class="folio"><span>[Nome Profissional]</span><span>02</span></div>
+  <div class="folio"><span>Victoria Benevides</span><span>02</span></div>
 </section>
 
-<!-- 3 · Índice -->
-<section class="page index">
+<!-- 3 · O que você recebe -->
+<section class="page services">
   <div>
-    <div class="eyebrow">Seleção</div>
-    <h2 style="margin-top:6mm">Trabalhos</h2>
+    <div class="eyebrow">O que você recebe</div>
+    <h2>Uma gestão pensada do planejamento à <em>publicação.</em></h2>
+    <p class="note">Frentes de serviço com escopo ajustado à proposta contratada.</p>
   </div>
-  <ol>
-    <li><span class="n">01</span><span class="t">Lisi Del Ré</span><span class="k">Evolução de feed</span></li>
-    <li><span class="n">02</span><span class="t">Lívia Serpa</span><span class="k">Evolução de feed</span></li>
-    <li><span class="n">03</span><span class="t">Autocuidado</span><span class="k">Carrossel de conexão</span></li>
-    <li><span class="n">04</span><span class="t">Formação GV</span><span class="k">Carrossel</span></li>
-  </ol>
-  <div class="folio"><span>[Nome Profissional]</span><span>03</span></div>
+  <ul>
+    <li><b>01</b><span>Diagnóstico inicial do perfil e da comunicação</span></li>
+    <li><b>02</b><span>Direcionamento de posicionamento e identidade de conteúdo</span></li>
+    <li><b>03</b><span>Planejamento estratégico e calendário editorial</span></li>
+    <li><b>04</b><span>Criação de posts, carrosséis, roteiros e criativos</span></li>
+    <li><b>05</b><span>Organização das pautas e das publicações</span></li>
+    <li><b>06</b><span>Acompanhamento de desempenho e ajustes estratégicos</span></li>
+  </ul>
+  <div class="folio"><span>Victoria Benevides</span><span>03</span></div>
 </section>
 
-<!-- 4 · Lisi Del Ré -->
+<!-- 4 · Como funciona -->
+<section class="page process">
+  <div class="eyebrow">Como funciona</div>
+  <h2>Passo a <em>passo</em></h2>
+  <ol>
+    <li><div class="n">01</div><h3>Diagnóstico</h3><p>Entendimento do negócio, público e comunicação atual.</p></li>
+    <li><div class="n">02</div><h3>Direção estratégica</h3><p>Objetivos, posicionamento e linhas de conteúdo.</p></li>
+    <li><div class="n">03</div><h3>Planejamento</h3><p>Pautas, formatos e calendário editorial.</p></li>
+    <li><div class="n">04</div><h3>Criação</h3><p>Desenvolvimento das peças, textos e roteiros previstos.</p></li>
+    <li><div class="n">05</div><h3>Publicação</h3><p>Organização e execução conforme o escopo combinado.</p></li>
+    <li><div class="n">06</div><h3>Análise</h3><p>Leitura de indicadores e otimizações contínuas.</p></li>
+  </ol>
+  <div class="folio"><span>Victoria Benevides</span><span>04</span></div>
+</section>
+
+<!-- 5 · Lisi Del Ré -->
 <section class="page project">
   <div class="meta">
     <div>
-      <div class="num">01</div>
+      <div class="eyebrow">Case</div>
       <h3>Lisi Del Ré</h3>
-      <p class="desc">Evolução de uma comunicação mais heterogênea para um feed com maior unidade visual e linguagem editorial.</p>
+      <p class="desc">Evolução da apresentação visual do perfil, com maior unidade de cores, tipografia e linguagem editorial.</p>
     </div>
-    <div class="eyebrow">Evolução de feed</div>
+    <div class="num">05</div>
   </div>
-  <div class="stage" style="--h:130mm">
+  <div class="stage" style="--h:126mm">
     <figure class="before"><figcaption>Antes</figcaption><img src="img/lisi-antes.jpg" alt="Feed Lisi Del Ré — antes"></figure>
     <figure><figcaption>Depois</figcaption><img src="img/lisi-depois.jpg" alt="Feed Lisi Del Ré — depois"></figure>
   </div>
 </section>
 
-<!-- 5 · Lívia Serpa -->
+<!-- 6 · Lívia Serpa -->
 <section class="page project">
   <div class="meta">
     <div>
-      <div class="num">02</div>
+      <div class="eyebrow">Case</div>
       <h3>Lívia Serpa</h3>
-      <p class="desc">Marca pessoal mais consistente, com imagens profissionais, tipografia e paleta harmonizadas.</p>
+      <p class="desc">Reposicionamento da apresentação visual, com maior consistência gráfica e valorização da imagem profissional.</p>
     </div>
-    <div class="eyebrow">Evolução de feed</div>
+    <div class="num">06</div>
   </div>
-  <div class="stage" style="--h:154mm">
+  <div class="stage" style="--h:148mm">
     <figure class="before"><figcaption>Antes</figcaption><img src="img/livia-antes.jpg" alt="Feed Lívia Serpa — antes"></figure>
     <figure><figcaption>Depois</figcaption><img src="img/livia-depois.jpg" alt="Feed Lívia Serpa — depois"></figure>
   </div>
 </section>
 
-<!-- 6 · Autocuidado -->
+<!-- 7 · Carrossel de conexão -->
 <section class="page project">
   <div class="meta">
     <div>
-      <div class="num">03</div>
-      <h3>Autocuidado</h3>
-      <p class="desc">Carrossel de conexão: narrativa visual e direção criativa sobre autocuidado.</p>
+      <div class="eyebrow">Carrossel</div>
+      <h3>Carrossel de conexão</h3>
+      <p class="desc">Design editorial e narrativa emocional com fotografias reais e mensagem centrada na experiência de autocuidado.</p>
     </div>
-    <div class="eyebrow">Carrossel</div>
+    <div class="num">07</div>
   </div>
   <div class="stage single">
     <figure><img src="img/carrossel-autocuidado.jpg" alt="Carrossel de conexão sobre autocuidado"></figure>
   </div>
 </section>
 
-<!-- 7 · Formação GV -->
+<!-- 8 · Formação GV -->
 <section class="page project">
   <div class="meta">
     <div>
-      <div class="num">04</div>
+      <div class="eyebrow">Carrossel</div>
       <h3>Formação GV</h3>
-      <p class="desc">Carrossel com storytelling comercial: narrativa visual e direção criativa.</p>
+      <p class="desc">Storytelling comercial: da história da especialista à proposta de valor de uma formação profissional em maquiagem.</p>
     </div>
-    <div class="eyebrow">Carrossel</div>
+    <div class="num">08</div>
   </div>
   <div class="stage single">
     <figure><img src="img/carrossel-formacao-gv.jpg" alt="Carrossel da Formação GV"></figure>
   </div>
 </section>
 
-<!-- 8 · Contato -->
-<section class="page contact">
+<!-- 9 · O que muda -->
+<section class="page change dark">
   <div>
-    <div class="eyebrow">Contato</div>
-    <h2>Vamos criar<br><em>juntos?</em></h2>
+    <div class="eyebrow">O que muda com uma gestão estratégica</div>
+    <h2>De publicações isoladas a uma presença com <em>direção.</em></h2>
   </div>
-  <dl>
-    <dt>Nome</dt><dd>[Nome Profissional]</dd>
-    <dt>Instagram</dt><dd>[@instagram]</dd>
-    <dt>WhatsApp</dt><dd>[+55 00 00000-0000]</dd>
-    <dt>E-mail</dt><dd>[email@dominio.com]</dd>
-  </dl>
-  <div class="folio"><span>Portfólio | Estratégia Digital, Design &amp; Conteúdo</span><span>08</span></div>
+  <div>
+    <ul>
+      <li>Mais clareza de posicionamento</li>
+      <li>Comunicação visual consistente</li>
+      <li>Conteúdos conectados ao público</li>
+      <li>Planejamento com objetivos definidos</li>
+    </ul>
+  </div>
+  <div class="folio"><span>Victoria Benevides</span><span>09</span></div>
+</section>
+
+<!-- 10 · Encerramento -->
+<section class="page contact dark">
+  <div>
+    <div class="eyebrow">Convite</div>
+    <h2>Você recebeu uma análise estratégica gratuita por indicação da <em>Lívia.</em></h2>
+    <p>Vamos olhar para o seu perfil, identificar oportunidades de melhoria e conversar sobre os próximos passos para fortalecer sua comunicação digital.</p>
+  </div>
+  <div>
+    <div class="name">Victoria Benevides</div>
+    <dl>
+      <dt>WhatsApp</dt><dd>(21) 97580-3416</dd>
+      <dt>E-mail</dt><dd>victoriabenevidessm@gmail.com</dd>
+    </dl>
+  </div>
+  <div class="folio"><span>Estratégia, Gestão Digital &amp; Conteúdo</span><span>10</span></div>
 </section>
 
 </body>
