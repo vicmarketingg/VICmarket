@@ -7,19 +7,13 @@
 <title>Editorial Lívia Serpa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <div class="app">
   <aside class="sidebar" aria-label="Navegação principal">
-    <div class="brand">
-      <button class="logo-slot" data-action="upload" data-target="logo" title="Anexar o logotipo original LS / Lívia Serpa" id="logoSlot"></button>
-      <div class="brand-text">
-        <span class="brand-name">Lívia Serpa</span>
-        <span class="brand-sub">Painel editorial · Reels</span>
-      </div>
-    </div>
+    <a class="brand" id="brandSide" href="#/overview" style="text-decoration:none"></a>
     <nav class="nav" id="sideNav"></nav>
     <div class="side-tools">
       <p class="side-label">Exportar</p>
@@ -27,13 +21,13 @@
       <button class="link-btn" data-action="export-csv">Cronograma (.csv)</button>
       <button class="link-btn" data-action="export-json">Backup completo (.json)</button>
       <button class="link-btn" data-action="import-json">Importar backup</button>
+      <button class="link-btn" data-action="upload" data-target="logo" id="logoAction">Adicionar logotipo</button>
       <p class="storage-note" id="storageNote"></p>
     </div>
   </aside>
 
   <header class="topbar">
-    <button class="logo-slot small" data-action="upload" data-target="logo" title="Anexar logotipo" id="logoSlotTop"></button>
-    <div class="topbar-title"><span class="brand-name">Lívia Serpa</span><span class="brand-sub">Painel editorial</span></div>
+    <a class="brand" id="brandTop" href="#/overview" style="text-decoration:none"></a>
   </header>
 
   <main class="main" id="view" tabindex="-1"></main>

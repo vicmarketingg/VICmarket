@@ -193,38 +193,60 @@
   /* ---------------- Ilustração de composição (não é foto) ---------------- */
   function illo(key) {
     const s = D.styles[key];
-    const t = { A: 'translate(90 198) scale(1.18)', B: 'translate(96 210) scale(1.3) rotate(-5)', C: 'translate(90 226) scale(1.65)', D: 'translate(90 186) scale(.92)' }[key];
-    const skin = '#D7AA8E', hair = '#2F1F17', o = s.outfitHex;
-    const neckline = s.blazer
-      ? `<path d="M-15 0 L0 50 L15 0Z" fill="#FBFAF7"/><path d="M-16 0 L-3 56 L-24 32Z M16 0 L3 56 L24 32Z" fill="rgba(0,0,0,.14)"/>`
-      : `<path d="M-10 0 L0 15 L10 0Z" fill="${skin}"/><path d="M-11 0 L0 16 L11 0" stroke="rgba(0,0,0,.12)" stroke-width="1.5" fill="none"/><path d="M0 18v150" stroke="rgba(0,0,0,.07)" stroke-width="1.5"/>`;
+    const c = {
+      A: { t: 'translate(90 112) scale(1)', label: 'Plano médio · em pé' },
+      B: { t: 'translate(94 118) scale(1.1) rotate(-4)', label: 'Meio-close · sentada' },
+      C: { t: 'translate(90 116) scale(1.42)', label: 'Close · do peito para cima' },
+      D: { t: 'translate(90 108) scale(.8)', label: 'Plano aberto · gestos livres' }
+    }[key];
+    const o = s.outfitHex;
+    const dark = key === 'C';
+    const shade = dark ? 'rgba(0,0,0,.28)' : 'rgba(60,40,30,.10)';
+    const garment = s.blazer
+      ? `<path d="M-11 38 L0 74 L11 38Z" fill="#F8F6F2"/>
+         <path d="M-13 37 L-2 84 L-28 58 L-21 44Z" fill="${shade}"/><path d="M13 37 L2 84 L28 58 L21 44Z" fill="${shade}"/>
+         <circle cx="0" cy="118" r="2.2" fill="${dark ? '#0B1626' : 'rgba(60,40,30,.25)'}"/>`
+      : `<path d="M-9 38 L0 56 L9 38Z" fill="url(#sk-${key})"/>
+         <path d="M-12 36 L-1 58 L-17 50Z M12 36 L1 58 L17 50Z" fill="${shade}"/>
+         <path d="M0 60 V250" stroke="${shade}" stroke-width="1"/>`;
     const arms = key === 'D'
-      ? `<path d="M-50 34 Q-64 92 -30 100 L-22 88 Q-42 80 -36 50Z" fill="${o}" stroke="rgba(0,0,0,.1)"/><ellipse cx="-22" cy="88" rx="8" ry="7" fill="${skin}"/>
-         <path d="M50 34 Q68 80 40 82 L33 72 Q48 66 40 50Z" fill="${o}" stroke="rgba(0,0,0,.1)"/><ellipse cx="33" cy="72" rx="8" ry="7" fill="${skin}"/>`
+      ? `<path d="M-60 66 C-70 110 -64 140 -40 136 L-12 116 L-20 104 L-42 118 C-48 104 -50 86 -48 70Z" fill="${o}" stroke="${shade}"/>
+         <ellipse cx="-13" cy="110" rx="8" ry="6.5" fill="url(#sk-${key})"/>
+         <path d="M60 66 C72 106 70 128 48 128 L22 124 L24 112 L44 114 C50 100 50 84 48 70Z" fill="${o}" stroke="${shade}"/>
+         <ellipse cx="22" cy="118" rx="8" ry="6.5" fill="url(#sk-${key})"/>`
       : '';
-    const chair = key === 'B' ? '<rect x="44" y="196" width="96" height="140" rx="18" fill="#3B271C" opacity=".45"/>' : '';
-    return `<svg viewBox="0 0 180 320" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Ilustração de composição do estilo ${esc(s.name)} — não é foto da Lívia">
+    const chair = key === 'B' ? '<path d="M28 196 Q30 168 62 166 L150 166 Q176 168 178 196 L178 320 L28 320Z" fill="#2A1A12" opacity=".35"/>' : '';
+    return `<svg viewBox="0 0 180 320" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Ilustração de composição do estilo ${esc(s.name)}, não é foto da Lívia">
       <defs>
-        <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7B5540"/><stop offset="1" stop-color="#5B3D2C"/></linearGradient>
-        <radialGradient id="glow" cx=".5" cy=".38" r=".62"><stop offset="0" stop-color="#fff" stop-opacity=".2"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+        <linearGradient id="wl-${key}" x1="0" y1="0" x2=".4" y2="1"><stop offset="0" stop-color="#7A5440"/><stop offset="1" stop-color="#4A3022"/></linearGradient>
+        <radialGradient id="lt-${key}" cx=".42" cy=".3" r=".7"><stop offset="0" stop-color="#FFE9DA" stop-opacity=".28"/><stop offset="1" stop-color="#FFE9DA" stop-opacity="0"/></radialGradient>
+        <linearGradient id="hr-${key}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B271C"/><stop offset="1" stop-color="#21140D"/></linearGradient>
+        <radialGradient id="sk-${key}" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="#E8C2A8"/><stop offset="1" stop-color="#C79479"/></radialGradient>
+        <linearGradient id="ot-${key}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${o}"/><stop offset="1" stop-color="${o}" stop-opacity="${dark ? '1' : '.88'}"/></linearGradient>
+        <filter id="bl-${key}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
       </defs>
-      <rect width="180" height="320" fill="url(#wall)"/><rect width="180" height="320" fill="url(#glow)"/>
+      <rect width="180" height="320" fill="url(#wl-${key})"/>
+      <rect width="180" height="320" fill="url(#lt-${key})"/>
       ${chair}
-      <g transform="${t}">
-        <ellipse cx="0" cy="-46" rx="25" ry="28" fill="${hair}"/>
-        <path d="M-25 -48 Q-30 -8 -31 10 L31 10 Q30 -8 25 -48Z" fill="${hair}"/>
-        <rect x="-8" y="-24" width="16" height="28" rx="6" fill="${skin}"/>
-        <path d="M-15 0 Q-48 4 -58 26 L-64 220 L64 220 L58 26 Q48 4 15 0Z" fill="${o}" stroke="rgba(0,0,0,.08)"/>
-        ${neckline}
-        <ellipse cx="0" cy="-42" rx="19" ry="23" fill="${skin}"/>
-        <path d="M-21 -42 Q-20 -72 1 -70 Q23 -70 21 -41 Q14 -59 -1 -60 Q-15 -57 -21 -42Z" fill="${hair}"/>
+      <g transform="${c.t}">
+        <ellipse cx="12" cy="120" rx="70" ry="120" fill="#160C07" opacity=".35" filter="url(#bl-${key})"/>
+        <path d="M-27 -2 C-31 -34 -14 -47 0 -47 C14 -47 31 -34 27 -2 C31 16 36 34 33 52 C20 58 -20 58 -33 52 C-36 34 -31 16 -27 -2Z" fill="url(#hr-${key})" stroke="#F3D9C8" stroke-opacity=".28" stroke-width=".8"/>
+        <path d="M-8 12 L-8 34 C-4 40 4 40 8 34 L8 12Z" fill="url(#sk-${key})"/>
+        <path d="M-19 32 C-48 36 -64 48 -70 74 L-78 260 L78 260 L70 74 C64 48 48 36 19 32 C10 39 -10 39 -19 32Z" fill="url(#ot-${key})"/>
+        ${garment}
+        <ellipse cx="0" cy="-2" rx="16.5" ry="20.5" fill="url(#sk-${key})"/>
+        <path d="M-19 4 C-23 -26 -6 -27 0 -25 C12 -28 24 -20 20 6 C17 -10 9 -15 -2 -13 C-10 -11 -16 -5 -19 4Z" fill="url(#hr-${key})"/>
         ${arms}
       </g>
-      <g font-family="Inter, sans-serif" font-size="7" fill="#fff" fill-opacity=".75">
-        <rect width="180" height="34" fill="#fff" fill-opacity=".07"/><line x1="0" y1="34" x2="180" y2="34" stroke="#fff" stroke-opacity=".45" stroke-dasharray="3 3"/>
-        <text x="8" y="22">área de título</text>
-        <rect y="278" width="180" height="42" fill="#fff" fill-opacity=".07"/><line x1="0" y1="278" x2="180" y2="278" stroke="#fff" stroke-opacity=".45" stroke-dasharray="3 3"/>
-        <text x="8" y="292">área de legendas</text>
+      <g fill="none" stroke="#FFFFFF" stroke-opacity=".75" stroke-width="1.2">
+        <path d="M12 26 V14 H24 M156 14 H168 V26 M168 294 V306 H156 M24 306 H12 V294"/>
+      </g>
+      <g stroke="#FFFFFF" stroke-opacity=".12" stroke-width=".6">
+        <path d="M60 0 V320 M120 0 V320 M0 106.7 H180 M0 213.3 H180"/>
+      </g>
+      <g font-family="Jost, sans-serif" fill="#FFFFFF" letter-spacing="1.2">
+        <circle cx="21" cy="40" r="2" fill="#E05A5A"/><text x="27" y="42.5" font-size="6.5" fill-opacity=".85">REC · 9:16</text>
+        <text x="90" y="296" font-size="6.3" text-anchor="middle" fill-opacity=".9">${esc(c.label.toUpperCase())}</text>
       </g>
     </svg>`;
   }
@@ -288,8 +310,13 @@
     const moreActive = ['my', 'guide', 'production', 'results'].includes(act);
     $('#bottomNav').innerHTML = bottom.map((n) => `<a href="#/${n.r}" class="${act === n.r ? 'active' : ''}">${icon(n.icon)}<span>${n.label}</span></a>`).join('') +
       `<button data-action="open-sheet" class="${moreActive ? 'active' : ''}">${icon('more')}<span>Mais</span></button>`;
-    const logoImg = images.logo ? `<img src="${images.logo}" alt="Logotipo Lívia Serpa">` : '';
-    [['#logoSlot', 'Logotipo<br>LS'], ['#logoSlotTop', 'LS']].forEach(([sel, ph]) => { const el = $(sel); el.innerHTML = logoImg || ph; el.classList.toggle('has-img', Boolean(images.logo)); });
+    const logo = images.logo || D.brand.logo;
+    const mark = logo
+      ? `<img class="brand-logo" src="${logo}" alt="Lívia Serpa">`
+      : '<span class="brand-name">Lívia <em>Serpa</em></span>';
+    $('#brandSide').innerHTML = `${mark}<span class="brand-sub">Painel editorial · Reels</span>`;
+    $('#brandTop').innerHTML = `${mark}<span class="brand-sub">Painel editorial</span>`;
+    $('#logoAction').textContent = images.logo ? 'Trocar logotipo' : 'Adicionar logotipo';
     $('#storageNote').innerHTML = storageOk
       ? 'Os dados ficam salvos <b>neste navegador</b>. Não há sincronização entre dispositivos: use “Backup completo” e “Importar backup” para transferir.'
       : '<b>Armazenamento indisponível</b> neste navegador (modo privado?). As alterações serão perdidas ao fechar — exporte um backup.';
@@ -307,6 +334,7 @@
       <button class="sheet-link" data-action="export-csv">${icon('download')} Cronograma (.csv)</button>
       <button class="sheet-link" data-action="export-json">${icon('download')} Backup completo (.json)</button>
       <button class="sheet-link" data-action="import-json">${icon('upload')} Importar backup</button>
+      <button class="sheet-link" data-action="upload" data-target="logo">${icon('image')} ${images.logo ? 'Trocar logotipo' : 'Adicionar logotipo'}</button>
       <p class="muted small" style="margin:14px 4px 0">Dados salvos apenas neste aparelho. Para usar em outro dispositivo, exporte o backup e importe lá.</p>
     </div>`;
     sheet.hidden = false;
@@ -357,14 +385,14 @@
       <section class="hero">
         <div>
           <p class="eyebrow">Campanha de Reels · Instagram</p>
-          <h1>15 Reels, 5 semanas, um único cenário.</h1>
-          <p>${fmtDate(D.campaign.start)} a ${fmtDate(D.campaign.end)} · segunda, quarta e sexta · 9:16 · 40–60 s por vídeo.</p>
-          <div style="margin-top:20px"><div class="progress" style="background:rgba(255,255,255,.12)"><span style="width:${progress}%"></span></div>
-          <p class="small" style="margin-top:8px">Progresso geral da produção: <b style="color:#fff">${progress}%</b> · checklists: ${checkPct}% concluídos</p></div>
+          <h1>Quinze Reels.<br><em>Um único cenário.</em></h1>
+          <p>${fmtDate(D.campaign.start)} a ${fmtDate(D.campaign.end)} · segunda, quarta e sexta · 9:16 · 40–60 s por vídeo</p>
+          <div class="hero-progress"><div class="progress"><span style="width:${progress}%"></span></div>
+          <p class="small" style="margin-top:10px">Produção <b style="color:#fff;font-weight:500">${progress}%</b> · checklists ${checkPct}%</p></div>
         </div>
-        ${np ? `<a class="hero-next" href="#/reel/${np.id}"><span class="label">Próxima publicação</span><h3>${pad(np.id)} · ${esc(np.title)}</h3>
-          <div class="meta">${np.weekday}, ${fmtDate(np.date)} · Estilo ${np.style} — ${D.styles[np.style].name}</div>
-          <div style="margin-top:10px">${statusPill(rs(np.id).status)}</div></a>`
+        ${np ? `<a class="hero-next" href="#/reel/${np.id}"><div class="hero-day"><b>${np.date.slice(8)}</b><span>${parseISO(np.date).toLocaleDateString('pt-BR', { month: 'short' }).replace('.', '')} · ${np.weekday.slice(0, 3)}</span></div>
+          <div><span class="label">Próxima publicação · Reels ${pad(np.id)}</span><h3>${esc(np.title)}</h3>
+          <div class="meta">Estilo ${np.style} · ${D.styles[np.style].name}</div></div></a>`
         : '<div class="hero-next"><span class="label">Campanha concluída</span><h3>Todos os Reels publicados</h3></div>'}
       </section>
 
@@ -476,7 +504,7 @@
   function reelCard(r) {
     const st = rs(r.id);
     return `<article class="card reel-card" data-href="#/reel/${r.id}">
-      <button class="thumb" data-action="style-modal" data-style="${r.style}" data-id="${r.id}" aria-label="Ver instruções do estilo ${esc(D.styles[r.style].name)}">${stylePhoto(r.style)}<span class="thumb-badge">${pad(r.id)}</span><span class="thumb-style">Estilo ${r.style} · ${esc(D.styles[r.style].name)}</span></button>
+      <button class="thumb" data-action="style-modal" data-style="${r.style}" data-id="${r.id}" aria-label="Ver instruções do estilo ${esc(D.styles[r.style].name)}"><span class="thumb-badge">${pad(r.id)}</span><span class="phone">${stylePhoto(r.style)}</span><span class="thumb-style">Estilo ${r.style}<br>${esc(D.styles[r.style].name)}</span></button>
       <div class="body">
         <span class="pub-date">${r.weekday}, ${fmtDate(r.date)} · Semana ${r.week}</span>
         <h3>${esc(r.title)}</h3>

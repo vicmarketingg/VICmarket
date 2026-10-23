@@ -2,6 +2,9 @@
  * Os roteiros abaixo estão armazenados integralmente, sem resumo nem reescrita.
  * Para atualizar conteúdos no futuro, edite este arquivo (ou use "Editar roteiro" no painel). */
 window.LS_DATA = {
+  // Logotipo original da Lívia (caminho ou data URI). Vazio = o nome aparece em tipografia.
+  brand: { logo: '' },
+
   campaign: {
     client: 'Dra. Lívia Serpa',
     platform: 'Instagram',
