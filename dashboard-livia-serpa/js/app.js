@@ -849,11 +849,40 @@
     toast(ok ? msg : 'Não foi possível copiar automaticamente. Selecione o texto e copie manualmente.');
   }
   function download(name, content, type) {
-    const blob = new Blob([content], { type });
+    const blob = new Blob([type.startsWith('text/csv') ? '\uFEFF' + content : content], { type });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob); a.download = name;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+  // Exportação em janela: copiar funciona em qualquer lugar; baixar só fora do visualizador de Artifacts (LS_EMBED).
+  function offerExport(title, name, content, type) {
+    ui.exportPayload = { name, content, type };
+    const m = $('#modal');
+    m.innerHTML = `<div class="modal" role="dialog" aria-modal="true" aria-label="${esc(title)}">
+      <div class="modal-head"><div><p class="eyebrow" style="margin:0">Exportar</p><h2>${esc(title)}</h2></div><button class="icon-btn" data-action="close-modal" aria-label="Fechar">${icon('x')}</button></div>
+      <textarea class="input" id="exportText" readonly style="min-height:260px;font-size:13px;font-family:ui-monospace,Menlo,monospace">${esc(content)}</textarea>
+      <div class="btn-row" style="margin-top:14px"><button class="btn primary" data-action="export-copy">${icon('copy')} Copiar conteúdo</button>${window.LS_EMBED ? '' : `<button class="btn" data-action="export-download">${icon('download')} Baixar ${esc(name)}</button>`}</div>
+      ${window.LS_EMBED ? '<p class="small muted" style="margin:10px 0 0">Copie e cole em um documento, planilha ou arquivo de texto.</p>' : ''}
+    </div>`;
+    m.hidden = false;
+  }
+  function askConfirm(title, message, yesLabel, onYes) {
+    ui.confirmFn = onYes;
+    const m = $('#modal');
+    m.innerHTML = `<div class="modal" role="alertdialog" aria-modal="true" aria-label="${esc(title)}" style="max-width:460px">
+      <h2 style="margin-bottom:10px">${esc(title)}</h2><p class="muted" style="margin:0 0 18px">${esc(message)}</p>
+      <div class="btn-row"><button class="btn primary" data-action="confirm-yes">${esc(yesLabel)}</button><button class="btn" data-action="close-modal">Cancelar</button></div></div>`;
+    m.hidden = false;
+  }
+  function openImport() {
+    const m = $('#modal');
+    m.innerHTML = `<div class="modal" role="dialog" aria-modal="true" aria-label="Importar backup">
+      <div class="modal-head"><div><p class="eyebrow" style="margin:0">Backup</p><h2>Importar backup</h2></div><button class="icon-btn" data-action="close-modal" aria-label="Fechar">${icon('x')}</button></div>
+      <p class="muted" style="margin-top:0">Cole o conteúdo de um backup exportado por este painel ou escolha o arquivo .json.</p>
+      <textarea class="input" id="importText" placeholder='{"app": "painel-livia-serpa", …}' style="min-height:180px;font-size:13px;font-family:ui-monospace,Menlo,monospace"></textarea>
+      <div class="btn-row" style="margin-top:14px"><button class="btn primary" data-action="import-text">Importar texto colado</button><button class="btn" data-action="import-file">${icon('upload')} Escolher arquivo</button></div></div>`;
+    m.hidden = false;
   }
   function exportMarkdown() {
     const lines = [`# Campanha de Reels — ${D.campaign.client}`, '', `${fmtDate(D.campaign.start)} a ${fmtDate(D.campaign.end)} · ${D.campaign.frequency}`, `Exportado em ${new Date().toLocaleString('pt-BR')}`, ''];
@@ -871,7 +900,7 @@
       if (st.fileLink) lines.push(`**Arquivo gravado:** ${st.fileLink}`, '');
       if (st.pubLink) lines.push(`**Publicação:** ${st.pubLink}`, '');
     });
-    download('roteiros-livia-serpa.md', lines.join('\n'), 'text/markdown;charset=utf-8');
+    offerExport('Roteiros completos (Markdown)', 'roteiros-livia-serpa.md', lines.join('\n'), 'text/markdown;charset=utf-8');
   }
   function exportCSV() {
     const q = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
@@ -881,28 +910,31 @@
       return [pad(r.id), fmtDate(r.date), r.weekday, r.title, r.theme, r.pillar, r.objective, `${r.style} — ${D.styles[r.style].name}`, r.outfit, statusInfo(st.status).label, r.cta, r.screenText,
         `${checklistDone(r.id)}/${D.checklist.length}`, st.realDuration, st.fileLink, st.pubLink, ...D.metrics.map((m) => st.metrics[m.key] ?? '')];
     });
-    download('cronograma-livia-serpa.csv', '﻿' + [head, ...rows].map((row) => row.map(q).join(';')).join('\r\n'), 'text/csv;charset=utf-8');
+    offerExport('Cronograma (CSV)', 'cronograma-livia-serpa.csv', [head, ...rows].map((row) => row.map(q).join(';')).join('\r\n'), 'text/csv;charset=utf-8');
   }
   function exportJSON() {
-    download(`backup-painel-livia-serpa-${todayISO()}.json`, JSON.stringify({ app: 'painel-livia-serpa', exportedAt: new Date().toISOString(), state, images }, null, 2), 'application/json');
+    offerExport('Backup completo (JSON)', `backup-painel-livia-serpa-${todayISO()}.json`, JSON.stringify({ app: 'painel-livia-serpa', exportedAt: new Date().toISOString(), state, images }, null, 2), 'application/json');
   }
   function importJSON(file) {
     const fr = new FileReader();
-    fr.onload = () => {
-      try {
-        const data = JSON.parse(fr.result);
-        if (!data.state || !data.state.reels) throw new Error('formato');
-        if (!confirm('Importar este backup vai substituir os dados salvos neste navegador. Continuar?')) return;
-        const fresh = mergeState(defaultState(), data.state);
-        Object.keys(state).forEach((k) => delete state[k]);
-        Object.assign(state, fresh);
-        save();
-        if (data.images && typeof data.images === 'object') { images = data.images; saveImages(); }
-        toast('Backup importado');
-        render(true);
-      } catch (e) { toast('Arquivo inválido. Use um backup exportado por este painel.'); }
-    };
+    fr.onload = () => applyBackup(fr.result);
     fr.readAsText(file);
+  }
+  function applyBackup(text) {
+    let data;
+    try {
+      data = JSON.parse(text);
+      if (!data.state || !data.state.reels) throw new Error('formato');
+    } catch (e) { toast('Conteúdo inválido. Use um backup exportado por este painel.'); return; }
+    askConfirm('Importar backup?', 'Os dados salvos neste navegador serão substituídos pelos do backup.', 'Importar e substituir', () => {
+      const fresh = mergeState(defaultState(), data.state);
+      Object.keys(state).forEach((k) => delete state[k]);
+      Object.assign(state, fresh);
+      save();
+      if (data.images && typeof data.images === 'object') { images = data.images; saveImages(); }
+      toast('Backup importado');
+      render(true);
+    });
   }
   function readImage(file, max, type) {
     return new Promise((resolve, reject) => {
@@ -1000,8 +1032,13 @@
           delete ui.editing[id]; save(); toast('Roteiro salvo'); render(true); break;
         }
         case 'restore-script':
-          if (confirm('Restaurar o roteiro original? A edição será descartada.')) { rs(id).scriptOverride = null; delete ui.editing[id]; save(); toast('Roteiro original restaurado'); render(true); }
+          askConfirm('Restaurar o roteiro original?', 'A edição feita pela equipe será descartada.', 'Restaurar original', () => { rs(id).scriptOverride = null; delete ui.editing[id]; save(); toast('Roteiro original restaurado'); render(true); });
           break;
+        case 'confirm-yes': { const fn = ui.confirmFn; ui.confirmFn = null; closeModal(); if (fn) fn(); break; }
+        case 'export-copy': copyText(ui.exportPayload.content, 'Conteúdo copiado'); break;
+        case 'export-download': download(ui.exportPayload.name, ui.exportPayload.content, ui.exportPayload.type); break;
+        case 'import-text': { const t = $('#importText').value.trim(); if (!t) { toast('Cole o conteúdo do backup primeiro.'); break; } applyBackup(t); break; }
+        case 'import-file': closeModal(); $('#fileJson').value = ''; $('#fileJson').click(); break;
         case 'font': state.prefs.readSize = Math.min(44, Math.max(18, (state.prefs.readSize || 26) + Number(a.dataset.delta))); save(); $('#reader .script').style.fontSize = state.prefs.readSize + 'px'; break;
         case 'close-reader': if (ui.navDepth > 1) history.back(); else location.hash = `#/reel/${id}`; break;
         case 'upload': ui.uploadTarget = a.dataset.target; $('#fileImage').value = ''; $('#fileImage').click(); break;
@@ -1009,7 +1046,7 @@
         case 'export-md': closeSheet(); exportMarkdown(); break;
         case 'export-csv': closeSheet(); exportCSV(); break;
         case 'export-json': closeSheet(); exportJSON(); break;
-        case 'import-json': closeSheet(); $('#fileJson').value = ''; $('#fileJson').click(); break;
+        case 'import-json': closeSheet(); openImport(); break;
       }
       return;
     }
