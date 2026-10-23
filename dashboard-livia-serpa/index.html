@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#172B45">
+<title>Editorial Lívia Serpa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" aria-label="Navegação principal">
+    <div class="brand">
+      <button class="logo-slot" data-action="upload" data-target="logo" title="Anexar o logotipo original LS / Lívia Serpa" id="logoSlot"></button>
+      <div class="brand-text">
+        <span class="brand-name">Lívia Serpa</span>
+        <span class="brand-sub">Painel editorial · Reels</span>
+      </div>
+    </div>
+    <nav class="nav" id="sideNav"></nav>
+    <div class="side-tools">
+      <p class="side-label">Exportar</p>
+      <button class="link-btn" data-action="export-md">Roteiros (.md)</button>
+      <button class="link-btn" data-action="export-csv">Cronograma (.csv)</button>
+      <button class="link-btn" data-action="export-json">Backup completo (.json)</button>
+      <button class="link-btn" data-action="import-json">Importar backup</button>
+      <p class="storage-note" id="storageNote"></p>
+    </div>
+  </aside>
+
+  <header class="topbar">
+    <button class="logo-slot small" data-action="upload" data-target="logo" title="Anexar logotipo" id="logoSlotTop"></button>
+    <div class="topbar-title"><span class="brand-name">Lívia Serpa</span><span class="brand-sub">Painel editorial</span></div>
+  </header>
+
+  <main class="main" id="view" tabindex="-1"></main>
+
+  <nav class="bottom-nav" id="bottomNav" aria-label="Navegação"></nav>
+</div>
+
+<div class="sheet-backdrop" id="sheet" hidden></div>
+<div class="modal-backdrop" id="modal" hidden></div>
+<div class="reader" id="reader" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<input type="file" id="fileImage" accept="image/*" hidden>
+<input type="file" id="fileJson" accept="application/json,.json" hidden>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
