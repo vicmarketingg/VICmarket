@@ -79,14 +79,117 @@
   const state = load();
   let images = loadImages();
 
-  function save() {
+  /* Banco compartilhado (capacidade `db` do Artifact). Sem ele, o painel funciona só com o localStorage. */
+  // base = última versão vista no banco, por documento; serve para gravar só os campos alterados.
+  const remote = { db: null, ready: false, readOnly: false, base: {}, synced: {}, queue: {}, warned: false };
+  const clone = (v) => JSON.parse(JSON.stringify(v));
+  const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+  const reelPath = (id) => `reels/r${pad(id)}`;
+  function remoteError(err) {
+    const code = err && err.code;
+    if (code === 'invalid_argument' && !remote.readOnly) { remote.readOnly = true; toast('Seu acesso a este painel é só de leitura: as alterações não são salvas para os outros.'); renderNav(route()); return; }
+    if (code === 'quota_exceeded') { toast('O armazenamento do painel está cheio. Remova fotos anexadas para liberar espaço.'); return; }
+    if (!remote.warned) { remote.warned = true; toast('Não foi possível sincronizar agora. As alterações continuam salvas neste aparelho.'); }
+  }
+  function writeRemote(path, body, verb) {
+    const prev = remote.queue[path] || Promise.resolve();
+    remote.queue[path] = prev.then(() => remote.db.doc(path)[verb](body)).catch(remoteError);
+  }
+  function pushDoc(path, local) {
+    const base = remote.base[path];
+    if (!base) { remote.base[path] = clone(local); writeRemote(path, clone(local), 'set'); return; }
+    const diff = {};
+    Object.keys(local).forEach((k) => { if (!same(local[k], base[k])) diff[k] = clone(local[k]); });
+    if (!Object.keys(diff).length) return;
+    Object.assign(base, clone(diff));
+    writeRemote(path, diff, 'update');
+  }
+  function pushRemote() {
+    if (!remote.ready || remote.readOnly) return;
+    Object.keys(state.reels).forEach((id) => pushDoc(reelPath(id), state.reels[id]));
+    pushDoc('shared/sessions', state.sessions);
+  }
+  // Junta o que veio do banco com o que esta pessoa alterou e ainda não foi gravado.
+  function applyRemote(path, body, local) {
+    const base = remote.base[path] || {};
+    const out = {};
+    new Set([...Object.keys(body), ...Object.keys(local)]).forEach((k) => {
+      const dirty = remote.base[path] && k in local && !same(local[k], base[k]);
+      out[k] = dirty ? local[k] : (k in body ? body[k] : local[k]);
+    });
+    remote.base[path] = clone(body);
+    return out;
+  }
+  function pushImage(key) {
+    if (!remote.ready || remote.readOnly) return;
+    const path = `media/${key}`;
+    remote.synced[path] = images[key] || '';
+    if (images[key]) writeRemote(path, { data: images[key] }, 'set'); else writeRemote(path, undefined, 'delete');
+  }
+  // Re-renderiza com dados de outras pessoas sem tirar o foco de quem está digitando.
+  function remoteRender() {
+    const a = document.activeElement;
+    if (a && a.closest && a.closest('#view, #modal') && /INPUT|TEXTAREA|SELECT/.test(a.tagName)) { ui.pendingRemote = true; return; }
+    ui.pendingRemote = false;
+    render(true);
+  }
+  document.addEventListener('focusout', () => { if (ui.pendingRemote) setTimeout(remoteRender, 0); });
+
+  async function connectRemote() {
+    if (!window.claude || typeof window.claude.use !== 'function') return;
+    let db = null;
+    try { db = await window.claude.use('db'); } catch (e) { db = null; }
+    if (!db) return;
+    remote.db = db;
+    // Só passa a gravar no banco depois de receber os dois conjuntos de dados, para não sobrescrever nada com padrões.
+    const loaded = { reels: false, sessions: false };
+    const markLoaded = (k) => {
+      loaded[k] = true;
+      if (!remote.ready && loaded.reels && loaded.sessions) { remote.ready = true; renderNav(route()); }
+      remoteRender();
+    };
+    db.collection('reels').onSnapshot((snap) => {
+      snap.docs.forEach((d) => {
+        const id = Number(d.id.slice(1));
+        if (!state.reels[id] || !d.exists) return;
+        const merged = applyRemote(reelPath(id), d.data(), state.reels[id]);
+        state.reels[id] = mergeState(defaultState(), { reels: { [id]: merged } }).reels[id];
+      });
+      save(true);
+      markLoaded('reels');
+    }, remoteError);
+    db.doc('shared/sessions').onSnapshot((snap) => {
+      if (snap.exists) {
+        const merged = applyRemote('shared/sessions', snap.data(), state.sessions);
+        state.sessions = mergeState(defaultState(), { sessions: merged }).sessions;
+        save(true);
+      }
+      markLoaded('sessions');
+    }, remoteError);
+    db.collection('media').onSnapshot((snap) => {
+      snap.docChanges().forEach((c) => {
+        const key = c.doc.id;
+        const data = c.type === 'removed' ? '' : (c.doc.data() || {}).data || '';
+        if (data) images[key] = data; else delete images[key];
+        remote.synced[`media/${key}`] = data;
+      });
+      try { localStorage.setItem(IMG_KEY, JSON.stringify(images)); } catch (e) { /* só cache local */ }
+      remoteRender();
+    }, remoteError);
+  }
+
+  function save(localOnly) {
     state.updatedAt = new Date().toISOString();
+    if (localOnly !== true) pushRemote();
     try { localStorage.setItem(KEY, JSON.stringify(state)); storageOk = true; return true; } catch (e) {
+      if (remote.ready) return true;
       storageOk = false; toast('Não foi possível salvar neste navegador. Exporte um backup para não perder as alterações.'); return false;
     }
   }
-  function saveImages() {
+  function saveImages(key) {
+    if (key) pushImage(key);
     try { localStorage.setItem(IMG_KEY, JSON.stringify(images)); return true; } catch (e) {
+      if (remote.ready) return true;
       toast('Imagem grande demais para o armazenamento deste navegador. Tente uma foto menor.'); return false;
     }
   }
@@ -317,7 +420,9 @@
     $('#brandSide').innerHTML = `${mark}<span class="brand-sub">Painel editorial · Reels</span>`;
     $('#brandTop').innerHTML = `${mark}<span class="brand-sub">Painel editorial</span>`;
     $('#logoAction').textContent = images.logo ? 'Trocar logotipo' : 'Adicionar logotipo';
-    $('#storageNote').innerHTML = storageOk
+    $('#storageNote').innerHTML = remote.ready
+      ? (remote.readOnly ? '<b>Somente leitura.</b> Você vê as informações da equipe, mas suas alterações não são salvas.' : '<b>Sincronizado.</b> Todos que abrem este painel veem os mesmos status, checklists, observações, métricas e fotos.')
+      : storageOk
       ? 'Os dados ficam salvos <b>neste navegador</b>. Não há sincronização entre dispositivos: use “Backup completo” e “Importar backup” para transferir.'
       : '<b>Armazenamento indisponível</b> neste navegador (modo privado?). As alterações serão perdidas ao fechar — exporte um backup.';
   }
@@ -335,7 +440,7 @@
       <button class="sheet-link" data-action="export-json">${icon('download')} Backup completo (.json)</button>
       <button class="sheet-link" data-action="import-json">${icon('upload')} Importar backup</button>
       <button class="sheet-link" data-action="upload" data-target="logo">${icon('image')} ${images.logo ? 'Trocar logotipo' : 'Adicionar logotipo'}</button>
-      <p class="muted small" style="margin:14px 4px 0">Dados salvos apenas neste aparelho. Para usar em outro dispositivo, exporte o backup e importe lá.</p>
+      <p class="muted small" style="margin:14px 4px 0">${remote.ready ? (remote.readOnly ? 'Somente leitura: suas alterações não são salvas para a equipe.' : 'Sincronizado: todos que abrem este painel veem as mesmas informações.') : 'Dados salvos apenas neste aparelho. Para usar em outro dispositivo, exporte o backup e importe lá.'}</p>
     </div>`;
     sheet.hidden = false;
   }
@@ -959,7 +1064,7 @@
       Object.keys(state).forEach((k) => delete state[k]);
       Object.assign(state, fresh);
       save();
-      if (data.images && typeof data.images === 'object') { images = data.images; saveImages(); }
+      if (data.images && typeof data.images === 'object') { images = data.images; saveImages(); Object.keys(images).forEach(pushImage); }
       toast('Backup importado');
       render(true);
     });
@@ -1070,7 +1175,7 @@
         case 'font': state.prefs.readSize = Math.min(44, Math.max(18, (state.prefs.readSize || 26) + Number(a.dataset.delta))); save(); $('#reader .script').style.fontSize = state.prefs.readSize + 'px'; break;
         case 'close-reader': if (ui.navDepth > 1) history.back(); else location.hash = `#/reel/${id}`; break;
         case 'upload': ui.uploadTarget = a.dataset.target; $('#fileImage').value = ''; $('#fileImage').click(); break;
-        case 'remove-image': delete images[a.dataset.target]; saveImages(); render(true); break;
+        case 'remove-image': delete images[a.dataset.target]; saveImages(a.dataset.target); render(true); break;
         case 'export-md': closeSheet(); exportMarkdown(); break;
         case 'export-csv': closeSheet(); exportCSV(); break;
         case 'export-json': closeSheet(); exportJSON(); break;
@@ -1114,8 +1219,8 @@
     if (!file || !ui.uploadTarget) return;
     try {
       const isLogo = ui.uploadTarget === 'logo';
-      images[ui.uploadTarget] = await readImage(file, isLogo ? 480 : 1000, isLogo ? 'image/png' : 'image/jpeg');
-      if (saveImages()) toast('Imagem anexada');
+      images[ui.uploadTarget] = await readImage(file, isLogo ? 400 : 720, isLogo ? 'image/png' : 'image/jpeg');
+      if (saveImages(ui.uploadTarget)) toast('Imagem anexada');
       render(true);
     } catch (err) { toast('Não foi possível ler esta imagem.'); }
   });
@@ -1151,4 +1256,5 @@
   if (!location.hash) history.replaceState(null, '', '#/overview');
   ui.navDepth = 1;
   render();
+  connectRemote();
 })();
