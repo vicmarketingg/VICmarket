@@ -39,21 +39,18 @@
   .dark .folio, .dark .eyebrow { color: var(--sand); }
 
   /* 1 · Capa */
-  .cover { background: var(--ink); color: var(--off); display: flex; flex-direction: column; justify-content: space-between; padding-right: 150mm; }
-  .cover .photo { position: absolute; top: 0; right: 0; width: 128mm; height: 100%; object-fit: cover; object-position: 50% 20%; }
-  .cover .photo-fade { position: absolute; top: 0; right: 98mm; width: 32mm; height: 100%; background: linear-gradient(90deg, var(--ink), rgba(22,18,16,0)); }
+  .cover { background: var(--brown); color: var(--off); display: flex; flex-direction: column; justify-content: space-between; }
   .cover .rule { width: 28mm; height: 1px; background: var(--sand); margin-bottom: 9mm; }
   .cover h1 { font-size: 72pt; line-height: .95; letter-spacing: -.01em; }
   .cover h1 em { color: var(--sand); }
   .cover .sub { margin-top: 8mm; font: 400 11pt/1.4 var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--beige); }
-  .cover .tagline { font-family: var(--serif); font-style: italic; font-size: 18pt; line-height: 1.35; color: var(--beige); }
+  .cover .tagline { font-family: var(--serif); font-style: italic; font-size: 19pt; line-height: 1.35; color: var(--beige); max-width: 175mm; }
 
   /* 2 · Quem sou */
-  .about { display: grid; grid-template-columns: 1fr; align-items: center; padding-left: 128mm; }
-  .about .photo { position: absolute; top: 0; left: 0; width: 106mm; height: 100%; object-fit: cover; object-position: 50% 18%; }
-  .about h2 { font-size: 44pt; line-height: 1; margin: 6mm 0 9mm; }
+  .about { display: grid; grid-template-columns: 1fr 1.3fr; gap: 22mm; align-items: center; }
+  .about h2 { font-size: 58pt; line-height: 1; margin-top: 6mm; }
   .about h2 em { color: var(--muted); }
-  .about p { font: 300 13pt/1.7 var(--sans); }
+  .about p { font: 300 14pt/1.7 var(--sans); }
   .about .areas { margin-top: 12mm; display: flex; gap: 8mm; font: 500 8.5pt/1 var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--brown); }
   .about .areas span { border-top: 1px solid var(--sand); padding-top: 3.5mm; }
 
@@ -113,8 +110,6 @@
 
 <!-- 1 · Capa -->
 <section class="page cover dark">
-  <img class="photo" src="img/victoria.jpg" alt="Victoria Benevides">
-  <div class="photo-fade"></div>
   <div class="eyebrow">Portfólio</div>
   <div>
     <div class="rule"></div>
@@ -126,14 +121,15 @@
 
 <!-- 2 · Quem sou -->
 <section class="page about">
-  <img class="photo" src="img/victoria.jpg" alt="Victoria Benevides">
   <div>
     <div class="eyebrow">Quem sou</div>
-    <h2>Posicionamento, planejamento &amp; <em>criação.</em></h2>
+    <h2>Posicionamento,<br>planejamento<br>&amp; <em>criação.</em></h2>
+  </div>
+  <div>
     <p>Sou Victoria Benevides, estrategista digital, designer e criadora de conteúdo. Trabalho unindo posicionamento, planejamento e criação para construir uma comunicação visual coerente com a essência e os objetivos de cada marca.</p>
     <div class="areas"><span>Estratégia digital</span><span>Design</span><span>Conteúdo</span></div>
   </div>
-  <div class="folio" style="left:128mm"><span>Victoria Benevides</span><span>02</span></div>
+  <div class="folio"><span>Victoria Benevides</span><span>02</span></div>
 </section>
 
 <!-- 3 · O que você recebe -->
