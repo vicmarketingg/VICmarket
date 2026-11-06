@@ -326,6 +326,11 @@ const fontsCss = fs.readFileSync(path.join(DIR, 'fonts/fonts.css'), 'utf8').repl
 const tex = dataUri(path.join(DIR, 'assets/textura-papel.png'), 'image/png');
 const CSS = `${fontsCss}
 @page { size: 540px 960px; margin: 0; }
+@media screen {
+  html.view, html.view body { background: #E9D9CA; }
+  html.view body { display: flex; flex-direction: column; align-items: center; gap: 28px; padding: 28px 0 40px; }
+  html.view .page { box-shadow: 0 10px 30px rgba(89,55,40,.25); border-radius: 6px; flex: none; }
+}
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { background: ${C.bege}; }
 body { font-family: 'Poppins', sans-serif; color: ${C.marrom}; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -504,7 +509,7 @@ h3 { font-weight: 700; font-size: 12px; letter-spacing: 1.8px; color: ${C.vinho}
 .dot.on { background: ${C.dourado}; color: ${C.off}; }
 `;
 
-const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Agenda de Natal 2026 — Mayara Dias | Studio Beauty</title><style>${CSS}</style></head><body>${DEFS}${p1}${p2}${p3}${p4}</body></html>`;
+const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agenda de Natal 2026 — Mayara Dias | Studio Beauty</title><style>${CSS}</style></head><body>${DEFS}${p1}${p2}${p3}${p4}</body></html>`;
 fs.mkdirSync(path.join(DIR, 'build'), { recursive: true });
 fs.writeFileSync(path.join(DIR, 'build', 'agenda.html'), html);
 
@@ -534,6 +539,10 @@ const overflow = await page.evaluate(() => [...document.querySelectorAll('.page'
 }));
 console.log('Espaço livre acima da navegação (px):', overflow);
 if (overflow.some((o) => o.folga < 0)) console.warn('ATENÇÃO: conteúdo passou do limite em', overflow.filter((o) => o.folga < 0).map((o) => o.id).join(', '), '— reduza os textos/linhas em dados.json.');
+// versão HTML para visualizar no navegador (mesmo conteúdo do PDF)
+const VIEW_SCRIPT = `<script>(function(){if(navigator.webdriver)return;var d=document.documentElement;d.classList.add('view');function fit(){var z=Math.min(1,(window.innerWidth-16)/540);document.querySelectorAll('.page').forEach(function(p){p.style.zoom=z;});}fit();window.addEventListener('resize',fit);})();<\/script>`;
+const viewHtml = (await page.content()).replace('</body>', VIEW_SCRIPT + '</body>');
+fs.writeFileSync(OUT.replace(/\.pdf$/i, '.html'), viewHtml);
 await page.pdf({ path: OUT, width: '540px', height: '960px', printBackground: true, preferCSSPageSize: true });
 await browser.close();
 try {
