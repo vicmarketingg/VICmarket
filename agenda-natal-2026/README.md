@@ -59,7 +59,7 @@ Vazio = linhas em branco + "serviços e valores atualizados em breve". Até ~7 s
 - Python 3 + `pypdf` (pós-processamento: links com destino direto, título do documento). Se faltar, o PDF é gerado mesmo assim.
 
 ## Identidade visual
-Editorial de luxo: capa vinho com moldura dupla dourada e foto em arco, títulos em Cormorant Garamond (versaletes), textos em Montserrat, assinatura em Pinyon Script, ramos de pinheiro e estrelas em traço dourado, papel com borda deckle e laços de cetim. Paleta: #F5E8DC, #FFF9F2, #593728, #8B1E2D, #C6A36A.
+Editorial de luxo: capa vinho com moldura dupla dourada e foto em arco, títulos e números em Bodoni Moda (contraste alto, estilo revista de moda), detalhes em Bodoni itálico, textos e versaletes espaçados em Jost, ramos de pinheiro e estrelas em traço dourado, papel com borda deckle e laços de cetim. Paleta: #F5E8DC, #FFF9F2, #593728, #8B1E2D, #C6A36A.
 Os emojis dos títulos foram trocados por ícones dourados em vetor (árvore, laço, coração), mais coerentes com a identidade.
 
 As fontes (licença SIL OFL) ficam em `fonts/` e são incorporadas ao PDF.
