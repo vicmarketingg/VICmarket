@@ -1,0 +1,2 @@
+Coloque aqui a foto atual da Mayara com o nome: mayara.jpg
+(ou altere o campo "foto" em dados.json). Depois rode: node build.mjs

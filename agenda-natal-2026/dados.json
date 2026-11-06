@@ -1,0 +1,25 @@
+{
+  "foto": "fotos/mayara.jpg",
+  "foto_posicao": "50% 25%",
+
+  "whatsapp_exibicao": "(21) 98182-6692",
+  "whatsapp_link": "https://wa.me/5521981826692",
+
+  "dias_sem_atendimento": [13, 24, 27],
+
+  "horarios_normais": [],
+
+  "horarios_extras": [
+    { "hora": "07h", "detalhe": "+ R$ 20,00" },
+    { "hora": "08h", "detalhe": "+ R$ 20,00" },
+    { "hora": "21h", "detalhe": "extra" },
+    { "hora": "22h", "detalhe": "extra" },
+    { "hora": "23h", "detalhe": "extra" }
+  ],
+
+  "disponibilidade": {},
+
+  "servicos": [],
+
+  "linhas_vazias_tabela": 8
+}

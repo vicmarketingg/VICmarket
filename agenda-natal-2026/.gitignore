@@ -1,0 +1,3 @@
+build/
+fotos/*
+!fotos/LEIA-ME.txt
