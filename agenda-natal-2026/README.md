@@ -12,7 +12,7 @@ PDF interativo de 4 páginas (formato vertical para celular), pronto para enviar
 Navegação: **← Voltar**, **✦ Capa**, **1 2 3 4** e **Avançar →** em todas as páginas internas (na última, o botão leva ao WhatsApp).
 Os links internos apontam direto para a página, o que funciona na maioria dos leitores de PDF de celular. Todo o conteúdo também é legível sem os links.
 
-Arquivo final: `Agenda_Natal_2026_Mayara_Dias.pdf`
+Arquivo final: `Agenda_Natal_2026_Mayara_Dias.pdf` (e `Agenda_Natal_2026_Mayara_Dias.html` para visualizar no navegador)
 
 ## Como atualizar (horários, vagas, serviços e foto)
 
@@ -52,10 +52,14 @@ Com dados aqui, o calendário mostra o status em cada dia e a página entra auto
   { "nome": "Nome do procedimento", "valor": "R$ 00,00", "info": "informação complementar (opcional)" }
 ]
 ```
-Vazio = linhas em branco + "serviços e valores atualizados em breve". Até ~8 serviços com folga; a partir de 9 a página fica mais compacta.
+Vazio = linhas em branco + "serviços e valores atualizados em breve". Até ~7 serviços com folga; a partir de 8 a página fica mais compacta automaticamente.
 
 ## Requisitos
 - Node.js + Playwright (Chromium)
 - Python 3 + `pypdf` (pós-processamento: links com destino direto, título do documento). Se faltar, o PDF é gerado mesmo assim.
 
-As fontes (Playfair Display, Poppins, Great Vibes, Caveat — licença SIL OFL) ficam em `fonts/` e são incorporadas ao PDF.
+## Identidade visual
+Editorial de luxo: capa vinho com moldura dupla dourada e foto em arco, títulos em Cormorant Garamond (versaletes), textos em Montserrat, assinatura em Pinyon Script, ramos de pinheiro e estrelas em traço dourado, papel com borda deckle e laços de cetim. Paleta: #F5E8DC, #FFF9F2, #593728, #8B1E2D, #C6A36A.
+Os emojis dos títulos foram trocados por ícones dourados em vetor (árvore, laço, coração), mais coerentes com a identidade.
+
+As fontes (licença SIL OFL) ficam em `fonts/` e são incorporadas ao PDF.
