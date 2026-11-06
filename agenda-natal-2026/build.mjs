@@ -1,6 +1,6 @@
 // Gera o PDF "Agenda de Natal 2026 — Mayara Dias | Studio Beauty" (identidade editorial de luxo).
 // Uso:  node build.mjs [dados.json] [saida.pdf]
-// Edite dados.json (horários, vagas, serviços, foto) e rode de novo. Gera também a versão .html.
+// Edite dados.json (horários, vagas, serviços) e rode de novo. Gera também a versão .html.
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -93,7 +93,7 @@ const ICON = {
   tree: `<svg class="ico" viewBox="0 0 24 30"><path d="M12 2.2l1 2.1 2.3.3-1.7 1.6.4 2.3-2-1.1-2 1.1.4-2.3-1.7-1.6 2.3-.3z" fill="url(#gold)"/><path d="M12 9 L6.5 16.5 H9.5 L4.5 23.5 H19.5 L14.5 16.5 H17.5 Z" fill="none" stroke="url(#gold)" stroke-width="1.4" stroke-linejoin="round"/><path d="M12 23.5 V28" stroke="url(#gold)" stroke-width="1.6"/><circle cx="10" cy="19" r="1" fill="url(#gold)"/><circle cx="14.2" cy="14.6" r="1" fill="url(#gold)"/><circle cx="13.5" cy="21" r="1" fill="url(#gold)"/></svg>`,
   bow: `<svg class="ico" viewBox="0 0 30 24"><path d="M15 10 C11 3 3 2 3 8 C3 13 10 13 15 11 Z M15 10 C19 3 27 2 27 8 C27 13 20 13 15 11 Z" fill="none" stroke="url(#gold)" stroke-width="1.4" stroke-linejoin="round"/><path d="M14 12 L9.5 21 L12 20.4 L13 22.5 L15 13 M16 12 L20.5 21 L18 20.4 L17 22.5 L15 13" fill="none" stroke="url(#gold)" stroke-width="1.3" stroke-linejoin="round"/><circle cx="15" cy="10.6" r="2" fill="url(#gold)"/></svg>`,
   heart: `<svg class="ico" viewBox="0 0 28 26"><path d="M14 23.5 C7 18.5 2.5 14.5 2.5 9.3 C2.5 5.5 5.4 3 8.6 3 C11 3 12.8 4.4 14 6.4 C15.2 4.4 17 3 19.4 3 C22.6 3 25.5 5.5 25.5 9.3 C25.5 14.5 21 18.5 14 23.5Z" fill="url(#gold)"/></svg>`,
-  camera: `<svg width="46" height="40" viewBox="0 0 44 38"><rect x="2" y="8" width="40" height="28" rx="5" fill="none" stroke="${C.dourado}" stroke-width="1.6"/><path d="M14 8 l3-6 h10 l3 6" fill="none" stroke="${C.dourado}" stroke-width="1.6"/><circle cx="22" cy="22" r="8" fill="none" stroke="${C.dourado}" stroke-width="1.6"/></svg>`,
+  _camera: `<svg width="46" height="40" viewBox="0 0 44 38"><rect x="2" y="8" width="40" height="28" rx="5" fill="none" stroke="${C.dourado}" stroke-width="1.6"/><path d="M14 8 l3-6 h10 l3 6" fill="none" stroke="${C.dourado}" stroke-width="1.6"/><circle cx="22" cy="22" r="8" fill="none" stroke="${C.dourado}" stroke-width="1.6"/></svg>`,
 };
 const orn = (w = 150, color = 'url(#goldLine)') => `<svg class="orn" width="${w}" height="14" viewBox="0 0 ${w} 14"><line x1="0" y1="7" x2="${w / 2 - 14}" y2="7" stroke="${color}" stroke-width=".8"/><line x1="${w / 2 + 14}" y1="7" x2="${w}" y2="7" stroke="${color}" stroke-width=".8"/>${sparkle(w / 2, 7, 6.5)}<circle cx="${w / 2 - 20}" cy="7" r="1.3" fill="${C.dourado}"/><circle cx="${w / 2 + 20}" cy="7" r="1.3" fill="${C.dourado}"/></svg>`;
 
@@ -115,11 +115,8 @@ const frame = (dark = false) => `<div class="frame ${dark ? 'dark' : ''}"></div>
 const header = (kicker, title, icon, extraCls = '') => `<div class="kicker">${kicker}</div><h2 class="title ${extraCls}">${title} ${ICON[icon] || icon}</h2>${orn(170)}`;
 
 // ---------- PÁGINA 1 — CAPA ----------
-const fotoFile = D.foto ? path.resolve(DIR, D.foto) : null;
-const temFoto = fotoFile && fs.existsSync(fotoFile);
-const fotoHtml = temFoto
-  ? `<img class="foto" src="${dataUri(fotoFile, /\.png$/i.test(fotoFile) ? 'image/png' : 'image/jpeg')}" style="object-position:${esc(D.foto_posicao || '50% 30%')}"/>`
-  : `<div class="foto vazia">${ICON.camera}<span>foto da Mayara</span></div>`;
+// monograma no lugar da foto
+const monograma = `<div class="mono"><div class="mono-l"><span>M</span><i></i><span class="it">D</span></div><div class="mono-orn">${orn(130)}</div></div>`;
 
 const p1 = `<section class="page cover" id="p1">
   ${frame(true)}
@@ -130,8 +127,8 @@ const p1 = `<section class="page cover" id="p1">
 
   <div class="kicker light">✦ &nbsp;Agenda exclusiva&nbsp; ✦</div>
   <div class="arch-wrap">
-    <div class="arch-outer"><div class="arch">${fotoHtml}</div></div>
-    ${bow(88, -40, 102, 0)}
+    <div class="arch-outer"><div class="arch">${monograma}</div></div>
+    ${bow(80, -40, 102, 0)}
   </div>
   <h1 class="cover-title">Dezembro,<br>Dezembro! ${ICON.tree}</h1>
   <div class="script">Agenda de Natal 2026</div>
@@ -294,11 +291,16 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .cover { background: radial-gradient(ellipse 80% 60% at 50% 32%, #A12A3A 0%, ${C.vinho} 48%, #5C0F19 100%); color: ${C.off}; }
 .cover::before { content: ''; position: absolute; inset: 0; background: url('${tex}'); opacity: .55; z-index: 0; }
 .kicker.light { margin-top: 56px; color: ${C.dourado}; }
-.arch-wrap { position: relative; margin-top: 44px; width: 278px; height: 336px; flex: none; }
-.arch-outer { position: absolute; inset: 0; border: 1px solid rgba(198,163,106,.75); border-radius: 139px 139px 6px 6px; padding: 7px; }
-.arch { width: 100%; height: 100%; border-radius: 132px 132px 3px 3px; overflow: hidden; border: 1.6px solid ${C.dourado}; background: #6D1520; }
-.foto { width: 100%; height: 100%; object-fit: cover; display: block; }
-.foto.vazia { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: radial-gradient(circle at 50% 40%, rgba(255,249,242,.10), rgba(255,249,242,0) 70%); font-family: ${SERIF}; font-style: italic; font-size: 16px; color: ${C.dourado}; }
+.arch-wrap { position: relative; margin-top: 48px; width: 262px; height: 300px; flex: none; }
+.arch-outer { position: absolute; inset: 0; border: 1px solid rgba(198,163,106,.75); border-radius: 131px 131px 6px 6px; padding: 7px; }
+.arch { width: 100%; height: 100%; border-radius: 124px 124px 3px 3px; overflow: hidden; border: 1.6px solid ${C.dourado}; background: #6D1520; }
+.mono { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 40px; background: radial-gradient(ellipse 70% 55% at 50% 45%, rgba(255,249,242,.09), rgba(255,249,242,0) 70%); }
+.mono-l { display: flex; align-items: center; gap: 12px; font-family: ${SERIF}; font-weight: 500; font-size: 104px; line-height: 1; color: ${C.off}; }
+.mono-l .it { font-style: italic; font-weight: 400; color: ${C.dourado}; }
+.mono-l i { width: 1px; height: 86px; background: linear-gradient(${C.dourado}, rgba(198,163,106,.2)); transform: rotate(14deg); }
+.mono-orn { margin-top: 22px; }
+.mono-sub { font-family: ${SANS}; font-weight: 400; font-size: 11px; letter-spacing: 5px; text-transform: uppercase; color: ${C.dourado}; margin: 14px 0 10px; }
+.mono-sub.sm { font-size: 10px; letter-spacing: 4px; color: rgba(255,249,242,.75); margin: 10px 0 0; }
 .cover-title { font-family: ${SERIF}; font-weight: 500; font-size: 46px; line-height: 1.02; letter-spacing: 1px; text-transform: uppercase; text-align: center; margin-top: 32px; color: ${C.off}; }
 .script { font-family: ${SCRIPT}; font-style: italic; font-weight: 400; font-size: 27px; letter-spacing: .5px; line-height: 1.2; color: ${C.dourado}; margin-top: 14px; }
 .brand { font-weight: 400; font-size: 12.5px; letter-spacing: 5px; text-transform: uppercase; color: ${C.off}; margin: 8px 0 16px; }
@@ -474,4 +476,4 @@ try {
   const { execFileSync } = await import('node:child_process');
   console.log(execFileSync('python3', [path.join(DIR, 'pos_processar.py'), OUT], { encoding: 'utf8' }).trim());
 } catch (e) { console.warn('Aviso: pós-processamento não executado (requer python3 + pypdf). Os links continuam funcionando.', e.message); }
-console.log('PDF gerado:', OUT, temFoto ? '(com foto)' : '(SEM foto — coloque o arquivo em ' + D.foto + ')');
+console.log('PDF gerado:', OUT);

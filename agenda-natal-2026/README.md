@@ -14,7 +14,7 @@ Os links internos apontam direto para a página, o que funciona na maioria dos l
 
 Arquivo final: `Agenda_Natal_2026_Mayara_Dias.pdf` (e `Agenda_Natal_2026_Mayara_Dias.html` para visualizar no navegador)
 
-## Como atualizar (horários, vagas, serviços e foto)
+## Como atualizar (horários, vagas e serviços)
 
 Tudo o que muda fica em **`dados.json`**. Depois de editar, gere o PDF de novo:
 
@@ -23,9 +23,6 @@ node build.mjs
 ```
 
 O script avisa no terminal se algum conteúdo passou do limite da página.
-
-### Foto da Mayara
-Salve a foto em `fotos/mayara.jpg`. Para ajustar o enquadramento, altere `"foto_posicao"` (ex.: `"50% 20%"` sobe o enquadramento). A foto é usada sem filtros, preservando a aparência real.
 
 ### Horários normais (página 2)
 ```json
@@ -59,7 +56,7 @@ Vazio = linhas em branco + "serviços e valores atualizados em breve". Até ~7 s
 - Python 3 + `pypdf` (pós-processamento: links com destino direto, título do documento). Se faltar, o PDF é gerado mesmo assim.
 
 ## Identidade visual
-Editorial de luxo: capa vinho com moldura dupla dourada e foto em arco, títulos e números em Bodoni Moda (contraste alto, estilo revista de moda), detalhes em Bodoni itálico, textos e versaletes espaçados em Jost, ramos de pinheiro e estrelas em traço dourado, papel com borda deckle e laços de cetim. Paleta: #F5E8DC, #FFF9F2, #593728, #8B1E2D, #C6A36A.
+Editorial de luxo: capa vinho com moldura dupla dourada e monograma MD em arco, títulos e números em Bodoni Moda (contraste alto, estilo revista de moda), detalhes em Bodoni itálico, textos e versaletes espaçados em Jost, ramos de pinheiro e estrelas em traço dourado, papel com borda deckle e laços de cetim. Paleta: #F5E8DC, #FFF9F2, #593728, #8B1E2D, #C6A36A.
 Os emojis dos títulos foram trocados por ícones dourados em vetor (árvore, laço, coração), mais coerentes com a identidade.
 
 As fontes (licença SIL OFL) ficam em `fonts/` e são incorporadas ao PDF.
