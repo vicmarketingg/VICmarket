@@ -209,7 +209,7 @@ const p3 = `<section class="page inner" id="p3">
   <div class="card rules-card" ${T(51)}>
     ${item(1, 'Abertura da agenda', `<div class="dates"><div><b>08/11</b><span>Clientes fixas</span></div><i></i><div><b>11/11</b><span>Abertura geral</span></div></div>`)}
     ${item(2, 'Reajuste de valores', `<p>Os valores dos serviços serão reajustados a partir de <b>20 de novembro de 2026</b>.</p>`)}
-    ${item(3, 'Confirmação do horário', `<p>Para garantir o agendamento, é necessário pagar antecipadamente um sinal de <b>R$ 50,00</b>. O restante é pago no dia do atendimento.</p>`)}
+    ${item(3, 'Confirmação do horário', `<p>Para garantir o agendamento, é necessário pagar antecipadamente um sinal de <b>50% do valor do procedimento</b>. Os outros 50% são pagos no dia do atendimento.</p>`)}
     ${item(4, 'Horários extras', `<p>Os atendimentos das <b>7h e 8h</b> têm taxa adicional de <b>R$ 20,00</b>, paga junto com o sinal. Os horários das <b>21h, 22h e 23h</b> também são considerados extras.</p>`)}
   </div>
   <div class="card wine-card" ${T(55, C.vinho)}>
