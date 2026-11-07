@@ -104,7 +104,7 @@ ${defs}
   <div class="env-title">Agenda de Natal 2026<small>Mayara Dias | Studio Beauty</small></div>
   <div class="envelope" id="envelope" role="button" aria-label="Abrir o convite" tabindex="0">
     <div class="env-back"></div>
-    <div class="letter"><b>Dezembro, Dezembro!</b><span>sua agenda está aqui</span></div>
+    <div class="letter"><b>Agenda de Natal</b><span>sua agenda está aqui</span></div>
     <div class="env-front"><div class="l"></div><div class="r"></div><div class="b"></div></div>
     <div class="flap"></div>
     <div class="seal">${SEAL}</div>

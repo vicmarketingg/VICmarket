@@ -139,15 +139,12 @@ const p1 = `<section class="page cover" id="p1">
   <svg class="abs sprigs" style="left:0;top:0" width="540" height="960" viewBox="0 0 540 960">${sprig(-14, 930, 140, -30, 15, { flip: true })}${sprig(554, 930, 140, 210, 16)}</svg>
   ${spark(66, 150, 12, .9)}${spark(462, 214, 16, .9)}${spark(452, 520, 12, .8)}${spark(72, 600, 14, .8)}
 
-  <div class="kicker light">✦ &nbsp;Agenda exclusiva&nbsp; ✦</div>
-  <h1 class="cover-title">Dezembro,<br>Dezembro! ${ICON.tree}</h1>
-  <div class="script">Agenda de Natal 2026</div>
-  <div class="brand">Mayara Dias <span>|</span> Studio Beauty</div>
-  ${orn(190)}
+  <div class="kicker light">✦ &nbsp;Mayara Dias · Studio Beauty&nbsp; ✦</div>
   <div class="arch-wrap">
     <div class="arch-outer"><div class="arch">${enfeite}</div></div>
     ${bow(70, -38, 96, 0)}
   </div>
+  <h1 class="lockup"><span class="lk-a">Agenda</span><span class="lk-b">de Natal</span><span class="lk-c"><i></i>2026<i></i></span></h1>
   <p class="quote">“Seu momento de beleza para as festas<br>começa aqui!”</p>
   <a class="cta" href="#p2">Abrir minha agenda <span>→</span></a>
   <div class="mini-index"><a href="#p2">Calendário</a><i>·</i><a href="#p3">Regras</a><i>·</i><a href="#p4">Valores</a></div>
@@ -321,8 +318,8 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 /* capa */
 .cover { background: radial-gradient(ellipse 80% 60% at 50% 32%, #A12A3A 0%, ${C.vinho} 48%, #5C0F19 100%); color: ${C.off}; }
 .cover::before { content: ''; position: absolute; inset: 0; background: url('${tex}'); opacity: .55; z-index: 0; }
-.kicker.light { margin-top: 64px; color: ${C.dourado}; }
-.arch-wrap { position: relative; margin-top: 52px; width: 236px; height: 276px; flex: none; }
+.kicker.light { margin-top: 76px; color: ${C.dourado}; }
+.arch-wrap { position: relative; margin-top: 62px; width: 236px; height: 276px; flex: none; }
 .arch-outer { position: absolute; inset: 0; border: 1px solid rgba(198,163,106,.75); border-radius: 118px 118px 6px 6px; padding: 7px; }
 .arch { width: 100%; height: 100%; border-radius: 111px 111px 3px 3px; overflow: hidden; border: 1.6px solid ${C.dourado}; background: #6D1520; }
 .mono { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 30px; background: radial-gradient(ellipse 70% 55% at 50% 45%, rgba(255,249,242,.09), rgba(255,249,242,0) 70%); }
@@ -333,12 +330,17 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .bauble { display: block; overflow: visible; }
 .mono-sub { font-family: ${SANS}; font-weight: 400; font-size: 11px; letter-spacing: 5px; text-transform: uppercase; color: ${C.dourado}; margin: 14px 0 10px; }
 .mono-sub.sm { font-size: 10px; letter-spacing: 4px; color: rgba(255,249,242,.75); margin: 10px 0 0; }
+.lockup { margin-top: 46px; display: flex; flex-direction: column; align-items: center; font-weight: 400; }
+.lk-a { font-family: ${SERIF}; font-weight: 500; font-size: 44px; letter-spacing: 15px; margin-right: -15px; text-transform: uppercase; color: ${C.off}; line-height: 1; }
+.lk-b { font-family: ${SERIF}; font-style: italic; font-weight: 400; font-size: 64px; line-height: 1.05; color: ${C.dourado}; margin-top: 2px; }
+.lk-c { display: flex; align-items: center; gap: 14px; font-family: ${SANS}; font-weight: 400; font-size: 13px; letter-spacing: 6px; margin-right: -6px; color: ${C.off}; margin-top: 8px; }
+.lk-c i { width: 46px; height: .8px; background: ${C.dourado}; }
 .cover-title { font-family: ${SERIF}; font-weight: 500; font-size: 50px; line-height: 1.02; letter-spacing: 1px; text-transform: uppercase; text-align: center; margin-top: 18px; color: ${C.off}; }
 .script { font-family: ${SCRIPT}; font-style: italic; font-weight: 400; font-size: 30px; letter-spacing: .5px; line-height: 1.2; color: ${C.dourado}; margin-top: 14px; }
 .brand { font-weight: 400; font-size: 12.5px; letter-spacing: 5px; text-transform: uppercase; color: ${C.off}; margin: 8px 0 16px; }
 .brand span { color: ${C.dourado}; padding: 0 6px; }
-.quote { font-family: ${SERIF}; font-style: italic; font-weight: 400; font-size: 17.5px; line-height: 1.45; text-align: center; margin-top: 34px; max-width: 400px; color: #F6E9DA; }
-.cta { margin-top: 32px; display: inline-flex; align-items: center; gap: 10px; padding: 15px 34px; border-radius: 40px; background: linear-gradient(135deg, #E6CF9C 0%, ${C.dourado} 45%, #A8854D 100%);
+.quote { font-family: ${SERIF}; font-style: italic; font-weight: 400; font-size: 17.5px; line-height: 1.45; text-align: center; margin-top: 44px; max-width: 400px; color: #F6E9DA; }
+.cta { margin-top: 40px; display: inline-flex; align-items: center; gap: 10px; padding: 15px 34px; border-radius: 40px; background: linear-gradient(135deg, #E6CF9C 0%, ${C.dourado} 45%, #A8854D 100%);
   color: ${C.vinhoEsc}; font-weight: 500; font-size: 14px; letter-spacing: 3.5px; text-transform: uppercase; box-shadow: 0 8px 20px rgba(40,5,10,.35); }
 .cta span { font-size: 16px; letter-spacing: 0; }
 .mini-index { margin-top: 16px; font-weight: 400; font-size: 11.5px; letter-spacing: 2.5px; text-transform: uppercase; color: ${C.dourado}; display: flex; gap: 10px; }
