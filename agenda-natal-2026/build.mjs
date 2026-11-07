@@ -34,7 +34,8 @@ const semAtend = (D.dias_sem_atendimento || []).map(Number).sort((a, b) => a - b
 const semAtendSet = new Set(semAtend);
 const disp = D.disponibilidade || {};
 const infoDia = (d) => disp[String(d)] || disp[String(d).padStart(2, '0')];
-const tipoDia = (d) => (semAtendSet.has(d) ? 'fechado' : (offsetSeg + d - 1) % 7 === 6 ? 'domingo' : 'aberto');
+const ehDomingo = (d) => (offsetSeg + d - 1) % 7 === 6;
+const tipoDia = (d) => (semAtendSet.has(d) || ehDomingo(d) ? 'fechado' : 'aberto'); // domingos: sem atendimento
 const statusDe = (i) => { const s = String(i?.status || '').toLowerCase(); return s.startsWith('lot') ? 'lotado' : s.startsWith('pou') ? 'poucas' : s ? 'vagas' : ''; };
 
 // ---------- ornamentos (vetor) ----------
@@ -146,7 +147,7 @@ const p1 = `<section class="page cover" id="p1">
   </div>
   <h1 class="lockup"><span class="lk-a">Agenda</span><span class="lk-b">de Dezembro</span><span class="lk-c"><i></i>2026<i></i></span></h1>
   <p class="quote">“Seu momento de beleza para as festas<br>começa aqui!”</p>
-  <a class="cta" href="#p2">Abrir minha agenda <span>→</span></a>
+  <a class="cta" href="#p2">Abrir agenda <span>→</span></a>
   <div class="mini-index"><a href="#p2">Regras</a><i>·</i><a href="#p3">Calendário</a><i>·</i><a href="#p4">Valores</a></div>
   <div class="swipe">Arraste para ver a agenda <span>→</span></div>
 </section>`;
@@ -162,10 +163,12 @@ for (let d = 1; d <= diasNoMes; d++) {
   cells += `<div class="cell ${cls}"><b>${d}</b>${sub}</div>`;
 }
 const fmtDia = (d) => `${String(d).padStart(2, '0')}/12`;
-const listaSem = semAtend.map(fmtDia); const txtSem = listaSem.length > 1 ? listaSem.slice(0, -1).join(', ') + ' e ' + listaSem.at(-1) : listaSem.join('');
+const domingos = []; for (let d = 1; d <= diasNoMes; d++) if (ehDomingo(d)) domingos.push(d);
+const juntar = (a) => (a.length > 1 ? a.slice(0, -1).join(', ') + ' e ' + a.at(-1) : a.join(''));
+const outrosFechados = semAtend.filter((d) => !ehDomingo(d)).map(fmtDia);
+const txtSem = `domingos (${juntar(domingos.map(String))}/12)${outrosFechados.length ? ' e ' + juntar(outrosFechados) : ''}`;
 const legenda = `<div class="legend">
   <span><i class="lg fechado"></i><b>Sem atendimento:</b> ${txtSem}</span>
-  <span><i class="lg domingo"></i>Domingos: sem atendimento</span>
   ${usaDisp ? '<span><i class="lg vagas"></i>vagas</span><span><i class="lg poucas"></i>poucas vagas</span><span><i class="lg lotado"></i>lotado</span>' : ''}
 </div>`;
 
