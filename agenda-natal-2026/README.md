@@ -1,13 +1,14 @@
 # Agenda de Natal 2026 — Mayara Dias | Studio Beauty
 
-PDF interativo de 4 páginas (formato vertical para celular), pronto para enviar pelo WhatsApp:
+PDF interativo de 5 páginas (formato vertical para celular), pronto para enviar pelo WhatsApp:
 
 | Página | Conteúdo |
 |---|---|
-| 1 | Capa "DEZEMBRO, DEZEMBRO!" + botão **ABRIR MINHA AGENDA →** |
+| 1 | Capa "Agenda de Dezembro" + botão **ABRIR AGENDA →** |
 | 2 | Regras da agenda — "Antes de agendar" (reajuste, sinal de R$ 50,00, horários extras, cancelamentos) |
 | 3 | Calendário real de dezembro/2026 (seg → dom, dia 1 numa terça), dias sem atendimento e horários de atendimento |
-| 4 | Tabela de serviços e valores + agradecimento e WhatsApp |
+| 4 | Grade de horários de dezembro (dias × horários): tocar num horário livre abre o WhatsApp com a mensagem pronta |
+| 5 | Tabela de serviços e valores + agradecimento e WhatsApp |
 
 Navegação: **← Voltar**, **✦ Capa**, **1 2 3 4** e **Avançar →** em todas as páginas internas (na última, o botão leva ao WhatsApp).
 Os links internos apontam direto para a página, o que funciona na maioria dos leitores de PDF de celular. Todo o conteúdo também é legível sem os links.
@@ -53,10 +54,17 @@ Use o número do dia. `status` aceita `"vagas"`, `"poucas"` ou `"lotado"`; `hora
 ```
 Com dados aqui, o calendário mostra o status em cada dia e a página entra automaticamente no modo compacto, com a tabela "VAGAS POR DIA". Dias sem atendimento (13, 24, 27 e domingos) são ignorados.
 
+### Grade de horários (página 4)
+Os horários saem de `horario_atendimento` (de hora em hora) + `horarios_extras`. Para marcar horários ocupados:
+```json
+"grade_horarios": { "ocupados": { "5": ["9h", "14h"], "12": ["18h"] } }
+```
+Horário ocupado aparece riscado e sem link; os livres abrem o WhatsApp com "Olá, Mayara! Quero agendar no dia 05/12 (sábado) às 10h."
+
 ### Dias sem atendimento
 `"dias_sem_atendimento": [13, 27]`. Domingos já são marcados automaticamente.
 
-### Serviços e valores (página 4)
+### Serviços e valores (página 5)
 ```json
 "servicos": [
   { "secao": "Unhas", "nome": "Gel na tips", "precos": [

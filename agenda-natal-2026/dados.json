@@ -101,5 +101,8 @@
       "valor": "R$ 90,00"
     }
   ],
-  "linhas_vazias_tabela": 7
+  "linhas_vazias_tabela": 7,
+  "grade_horarios": {
+    "ocupados": {}
+  }
 }

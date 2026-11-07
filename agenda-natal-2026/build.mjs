@@ -107,11 +107,12 @@ const DEFS = `<svg width="0" height="0" style="position:absolute"><defs>
 </defs></svg>`;
 
 // ---------- navegação ----------
+const TOTAL = 5;
 function nav(page) {
   const prev = page > 1 ? `<a class="nbtn" href="#p${page - 1}">← Voltar</a>` : '<span></span>';
-  const dots = [1, 2, 3, 4].map((i) => `<a class="dot ${i === page ? 'on' : ''}" href="#p${i}">${i}</a>`).join('');
-  const next = page < 4 ? `<a class="nbtn solid" href="#p${page + 1}">Avançar →</a>` : `<a class="nbtn solid" href="${esc(D.whatsapp_link)}">WhatsApp →</a>`;
-  const foot = page < 4 ? `<span>${page} / 4</span><em>arraste para o lado →</em>` : `<span>4 / 4</span><em>Agende pelo WhatsApp ${esc(D.whatsapp_exibicao)}</em>`;
+  const dots = Array.from({ length: TOTAL }, (_, k) => k + 1).map((i) => `<a class="dot ${i === page ? 'on' : ''}" href="#p${i}">${i}</a>`).join('');
+  const next = page < TOTAL ? `<a class="nbtn solid" href="#p${page + 1}">Avançar →</a>` : `<a class="nbtn solid" href="${esc(D.whatsapp_link)}">WhatsApp →</a>`;
+  const foot = page < TOTAL ? `<span>${page} / ${TOTAL}</span><em>arraste para o lado →</em>` : `<span>${TOTAL} / ${TOTAL}</span><em>Agende pelo WhatsApp ${esc(D.whatsapp_exibicao)}</em>`;
   return `<nav class="nav">${prev}<a class="nbtn" href="#p1">Capa</a><span class="dots">${dots}</span>${next}</nav><div class="imgfoot">${foot}</div>`;
 }
 const frame = (dark = false) => `<div class="frame ${dark ? 'dark' : ''}"></div><div class="corners">${spark(10, 10, 20)}${spark(510, 10, 20)}${spark(10, 930, 20)}${spark(510, 930, 20)}</div>`;
@@ -148,7 +149,7 @@ const p1 = `<section class="page cover" id="p1">
   <h1 class="lockup"><span class="lk-a">Agenda</span><span class="lk-b">de Dezembro</span><span class="lk-c"><i></i>2026<i></i></span></h1>
   <p class="quote">“Seu momento de beleza para as festas<br>começa aqui!”</p>
   <a class="cta" href="#p2">Abrir agenda <span>→</span></a>
-  <div class="mini-index"><a href="#p2">Regras</a><i>·</i><a href="#p3">Calendário</a><i>·</i><a href="#p4">Valores</a></div>
+  <div class="mini-index"><a href="#p2">Regras</a><i>·</i><a href="#p3">Calendário</a><i>·</i><a href="#p4">Horários</a><i>·</i><a href="#p5">Valores</a></div>
   <div class="swipe">Arraste para ver a agenda <span>→</span></div>
 </section>`;
 
@@ -237,7 +238,42 @@ const pRegras = `<section class="page inner pg-regras" id="p2">
   ${nav(2)}
 </section>`;
 
-// ---------- PÁGINA 4 — VALORES ----------
+// ---------- PÁGINA 4 — GRADE DE HORÁRIOS (toque abre o WhatsApp) ----------
+const hNum = (h) => parseInt(String(h), 10);
+const horasExtras = new Set(gruposExtras.flatMap((g) => g.horas.map(hNum)));
+const hIni = hNum(H.inicio || '9h'), hFim = hNum(H.fim || '20h');
+const horasGrade = [...new Set([...Array.from({ length: hFim - hIni + 1 }, (_, k) => hIni + k), ...horasExtras])].sort((a, b) => a - b);
+const ocupados = (D.grade_horarios && D.grade_horarios.ocupados) || {};
+const NOME_LONGO = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado', 'domingo'];
+const waBase = String(D.whatsapp_link || '').split('?')[0];
+let gradeRows = '';
+for (let d = 1; d <= diasNoMes; d++) {
+  if (tipoDia(d) !== 'aberto') continue;
+  const dow = (offsetSeg + d - 1) % 7; const dd = String(d).padStart(2, '0');
+  const occ = new Set((ocupados[String(d)] || ocupados[dd] || []).map(hNum));
+  const slots = horasGrade.map((h) => {
+    const ex = horasExtras.has(h) ? ' ex' : '';
+    if (occ.has(h)) return `<span class="slot oc${ex}"></span>`;
+    const msg = `Olá, Mayara! Quero agendar no dia ${dd}/12 (${NOME_LONGO[dow]}) às ${h}h.${ex ? ' (horário extra)' : ''}`;
+    return `<a class="slot${ex}" href="${esc(waBase)}?text=${encodeURIComponent(msg)}"></a>`;
+  }).join('');
+  gradeRows += `<div class="grow${dow === 0 && d > 1 ? ' wk' : ''}"><b>${NOMES_DIA[dow]} <i>${dd}</i></b>${slots}</div>`;
+}
+const gradeHead = `<div class="grow ghead"><b></b>${horasGrade.map((h) => `<span class="${horasExtras.has(h) ? 'ex' : ''}">${h}</span>`).join('')}</div>`;
+const pGrade = `<section class="page inner pg-grade" id="p4">
+  ${frame()}
+  <svg class="abs sprigs" style="left:0;top:0" width="540" height="960" viewBox="0 0 540 960">${sprig(-14, -18, 120, 34, 61, { op: .75 })}${sprig(554, -18, 120, 146, 62, { op: .75, flip: true })}</svg>
+  ${header('✦ &nbsp;Toque para agendar&nbsp; ✦', 'Horários de Dezembro', 'bow', 'one')}
+  <p class="lead sm">Toque em um horário livre e envie a mensagem no WhatsApp.</p>
+  <div class="card grade-card" ${T(71)}>
+    ${gradeHead}
+    <div class="gbody">${gradeRows}</div>
+    <div class="glegend"><span><i class="slot"></i>livre</span><span><i class="slot ex"></i>extra + ${esc((gruposExtras[0] || {}).taxa || '')}</span><span><i class="slot oc"></i>ocupado</span></div>
+  </div>
+  ${nav(4)}
+</section>`;
+
+// ---------- PÁGINA 5 — VALORES ----------
 const servicos = D.servicos || [];
 let linhas = '';
 if (servicos.length) {
@@ -253,7 +289,7 @@ if (servicos.length) {
 } else {
   for (let i = 0; i < (D.linhas_vazias_tabela || 7); i++) linhas += `<div class="srow empty"><div class="sname"></div><i></i><div class="sval"></div></div>`;
 }
-const p4 = `<section class="page inner" id="p4">
+const pValores = `<section class="page inner" id="p5">
   ${frame()}
   <svg class="abs sprigs" style="left:0;top:0" width="540" height="960" viewBox="0 0 540 960">${sprig(-14, -18, 120, 34, 41, { op: .75 })}${sprig(554, -18, 120, 146, 42, { op: .75, flip: true })}</svg>
   ${header('✦ &nbsp;Valores de dezembro&nbsp; ✦', 'Seu momento<br>de beleza', 'tree', 'two')}
@@ -270,7 +306,7 @@ const p4 = `<section class="page inner" id="p4">
     <div class="brand dark">Studio Beauty</div>
     <a class="wa" href="${esc(D.whatsapp_link)}">WhatsApp: ${esc(D.whatsapp_exibicao)}</a>
   </div>
-  ${nav(4)}
+  ${nav(5)}
 </section>`;
 
 // ---------- CSS ----------
@@ -498,6 +534,25 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .imgmode .swipe { display: block !important; margin-top: 30px; padding: 13px 30px; border: 1px solid ${C.dourado}; border-radius: 40px; font-family: ${SANS}; font-weight: 500; font-size: 13px; letter-spacing: 3.5px; text-transform: uppercase; color: ${C.dourado}; }
 .swipe span { letter-spacing: 0; }
 
+/* grade de horários */
+.pg-grade .kicker { margin-top: 56px; }
+.lead.sm { font-size: 14px; margin-top: 6px; }
+.grade-card { margin-top: 12px; padding: 10px 10px 10px 12px; }
+.grow { display: grid; grid-template-columns: 50px repeat(${horasGrade.length}, 1fr); align-items: center; height: 21px; }
+.grow.wk { border-top: .8px solid rgba(198,163,106,.75); margin-top: 3px; padding-top: 3px; height: 25px; }
+.grow > b { font-family: ${SANS}; font-weight: 500; font-size: 9.5px; letter-spacing: .4px; text-transform: uppercase; color: ${C.marrom}; white-space: nowrap; }
+.grow > b i { font-style: normal; font-family: ${SERIF}; font-weight: 600; font-size: 11.5px; color: ${C.vinho}; letter-spacing: 0; }
+.ghead { height: 22px; border-bottom: 1px solid ${C.dourado}; margin-bottom: 4px; }
+.ghead span { text-align: center; font-family: ${SERIF}; font-weight: 600; font-size: 11px; color: ${C.marrom}; }
+.ghead span.ex { color: ${C.ouroEsc}; font-style: italic; }
+.slot { justify-self: center; display: block; width: 15px; height: 15px; border-radius: 50%; border: 1.1px solid ${C.vinho}; background: #fff; }
+.slot.ex { border-color: ${C.dourado}; background: rgba(198,163,106,.28); }
+.slot.oc { border-color: #CDB9A6; background: #E6D8CA; position: relative; }
+.slot.oc::after { content: ''; position: absolute; left: 2px; right: 2px; top: 50%; height: 1px; background: #9A826F; transform: rotate(-45deg); }
+.glegend { display: flex; justify-content: center; gap: 18px; margin-top: 10px; padding-top: 8px; border-top: .6px solid rgba(198,163,106,.6); font-size: 11.5px; }
+.glegend span { display: inline-flex; align-items: center; gap: 6px; }
+.glegend .slot { width: 12px; height: 12px; }
+
 /* espaçamento das páginas 2 e 3 (conteúdo mais enxuto) */
 .pg-cal:not(.compact) .kicker { margin-top: 62px; }
 .pg-cal:not(.compact) .cal-card { margin-top: 18px; padding: 10px 20px 14px; }
@@ -526,7 +581,7 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .dot.on { background: ${C.dourado}; color: ${C.off}; }
 `;
 
-let html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agenda de Dezembro 2026 — Mayara Dias | Studio Beauty</title><style>${CSS}</style></head><body>${DEFS}${p1}${pRegras}${pCal}${p4}</body></html>`;
+let html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agenda de Dezembro 2026 — Mayara Dias | Studio Beauty</title><style>${CSS}</style></head><body>${DEFS}${p1}${pRegras}${pCal}${pGrade}${pValores}</body></html>`;
 html = html.replace(/R\$ (?=\d)/g, () => 'R$\u00a0'); // "R$" nunca separado do valor
 fs.mkdirSync(path.join(DIR, 'build'), { recursive: true });
 fs.writeFileSync(path.join(DIR, 'build', 'agenda.html'), html);
@@ -537,7 +592,7 @@ await page.setContent(html, { waitUntil: 'load' });
 await page.evaluate(() => document.fonts.ready);
 // página de valores: compacta automaticamente se a lista não couber
 await page.evaluate(() => {
-  const p = document.getElementById('p4'); const nav = p.querySelector('.nav');
+  const p = document.getElementById('p5'); const nav = p.querySelector('.nav');
   const sobra = () => nav.getBoundingClientRect().top - Math.max(...[...p.children].filter((c) => getComputedStyle(c).position !== 'absolute').map((c) => c.getBoundingClientRect().bottom));
   for (const c of ['dense', 'xdense']) { if (sobra() >= 4) break; p.classList.add(c); }
 });
@@ -577,7 +632,7 @@ const ip = await ctx.newPage();
 await ip.setContent(renderizado, { waitUntil: 'load' });
 await ip.evaluate(() => document.documentElement.classList.add('imgmode'));
 await ip.evaluate(() => document.fonts.ready);
-for (let i = 1; i <= 4; i++) await ip.locator('#p' + i).screenshot({ path: path.join(imgDir, `Agenda_Natal_2026_pagina_${i}.jpg`), type: 'jpeg', quality: 92 });
+for (let i = 1; i <= TOTAL; i++) await ip.locator('#p' + i).screenshot({ path: path.join(imgDir, `Agenda_Natal_2026_pagina_${i}.jpg`), type: 'jpeg', quality: 92 });
 console.log('Imagens geradas em', imgDir);
 console.log('Convite interativo:', await gerarConvite({ browser, renderizado, outDir: path.join(path.dirname(OUT), 'convite'), D }));
 await browser.close();
