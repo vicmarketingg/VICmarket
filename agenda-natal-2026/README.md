@@ -38,7 +38,7 @@ O script avisa no terminal se algum conteúdo passou do limite da página.
 "horario_atendimento": { "dias": "Segunda a sábado", "inicio": "9h", "fim": "20h" },
 "horarios_extras": [
   { "horas": ["7h", "8h"], "taxa": "R$ 20,00", "obs": "paga junto com o sinal" },
-  { "horas": ["21h", "22h", "23h"] }
+  { "horas": ["21h", "22h", "23h"], "taxa": "R$ 20,00" }
 ]
 ```
 Os horários extras aparecem no quadro da página 2 e como regra na página 3. Use `"horarios_extras": []` para não mostrar.

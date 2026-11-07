@@ -166,7 +166,10 @@ const listaTxt = (a) => (a.length > 1 ? a.slice(0, -1).join(', ') + ' e ' + a.at
 const gruposExtras = (Array.isArray(D.horarios_extras) ? D.horarios_extras : []).filter((g) => (g.horas || []).length);
 const extrasTxt = gruposExtras.length > 0;
 const extrasQuadro = gruposExtras.map((g) => `<div class="hx"><b>${esc(listaTxt(g.horas))}</b>${g.taxa ? `<em>+ ${esc(g.taxa)}</em>` : '<em class="sem">extra</em>'}</div>`).join('');
-const extrasRegra = gruposExtras.map((g, i) => g.taxa
+const mesmaTaxa = gruposExtras.length > 1 && gruposExtras.every((g) => g.taxa && g.taxa === gruposExtras[0].taxa);
+const extrasRegra = mesmaTaxa
+  ? `Os horários das <b>${esc(listaTxt(gruposExtras.flatMap((g) => g.horas)))}</b> são extras, com taxa de <b>${esc(gruposExtras[0].taxa)}</b> para agendar${gruposExtras.find((g) => g.obs) ? `, ${esc(gruposExtras.find((g) => g.obs).obs)}` : ''}.`
+  : gruposExtras.map((g, i) => g.taxa
   ? `Os horários das <b>${esc(listaTxt(g.horas))}</b> são extras, com taxa de <b>${esc(g.taxa)}</b> para agendar${g.obs ? `, ${esc(g.obs)}` : ''}.`
   : `Os horários das <b>${esc(listaTxt(g.horas))}</b> ${i ? 'também ' : ''}são horários extras.`).join(' ');
 const normais = H.inicio
