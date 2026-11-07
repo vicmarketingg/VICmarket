@@ -160,8 +160,17 @@ const legenda = `<div class="legend">
   ${usaDisp ? '<span><i class="lg vagas"></i>vagas</span><span><i class="lg poucas"></i>poucas vagas</span><span><i class="lg lotado"></i>lotado</span>' : ''}
 </div>`;
 
-const normais = (D.horarios_normais || []).length
-  ? `<div class="times">${D.horarios_normais.map((h) => `<span>${esc(h)}</span>`).join('')}</div>`
+const H = D.horario_atendimento || {};
+const listaTxt = (a) => (a.length > 1 ? a.slice(0, -1).join(', ') + ' e ' + a.at(-1) : a.join(''));
+// horarios_extras: grupos [{ horas: [...], taxa?: 'R$ 20,00', obs?: '...' }]
+const gruposExtras = (Array.isArray(D.horarios_extras) ? D.horarios_extras : []).filter((g) => (g.horas || []).length);
+const extrasTxt = gruposExtras.length > 0;
+const extrasQuadro = gruposExtras.map((g) => `<div class="hx"><b>${esc(listaTxt(g.horas))}</b>${g.taxa ? `<em>+ ${esc(g.taxa)}</em>` : '<em class="sem">extra</em>'}</div>`).join('');
+const extrasRegra = gruposExtras.map((g, i) => g.taxa
+  ? `Os horários das <b>${esc(listaTxt(g.horas))}</b> são extras, com taxa de <b>${esc(g.taxa)}</b> para agendar${g.obs ? `, ${esc(g.obs)}` : ''}.`
+  : `Os horários das <b>${esc(listaTxt(g.horas))}</b> ${i ? 'também ' : ''}são horários extras.`).join(' ');
+const normais = H.inicio
+  ? `<div class="hours-main"><span class="hdias">${esc(H.dias || 'Segunda a sábado')}</span><b>${esc(H.inicio)} <i>às</i> ${esc(H.fim)}</b></div>${extrasTxt ? `<div class="hours-extra"><span>Horários extras</span><div class="hxs">${extrasQuadro}</div></div>` : ''}`
   : `<div class="soon"><em>Em breve</em><span>os horários serão divulgados aqui</span></div>`;
 
 let porDia;
@@ -204,10 +213,11 @@ const p3 = `<section class="page inner" id="p3">
   <div class="card rules-card" ${T(51)}>
     ${item(1, 'Reajuste de valores', `<p>Os valores dos serviços serão reajustados a partir de <b>20 de novembro de 2026</b>.</p>`)}
     ${item(2, 'Confirmação do horário', `<p>Para garantir o agendamento, é necessário pagar antecipadamente um sinal de <b>R$ 50,00</b>. O restante é pago no dia do atendimento.</p>`)}
+    ${extrasTxt ? item(3, 'Horários extras', `<p>${extrasRegra}</p>`) : ''}
   </div>
   <div class="card wine-card" ${T(55, C.vinho)}>
     ${bow(404, -30, 66, 12)}
-    ${item(3, 'Cancelamentos e reagendamentos', `<p>Em caso de cancelamento, desistência ou falta, <b>o sinal não será reembolsado</b>.</p><p>Para reagendar, avise com <b>pelo menos 24 horas de antecedência</b>. A nova data dependerá da disponibilidade da agenda.</p>`)}
+    ${item(extrasTxt ? 4 : 3, 'Cancelamentos e reagendamentos', `<p>Em caso de cancelamento, desistência ou falta, <b>o sinal não será reembolsado</b>.</p><p>Para reagendar, avise com <b>pelo menos 24 horas de antecedência</b>. A nova data dependerá da disponibilidade da agenda.</p>`)}
   </div>
   ${nav(3)}
 </section>`;
@@ -349,6 +359,19 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 
 /* horários */
 .hours-card { margin-top: 16px; padding: 18px 20px 14px; }
+.hours-main { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.hdias { font-weight: 500; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: ${C.ouroEsc}; }
+.hours-main b { font-family: ${SERIF}; font-weight: 500; font-size: 34px; line-height: 1.15; color: ${C.vinho}; }
+.hours-main b i { font-style: italic; font-weight: 400; font-size: .62em; color: ${C.ouroEsc}; padding: 0 4px; }
+.hours-extra { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: .6px solid rgba(198,163,106,.55); }
+.hours-extra > span { font-weight: 500; font-size: 11px; letter-spacing: 2.4px; text-transform: uppercase; color: ${C.ouroEsc}; }
+.hxs { display: flex; gap: 22px; justify-content: center; }
+.hx { display: flex; align-items: baseline; gap: 8px; }
+.hx b { font-family: ${SERIF}; font-weight: 600; font-size: 18px; color: ${C.marrom}; }
+.hx em { font-style: normal; font-weight: 500; font-size: 12.5px; color: ${C.vinho}; background: rgba(198,163,106,.2); padding: 2px 9px; border-radius: 20px; }
+.hx em.sem { background: none; border: .8px solid rgba(198,163,106,.7); color: ${C.ouroEsc}; }
+.compact .hours-main b { font-size: 26px; }
+.compact .hours-extra { margin-top: 6px; padding-top: 6px; }
 .hh { padding-bottom: 7px; border-bottom: .8px solid ${C.dourado}; margin-bottom: 10px; text-align: center; }
 .hours-card .soon { align-items: center; text-align: center; }
 .hours-card .times { grid-template-columns: repeat(5, 1fr); text-align: center; }
@@ -455,22 +478,22 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .swipe span { letter-spacing: 0; }
 
 /* espaçamento das páginas 2 e 3 (conteúdo mais enxuto) */
-#p2:not(.compact) .kicker { margin-top: 74px; }
-#p2:not(.compact) .cal-card { margin-top: 28px; padding: 14px 20px 18px; }
-#p2:not(.compact) .cell { height: 58px; }
+#p2:not(.compact) .kicker { margin-top: 62px; }
+#p2:not(.compact) .cal-card { margin-top: 18px; padding: 10px 20px 14px; }
+#p2:not(.compact) .cell { height: 56px; }
 #p2:not(.compact) .cell b { font-size: 21px; }
 #p2:not(.compact) .cell.fechado b { width: 36px; height: 36px; font-size: 16px; }
 #p2:not(.compact) .legend { margin-top: 16px; }
-#p2:not(.compact) .hours-card { margin-top: 26px; padding: 20px 22px 18px; }
-#p2:not(.compact) .note { margin-top: 26px; }
-#p3 .kicker { margin-top: 80px; }
+#p2:not(.compact) .hours-card { margin-top: 22px; padding: 18px 22px 16px; }
+#p2:not(.compact) .note { margin-top: 20px; }
+#p3 .kicker { margin-top: 62px; }
 #p3 .lead { margin-top: 14px; font-size: 18px; }
-#p3 .rules-card { margin-top: 34px; padding: 10px 26px; }
-#p3 .ri { padding: 22px 0 20px; grid-template-columns: 54px 1fr; }
+#p3 .rules-card { margin-top: 20px; padding: 6px 24px; }
+#p3 .ri { padding: 16px 0 14px; grid-template-columns: 50px 1fr; }
 #p3 .rn { font-size: 32px; }
 #p3 .ri h3 { font-size: 12.5px; margin-bottom: 8px; }
-#p3 .ri p { font-size: 15.5px; line-height: 1.6; }
-#p3 .wine-card { margin-top: 30px; padding: 8px 26px; }
+#p3 .ri p { font-size: 14.5px; line-height: 1.55; }
+#p3 .wine-card { margin-top: 18px; padding: 4px 24px; }
 
 /* navegação */
 .nav { position: absolute !important; left: 40px; right: 40px; bottom: 36px; height: 48px; z-index: 10 !important; display: flex; align-items: center; justify-content: space-between;
@@ -482,7 +505,8 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .dot.on { background: ${C.dourado}; color: ${C.off}; }
 `;
 
-const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agenda de Natal 2026 — Mayara Dias | Studio Beauty</title><style>${CSS}</style></head><body>${DEFS}${p1}${p2}${p3}${p4}</body></html>`;
+let html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agenda de Natal 2026 — Mayara Dias | Studio Beauty</title><style>${CSS}</style></head><body>${DEFS}${p1}${p2}${p3}${p4}</body></html>`;
+html = html.replace(/R\$ (?=\d)/g, 'R$&nbsp;'); // "R$" nunca separado do valor
 fs.mkdirSync(path.join(DIR, 'build'), { recursive: true });
 fs.writeFileSync(path.join(DIR, 'build', 'agenda.html'), html);
 

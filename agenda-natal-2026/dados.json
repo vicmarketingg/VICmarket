@@ -4,10 +4,30 @@
   "whatsapp_link": "https://wa.me/5521981826692",
   "dias_sem_atendimento": [
     13,
-    24,
     27
   ],
-  "horarios_normais": [],
+  "horario_atendimento": {
+    "dias": "Segunda a sábado",
+    "inicio": "9h",
+    "fim": "20h"
+  },
+  "horarios_extras": [
+    {
+      "horas": [
+        "7h",
+        "8h"
+      ],
+      "taxa": "R$ 20,00",
+      "obs": "paga junto com o sinal"
+    },
+    {
+      "horas": [
+        "21h",
+        "22h",
+        "23h"
+      ]
+    }
+  ],
   "disponibilidade": {},
   "servicos": [
     {

@@ -33,11 +33,15 @@ node build.mjs
 
 O script avisa no terminal se algum conteúdo passou do limite da página.
 
-### Horários normais (página 2)
+### Horários de atendimento (páginas 2 e 3)
 ```json
-"horarios_normais": ["09h", "11h", "14h", "16h", "18h"]
+"horario_atendimento": { "dias": "Segunda a sábado", "inicio": "9h", "fim": "20h" },
+"horarios_extras": [
+  { "horas": ["7h", "8h"], "taxa": "R$ 20,00", "obs": "paga junto com o sinal" },
+  { "horas": ["21h", "22h", "23h"] }
+]
 ```
-Vazio = aparece "horários normais em breve".
+Os horários extras aparecem no quadro da página 2 e como regra na página 3. Use `"horarios_extras": []` para não mostrar.
 
 ### Disponibilidade de cada dia (página 2)
 Use o número do dia. `status` aceita `"vagas"`, `"poucas"` ou `"lotado"`; `horarios` é opcional.
@@ -50,7 +54,7 @@ Use o número do dia. `status` aceita `"vagas"`, `"poucas"` ou `"lotado"`; `hora
 Com dados aqui, o calendário mostra o status em cada dia e a página entra automaticamente no modo compacto, com a tabela "VAGAS POR DIA". Dias sem atendimento (13, 24, 27 e domingos) são ignorados.
 
 ### Dias sem atendimento
-`"dias_sem_atendimento": [13, 24, 27]`. Domingos já são marcados automaticamente.
+`"dias_sem_atendimento": [13, 27]`. Domingos já são marcados automaticamente.
 
 ### Serviços e valores (página 4)
 ```json
