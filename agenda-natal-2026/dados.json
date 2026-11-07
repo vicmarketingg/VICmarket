@@ -30,6 +30,76 @@
     }
   ],
   "disponibilidade": {},
-  "servicos": [],
+  "servicos": [
+    {
+      "secao": "Unhas",
+      "nome": "Gel na tips",
+      "precos": [
+        {
+          "rotulo": "colocação",
+          "valor": "R$ 110,00"
+        },
+        {
+          "rotulo": "manutenção",
+          "valor": "R$ 95,00"
+        }
+      ]
+    },
+    {
+      "secao": "Unhas",
+      "nome": "Molde F1",
+      "precos": [
+        {
+          "rotulo": "colocação",
+          "valor": "R$ 95,00"
+        },
+        {
+          "rotulo": "manutenção",
+          "valor": "R$ 85,00"
+        }
+      ]
+    },
+    {
+      "secao": "Unhas",
+      "nome": "Banho de gel",
+      "valor": "R$ 75,00"
+    },
+    {
+      "secao": "Unhas",
+      "nome": "Blindagem",
+      "valor": "R$ 65,00"
+    },
+    {
+      "secao": "Unhas",
+      "nome": "Postiça realista",
+      "valor": "R$ 55,00"
+    },
+    {
+      "secao": "Pés",
+      "nome": "Pedicure simples",
+      "valor": "R$ 35,00"
+    },
+    {
+      "secao": "Pés",
+      "nome": "Pedicure com esmaltação em gel",
+      "valor": "R$ 60,00"
+    },
+    {
+      "secao": "Pés",
+      "nome": "Pedicure + spa dos pés",
+      "valor": "R$ 60,00"
+    },
+    {
+      "secao": "Pés",
+      "nome": "Pedicure + plástica dos pés",
+      "valor": "R$ 75,00"
+    },
+    {
+      "secao": "Pés",
+      "nome": "Pedicure premium completo",
+      "info": "esmaltação em gel + plástica dos pés",
+      "valor": "R$ 90,00"
+    }
+  ],
   "linhas_vazias_tabela": 7
 }

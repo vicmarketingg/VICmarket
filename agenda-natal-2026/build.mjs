@@ -220,17 +220,25 @@ const p3 = `<section class="page inner" id="p3">
 const servicos = D.servicos || [];
 let linhas = '';
 if (servicos.length) {
-  linhas = servicos.map((s) => `<div class="srow"><div class="sname"><b>${esc(s.nome)}</b>${s.info ? `<small>${esc(s.info)}</small>` : ''}</div><i></i><div class="sval">${esc(s.valor)}</div></div>`).join('');
+  let secao = null;
+  linhas = servicos.map((sv) => {
+    let h = '';
+    if (sv.secao && sv.secao !== secao) { secao = sv.secao; h += `<div class="ssec"><span>${esc(secao)}</span></div>`; }
+    const valor = Array.isArray(sv.precos) && sv.precos.length
+      ? `<div class="svals">${sv.precos.map((pr) => `<span><em>${esc(pr.rotulo)}</em>${esc(pr.valor)}</span>`).join('')}</div>`
+      : `<div class="sval">${esc(sv.valor)}</div>`;
+    return h + `<div class="srow"><div class="sname"><b>${esc(sv.nome).replace(/ \+ /g, ' <span class="plus">+</span> ')}</b>${sv.info ? `<small>${esc(sv.info)}</small>` : ''}</div><i></i>${valor}</div>`;
+  }).join('');
 } else {
   for (let i = 0; i < (D.linhas_vazias_tabela || 7); i++) linhas += `<div class="srow empty"><div class="sname"></div><i></i><div class="sval"></div></div>`;
 }
-const p4 = `<section class="page inner ${servicos.length > 7 ? 'dense' : ''} ${servicos.length > 10 ? 'xdense' : ''}" id="p4">
+const p4 = `<section class="page inner" id="p4">
   ${frame()}
   <svg class="abs sprigs" style="left:0;top:0" width="540" height="960" viewBox="0 0 540 960">${sprig(-14, -18, 120, 34, 41, { op: .75 })}${sprig(554, -18, 120, 146, 42, { op: .75, flip: true })}</svg>
-  ${header('✦ &nbsp;Serviços &amp; valores&nbsp; ✦', 'Seu momento<br>de beleza', 'tree', 'two')}
+  ${header('✦ &nbsp;Valores de dezembro&nbsp; ✦', 'Seu momento<br>de beleza', 'tree', 'two')}
   <p class="lead">Confira nossos serviços e valores.</p>
   <div class="card menu-card" ${T(81)}>
-    ${bow(-22, -26, 56, -16)}
+    ${bow(-36, -40, 56, -16)}
     <div class="thead"><span>Procedimento</span><span>Valor</span></div>
     <div class="tbody">${linhas}</div>
     ${servicos.length ? '' : '<p class="soon-menu">Serviços e valores atualizados em breve.</p>'}
@@ -406,6 +414,14 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .sname b { font-family: ${SERIF}; font-weight: 500; font-size: 16.5px; line-height: 1.1; display: block; }
 .sname small { font-size: 11px; font-style: italic; color: #7D5E4D; display: block; margin-top: 1px; }
 .sval { font-family: ${SERIF}; font-weight: 600; font-size: 16.5px; color: ${C.vinho}; white-space: nowrap; }
+.plus { font-family: ${SANS}; font-weight: 300; font-size: .9em; }
+.svals { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.svals span { font-family: ${SERIF}; font-weight: 600; font-size: 15.5px; color: ${C.vinho}; white-space: nowrap; line-height: 1.25; }
+.svals em { font-family: ${SANS}; font-style: normal; font-weight: 400; font-size: 10px; letter-spacing: 1.6px; text-transform: uppercase; color: ${C.ouroEsc}; margin-right: 8px; }
+.dense .svals span { font-size: 13.5px; }
+.ssec { display: flex; align-items: center; gap: 10px; margin: 12px 0 2px; font-family: ${SERIF}; font-style: italic; font-size: 17px; color: ${C.ouroEsc}; }
+.ssec::after { content: ''; flex: 1; height: .6px; background: rgba(198,163,106,.6); }
+.dense .ssec { margin: 8px 0 0; font-size: 15px; }
 .srow.empty > i { border-bottom-style: solid; border-bottom-width: .6px; border-color: rgba(198,163,106,.55); transform: translateY(-2px); }
 .soon-menu { margin-top: 14px; text-align: center; font-family: ${SERIF}; font-style: italic; font-weight: 400; font-size: 15px; color: ${C.vinho}; }
 .thanks { margin-top: 20px; width: 430px; text-align: center; display: flex; flex-direction: column; align-items: center; }
@@ -423,8 +439,10 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .dense .ty { font-size: 13.5px; }
 .dense .sig { font-size: 23px; margin-top: 4px; }
 .xdense .srow { padding: 3px 0 2px; }
+.xdense .ssec { margin-top: 6px; }
 .xdense .sname small { display: inline; margin-left: 6px; }
-.xdense .ty { display: none; }
+.xdense .ty { font-size: 12.5px; line-height: 1.4; }
+.xdense .lead { display: none; }
 
 /* navegação */
 .nav { position: absolute !important; left: 40px; right: 40px; bottom: 36px; height: 48px; z-index: 10 !important; display: flex; align-items: center; justify-content: space-between;
@@ -444,6 +462,12 @@ const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 540, height: 960 } });
 await page.setContent(html, { waitUntil: 'load' });
 await page.evaluate(() => document.fonts.ready);
+// página de valores: compacta automaticamente se a lista não couber
+await page.evaluate(() => {
+  const p = document.getElementById('p4'); const nav = p.querySelector('.nav');
+  const sobra = () => nav.getBoundingClientRect().top - Math.max(...[...p.children].filter((c) => getComputedStyle(c).position !== 'absolute').map((c) => c.getBoundingClientRect().bottom));
+  for (const c of ['dense', 'xdense']) { if (sobra() >= 4) break; p.classList.add(c); }
+});
 // papel com borda "deckle" (rasgada fina), ajustado ao tamanho real de cada cartão
 await page.evaluate(() => {
   const rng = (seed) => { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); };

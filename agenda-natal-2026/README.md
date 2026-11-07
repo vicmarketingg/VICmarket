@@ -46,10 +46,17 @@ Com dados aqui, o calendário mostra o status em cada dia e a página entra auto
 ### Serviços e valores (página 4)
 ```json
 "servicos": [
-  { "nome": "Nome do procedimento", "valor": "R$ 00,00", "info": "informação complementar (opcional)" }
+  { "secao": "Unhas", "nome": "Gel na tips", "precos": [
+      { "rotulo": "colocação", "valor": "R$ 110,00" },
+      { "rotulo": "manutenção", "valor": "R$ 95,00" } ] },
+  { "secao": "Unhas", "nome": "Banho de gel", "valor": "R$ 75,00" },
+  { "secao": "Pés", "nome": "Pedicure premium completo", "info": "esmaltação em gel + plástica dos pés", "valor": "R$ 90,00" }
 ]
 ```
-Vazio = linhas em branco + "serviços e valores atualizados em breve". Até ~7 serviços com folga; a partir de 8 a página fica mais compacta automaticamente.
+- `secao` (opcional) cria os subtítulos *Unhas* / *Pés*.
+- Use `valor` para preço único ou `precos` para mais de um (ex.: colocação e manutenção).
+- `info` (opcional) aparece em letra menor embaixo do nome.
+- Se a lista crescer, a página fica mais compacta automaticamente.
 
 ## Requisitos
 - Node.js + Playwright (Chromium)
