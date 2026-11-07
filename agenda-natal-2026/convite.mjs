@@ -9,7 +9,7 @@ export async function gerarConvite({ browser, renderizado, outDir, D }) {
   const body = renderizado.slice(renderizado.indexOf('<body>') + 6, renderizado.lastIndexOf('</body>'));
   const site = (D.site_url || '').replace(/\/+$/, '');
   const ogImg = site ? `${site}/capa.jpg` : 'capa.jpg';
-  const titulo = 'Agenda de Natal 2026 — Mayara Dias | Studio Beauty';
+  const titulo = 'Agenda de Dezembro 2026 — Mayara Dias | Studio Beauty';
   const desc = 'Você recebeu um convite. Toque para abrir a agenda de dezembro.';
 
   const CONVITE_CSS = `
@@ -101,10 +101,10 @@ ${site ? `<meta property="og:url" content="${site}/">` : ''}<meta name="twitter:
 ${defs}
 <div class="env-screen" id="env">
   <div class="env-kicker">✦ &nbsp;Um convite para você&nbsp; ✦</div>
-  <div class="env-title">Agenda de Natal 2026<small>Mayara Dias | Studio Beauty</small></div>
+  <div class="env-title">Agenda de Dezembro 2026<small>Mayara Dias | Studio Beauty</small></div>
   <div class="envelope" id="envelope" role="button" aria-label="Abrir o convite" tabindex="0">
     <div class="env-back"></div>
-    <div class="letter"><b>Agenda de Natal</b><span>sua agenda está aqui</span></div>
+    <div class="letter"><b>Agenda de Dezembro</b><span>sua agenda está aqui</span></div>
     <div class="env-front"><div class="l"></div><div class="r"></div><div class="b"></div></div>
     <div class="flap"></div>
     <div class="seal">${SEAL}</div>

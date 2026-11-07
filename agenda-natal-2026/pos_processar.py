@@ -18,7 +18,7 @@ for page in pages:
             a[NameObject("/Dest")] = ArrayObject([nomes[str(dest)], NameObject("/Fit")])
 
 writer.add_metadata({
-    "/Title": "Agenda de Natal 2026 — Mayara Dias | Studio Beauty",
+    "/Title": "Agenda de Dezembro 2026 — Mayara Dias | Studio Beauty",
     "/Author": "Mayara Dias | Studio Beauty",
     "/Subject": "Agenda de dezembro 2026: calendário, horários, regras e valores",
 })

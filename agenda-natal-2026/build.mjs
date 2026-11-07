@@ -144,7 +144,7 @@ const p1 = `<section class="page cover" id="p1">
     <div class="arch-outer"><div class="arch">${enfeite}</div></div>
     ${bow(70, -38, 96, 0)}
   </div>
-  <h1 class="lockup"><span class="lk-a">Agenda</span><span class="lk-b">de Natal</span><span class="lk-c"><i></i>2026<i></i></span></h1>
+  <h1 class="lockup"><span class="lk-a">Agenda</span><span class="lk-b">de Dezembro</span><span class="lk-c"><i></i>2026<i></i></span></h1>
   <p class="quote">“Seu momento de beleza para as festas<br>começa aqui!”</p>
   <a class="cta" href="#p2">Abrir minha agenda <span>→</span></a>
   <div class="mini-index"><a href="#p2">Calendário</a><i>·</i><a href="#p3">Regras</a><i>·</i><a href="#p4">Valores</a></div>
@@ -523,7 +523,7 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .dot.on { background: ${C.dourado}; color: ${C.off}; }
 `;
 
-let html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agenda de Natal 2026 — Mayara Dias | Studio Beauty</title><style>${CSS}</style></head><body>${DEFS}${p1}${p2}${p3}${p4}</body></html>`;
+let html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agenda de Dezembro 2026 — Mayara Dias | Studio Beauty</title><style>${CSS}</style></head><body>${DEFS}${p1}${p2}${p3}${p4}</body></html>`;
 html = html.replace(/R\$ (?=\d)/g, () => 'R$\u00a0'); // "R$" nunca separado do valor
 fs.mkdirSync(path.join(DIR, 'build'), { recursive: true });
 fs.writeFileSync(path.join(DIR, 'build', 'agenda.html'), html);
