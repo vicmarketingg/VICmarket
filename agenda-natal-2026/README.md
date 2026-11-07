@@ -16,6 +16,12 @@ Arquivos gerados:
 - `imagens/Agenda_Natal_2026_pagina_1..4.jpg` — 1080×1920, para mandar direto na conversa, no status do WhatsApp ou nos stories (sem botões, com "arraste para o lado").
 - `Agenda_Natal_2026_Mayara_Dias.pdf` — PDF interativo com botões de navegação.
 - `Agenda_Natal_2026_Mayara_Dias.html` — mesma agenda para abrir no navegador.
+- `convite/` — **convite interativo** (envelope com selo de cera que abre e mostra a agenda deslizando). Para virar link, publique a pasta inteira (veja abaixo).
+
+## Convite interativo: como publicar o link
+1. Acesse **app.netlify.com/drop** (grátis) e arraste a pasta `convite` para a página.
+2. O Netlify gera um link (ex.: `nome-aleatorio.netlify.app`). Em *Site settings* dá para trocar o nome, ex.: `agenda-mayara-dias.netlify.app`.
+3. Coloque esse endereço em `"site_url"` no `dados.json`, rode `node build.mjs` e arraste a pasta de novo. Assim a imagem da capa aparece na prévia do link no WhatsApp.
 
 ## Como atualizar (horários, vagas e serviços)
 

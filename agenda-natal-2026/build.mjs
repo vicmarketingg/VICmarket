@@ -5,6 +5,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { gerarConvite } from './convite.mjs';
 
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
@@ -278,6 +279,8 @@ a { color: inherit; text-decoration: none; }
 .bow { z-index: 6; }
 .ico { width: .78em; height: .78em; vertical-align: -.02em; margin-left: .12em; overflow: visible; }
 
+/* ornamentos não bloqueiam toques nos botões */
+.abs, .frame, .corners, .paper, .sprigs, .bow { pointer-events: none; }
 /* moldura dupla dourada */
 .frame { position: absolute !important; inset: 18px; border: 1px solid rgba(198,163,106,.85); z-index: 1 !important; }
 .frame::after { content: ''; position: absolute; inset: 5px; border: .6px solid rgba(198,163,106,.45); }
@@ -517,6 +520,7 @@ await ip.evaluate(() => document.documentElement.classList.add('imgmode'));
 await ip.evaluate(() => document.fonts.ready);
 for (let i = 1; i <= 4; i++) await ip.locator('#p' + i).screenshot({ path: path.join(imgDir, `Agenda_Natal_2026_pagina_${i}.jpg`), type: 'jpeg', quality: 92 });
 console.log('Imagens geradas em', imgDir);
+console.log('Convite interativo:', await gerarConvite({ browser, renderizado, outDir: path.join(path.dirname(OUT), 'convite'), D }));
 await browser.close();
 try {
   const { execFileSync } = await import('node:child_process');
