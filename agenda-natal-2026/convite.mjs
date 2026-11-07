@@ -79,7 +79,7 @@ body { -webkit-tap-highlight-color: transparent; }
     <path d="M50 3 C60 4 63 9 72 9 C82 11 86 19 90 27 C95 35 97 42 96 51 C97 61 92 67 89 75 C85 84 76 87 68 92 C59 97 51 96 43 96 C33 95 27 90 20 86 C12 80 8 72 5 63 C2 54 4 46 6 38 C9 28 15 21 23 14 C31 7 41 3 50 3Z" fill="url(#wax)"/>
     <circle cx="50" cy="50" r="31" fill="none" stroke="#5A0E18" stroke-width="2.4" opacity=".55"/>
     <circle cx="50" cy="50" r="31" fill="none" stroke="#D9A0A8" stroke-width=".8" opacity=".35" transform="translate(-.8,-.8)"/>
-    <text x="50" y="60" text-anchor="middle" font-family="Bodoni Moda" font-size="30" font-weight="500" fill="#E3C98F">M<tspan font-style="italic" font-weight="400">D</tspan></text>
+    <path d="M50 30 Q52.6 47.4 70 50 Q52.6 52.6 50 70 Q47.4 52.6 30 50 Q47.4 47.4 50 30Z" fill="#E3C98F"/><circle cx="50" cy="50" r="2.2" fill="#8B1E2D"/>
   </svg>`;
 
   const slides = [];

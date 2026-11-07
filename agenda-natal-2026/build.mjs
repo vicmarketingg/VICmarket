@@ -117,8 +117,20 @@ const frame = (dark = false) => `<div class="frame ${dark ? 'dark' : ''}"></div>
 const header = (kicker, title, icon, extraCls = '') => `<div class="kicker">${kicker}</div><h2 class="title ${extraCls}">${title} ${ICON[icon] || icon}</h2>${orn(170)}`;
 
 // ---------- PÁGINA 1 — CAPA ----------
-// monograma no lugar da foto
-const monograma = `<div class="mono"><div class="mono-l"><span>M</span><i></i><span class="it">D</span></div><div class="mono-orn">${orn(130)}</div></div>`;
+// enfeite central da capa: bola de Natal em traço dourado (sem logo)
+const enfeite = `<div class="mono"><svg class="bauble" viewBox="0 0 120 156" width="128" height="166">
+  <line x1="60" y1="0" x2="60" y2="20" stroke="url(#goldLine)" stroke-width="1.1"/>
+  <path d="M55 20 C55 13 65 13 65 20" fill="none" stroke="url(#gold)" stroke-width="1.4"/>
+  <rect x="49" y="20" width="22" height="13" rx="2.5" fill="none" stroke="url(#gold)" stroke-width="1.5"/>
+  <line x1="53" y1="20" x2="53" y2="33" stroke="url(#gold)" stroke-width=".7"/><line x1="60" y1="20" x2="60" y2="33" stroke="url(#gold)" stroke-width=".7"/><line x1="67" y1="20" x2="67" y2="33" stroke="url(#gold)" stroke-width=".7"/>
+  <circle cx="60" cy="92" r="58" fill="rgba(255,249,242,.04)" stroke="url(#gold)" stroke-width="1.6"/>
+  <path d="M5 80 Q60 98 115 80" fill="none" stroke="url(#goldLine)" stroke-width="1"/>
+  <path d="M3 100 Q60 118 117 100" fill="none" stroke="url(#goldLine)" stroke-width="1"/>
+  <path d="M14 60 Q60 74 106 60" fill="none" stroke="url(#goldLine)" stroke-width=".6" opacity=".7"/>
+  <path d="M14 124 Q60 138 106 124" fill="none" stroke="url(#goldLine)" stroke-width=".6" opacity=".7"/>
+  ${[20, 40, 60, 80, 100].map((x, i) => sparkle(x, 90 + (i % 2 ? 1 : -1) + Math.abs(x - 60) * -0.02, i === 2 ? 6 : 4)).join('')}
+  <path d="M28 52 Q38 40 52 37" fill="none" stroke="#FFF9F2" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/>
+</svg><div class="mono-orn">${orn(120)}</div></div>`;
 
 const p1 = `<section class="page cover" id="p1">
   ${frame(true)}
@@ -133,7 +145,7 @@ const p1 = `<section class="page cover" id="p1">
   <div class="brand">Mayara Dias <span>|</span> Studio Beauty</div>
   ${orn(190)}
   <div class="arch-wrap">
-    <div class="arch-outer"><div class="arch">${monograma}</div></div>
+    <div class="arch-outer"><div class="arch">${enfeite}</div></div>
     ${bow(70, -38, 96, 0)}
   </div>
   <p class="quote">“Seu momento de beleza para as festas<br>começa aqui!”</p>
@@ -317,7 +329,8 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .mono-l { display: flex; align-items: center; gap: 12px; font-family: ${SERIF}; font-weight: 500; font-size: 92px; line-height: 1; color: ${C.off}; }
 .mono-l .it { font-style: italic; font-weight: 400; color: ${C.dourado}; }
 .mono-l i { width: 1px; height: 68px; background: linear-gradient(${C.dourado}, rgba(198,163,106,.2)); transform: rotate(14deg); }
-.mono-orn { margin-top: 16px; }
+.mono-orn { margin-top: 14px; }
+.bauble { display: block; overflow: visible; }
 .mono-sub { font-family: ${SANS}; font-weight: 400; font-size: 11px; letter-spacing: 5px; text-transform: uppercase; color: ${C.dourado}; margin: 14px 0 10px; }
 .mono-sub.sm { font-size: 10px; letter-spacing: 4px; color: rgba(255,249,242,.75); margin: 10px 0 0; }
 .cover-title { font-family: ${SERIF}; font-weight: 500; font-size: 50px; line-height: 1.02; letter-spacing: 1px; text-transform: uppercase; text-align: center; margin-top: 18px; color: ${C.off}; }
