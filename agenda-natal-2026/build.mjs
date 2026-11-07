@@ -107,7 +107,7 @@ const DEFS = `<svg width="0" height="0" style="position:absolute"><defs>
 </defs></svg>`;
 
 // ---------- navegação ----------
-const TOTAL = 5;
+const TOTAL = 6;
 function nav(page) {
   const prev = page > 1 ? `<a class="nbtn" href="#p${page - 1}">← Voltar</a>` : '<span></span>';
   const dots = Array.from({ length: TOTAL }, (_, k) => k + 1).map((i) => `<a class="dot ${i === page ? 'on' : ''}" href="#p${i}">${i}</a>`).join('');
@@ -149,7 +149,7 @@ const p1 = `<section class="page cover" id="p1">
   <h1 class="lockup"><span class="lk-a">Agenda</span><span class="lk-b">de Dezembro</span><span class="lk-c"><i></i>2026<i></i></span></h1>
   <p class="quote">“Seu momento de beleza para as festas<br>começa aqui!”</p>
   <a class="cta" href="#p2">Abrir agenda <span>→</span></a>
-  <div class="mini-index"><a href="#p2">Regras</a><i>·</i><a href="#p3">Calendário</a><i>·</i><a href="#p4">Horários</a><i>·</i><a href="#p5">Valores</a></div>
+  <div class="mini-index"><a href="#p2">Regras</a><i>·</i><a href="#p3">Calendário</a><i>·</i><a href="#p4">Horários</a><i>·</i><a href="#p6">Valores</a></div>
   <div class="swipe">Arraste para ver a agenda <span>→</span></div>
 </section>`;
 
@@ -246,32 +246,37 @@ const horasGrade = [...new Set([...Array.from({ length: hFim - hIni + 1 }, (_, k
 const ocupados = (D.grade_horarios && D.grade_horarios.ocupados) || {};
 const NOME_LONGO = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado', 'domingo'];
 const waBase = String(D.whatsapp_link || '').split('?')[0];
-let gradeRows = '';
-for (let d = 1; d <= diasNoMes; d++) {
-  if (tipoDia(d) !== 'aberto') continue;
-  const dow = (offsetSeg + d - 1) % 7; const dd = String(d).padStart(2, '0');
-  const occ = new Set((ocupados[String(d)] || ocupados[dd] || []).map(hNum));
-  const slots = horasGrade.map((h) => {
-    const ex = horasExtras.has(h) ? ' ex' : '';
-    if (occ.has(h)) return `<span class="slot oc${ex}"></span>`;
-    const msg = `Olá, Mayara! Quero agendar no dia ${dd}/12 (${NOME_LONGO[dow]}) às ${h}h.${ex ? ' (horário extra)' : ''}`;
-    return `<a class="slot${ex}" href="${esc(waBase)}?text=${encodeURIComponent(msg)}"></a>`;
-  }).join('');
-  gradeRows += `<div class="grow${dow === 0 && d > 1 ? ' wk' : ''}"><b>${NOMES_DIA[dow]} <i>${dd}</i></b>${slots}</div>`;
+// duas páginas (quinzenas) para os horários ficarem grandes e legíveis no celular
+const QUINZENAS = [{ de: 1, ate: 15, id: 4, nome: '1ª quinzena', faixa: '01 a 15 de dezembro' }, { de: 16, ate: 31, id: 5, nome: '2ª quinzena', faixa: '16 a 31 de dezembro' }];
+function linhasGrade(de, ate) {
+  let out = ''; let primeira = true;
+  for (let d = de; d <= ate; d++) {
+    if (tipoDia(d) !== 'aberto') continue;
+    const dow = (offsetSeg + d - 1) % 7; const dd = String(d).padStart(2, '0');
+    const occ = new Set((ocupados[String(d)] || ocupados[dd] || []).map(hNum));
+    const slots = horasGrade.map((h) => {
+      const ex = horasExtras.has(h) ? ' ex' : '';
+      if (occ.has(h)) return `<span class="slot oc${ex}">${h}</span>`;
+      const msg = `Olá, Mayara! Quero agendar no dia ${dd}/12 (${NOME_LONGO[dow]}) às ${h}h.${ex ? ' (horário extra)' : ''}`;
+      return `<a class="slot${ex}" href="${esc(waBase)}?text=${encodeURIComponent(msg)}">${h}</a>`;
+    }).join('');
+    out += `<div class="grow${dow === 0 && !primeira ? ' wk' : ''}"><b><span>${NOMES_DIA[dow]}</span><i>${dd}</i></b>${slots}</div>`;
+    primeira = false;
+  }
+  return out;
 }
-const gradeHead = `<div class="grow ghead"><b></b>${horasGrade.map((h) => `<span class="${horasExtras.has(h) ? 'ex' : ''}">${h}</span>`).join('')}</div>`;
-const pGrade = `<section class="page inner pg-grade" id="p4">
+const legendaGrade = `<div class="glegend"><span><i class="slot">9</i>livre</span><span><i class="slot ex">7</i>extra + ${esc((gruposExtras[0] || {}).taxa || '')}</span><span><i class="slot oc">10</i>ocupado</span></div>`;
+const pGrades = QUINZENAS.map((q, k) => `<section class="page inner pg-grade" id="p${q.id}">
   ${frame()}
-  <svg class="abs sprigs" style="left:0;top:0" width="540" height="960" viewBox="0 0 540 960">${sprig(-14, -18, 120, 34, 61, { op: .75 })}${sprig(554, -18, 120, 146, 62, { op: .75, flip: true })}</svg>
-  ${header('✦ &nbsp;Toque para agendar&nbsp; ✦', 'Horários de Dezembro', 'bow', 'one')}
-  <p class="lead sm">Toque em um horário livre e envie a mensagem no WhatsApp.</p>
-  <div class="card grade-card" ${T(71)}>
-    ${gradeHead}
-    <div class="gbody">${gradeRows}</div>
-    <div class="glegend"><span><i class="slot"></i>livre</span><span><i class="slot ex"></i>extra + ${esc((gruposExtras[0] || {}).taxa || '')}</span><span><i class="slot oc"></i>ocupado</span></div>
+  <svg class="abs sprigs" style="left:0;top:0" width="540" height="960" viewBox="0 0 540 960">${sprig(-14, -18, 120, 34, 61 + k * 2, { op: .75 })}${sprig(554, -18, 120, 146, 62 + k * 2, { op: .75, flip: true })}</svg>
+  ${header(`✦ &nbsp;${q.nome}&nbsp; ✦`, 'Horários de Dezembro', 'bow', 'one')}
+  <p class="lead sm">${q.faixa} · toque no horário para agendar pelo WhatsApp</p>
+  <div class="card grade-card" ${T(71 + k)}>
+    <div class="gbody">${linhasGrade(q.de, q.ate)}</div>
+    ${legendaGrade}
   </div>
-  ${nav(4)}
-</section>`;
+  ${nav(q.id)}
+</section>`).join('');
 
 // ---------- PÁGINA 5 — VALORES ----------
 const servicos = D.servicos || [];
@@ -289,7 +294,7 @@ if (servicos.length) {
 } else {
   for (let i = 0; i < (D.linhas_vazias_tabela || 7); i++) linhas += `<div class="srow empty"><div class="sname"></div><i></i><div class="sval"></div></div>`;
 }
-const pValores = `<section class="page inner" id="p5">
+const pValores = `<section class="page inner" id="p6">
   ${frame()}
   <svg class="abs sprigs" style="left:0;top:0" width="540" height="960" viewBox="0 0 540 960">${sprig(-14, -18, 120, 34, 41, { op: .75 })}${sprig(554, -18, 120, 146, 42, { op: .75, flip: true })}</svg>
   ${header('✦ &nbsp;Valores de dezembro&nbsp; ✦', 'Seu momento<br>de beleza', 'tree', 'two')}
@@ -306,7 +311,7 @@ const pValores = `<section class="page inner" id="p5">
     <div class="brand dark">Studio Beauty</div>
     <a class="wa" href="${esc(D.whatsapp_link)}">WhatsApp: ${esc(D.whatsapp_exibicao)}</a>
   </div>
-  ${nav(5)}
+  ${nav(6)}
 </section>`;
 
 // ---------- CSS ----------
@@ -534,24 +539,23 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .imgmode .swipe { display: block !important; margin-top: 30px; padding: 13px 30px; border: 1px solid ${C.dourado}; border-radius: 40px; font-family: ${SANS}; font-weight: 500; font-size: 13px; letter-spacing: 3.5px; text-transform: uppercase; color: ${C.dourado}; }
 .swipe span { letter-spacing: 0; }
 
-/* grade de horários */
+/* grade de horários (2 páginas) */
 .pg-grade .kicker { margin-top: 56px; }
 .lead.sm { font-size: 14px; margin-top: 6px; }
-.grade-card { margin-top: 12px; padding: 10px 10px 10px 12px; }
-.grow { display: grid; grid-template-columns: 50px repeat(${horasGrade.length}, 1fr); align-items: center; height: 21px; }
-.grow.wk { border-top: .8px solid rgba(198,163,106,.75); margin-top: 3px; padding-top: 3px; height: 25px; }
-.grow > b { font-family: ${SANS}; font-weight: 500; font-size: 9.5px; letter-spacing: .4px; text-transform: uppercase; color: ${C.marrom}; white-space: nowrap; }
-.grow > b i { font-style: normal; font-family: ${SERIF}; font-weight: 600; font-size: 11.5px; color: ${C.vinho}; letter-spacing: 0; }
-.ghead { height: 22px; border-bottom: 1px solid ${C.dourado}; margin-bottom: 4px; }
-.ghead span { text-align: center; font-family: ${SERIF}; font-weight: 600; font-size: 11px; color: ${C.marrom}; }
-.ghead span.ex { color: ${C.ouroEsc}; font-style: italic; }
-.slot { justify-self: center; display: block; width: 15px; height: 15px; border-radius: 50%; border: 1.1px solid ${C.vinho}; background: #fff; }
-.slot.ex { border-color: ${C.dourado}; background: rgba(198,163,106,.28); }
-.slot.oc { border-color: #CDB9A6; background: #E6D8CA; position: relative; }
-.slot.oc::after { content: ''; position: absolute; left: 2px; right: 2px; top: 50%; height: 1px; background: #9A826F; transform: rotate(-45deg); }
-.glegend { display: flex; justify-content: center; gap: 18px; margin-top: 10px; padding-top: 8px; border-top: .6px solid rgba(198,163,106,.6); font-size: 11.5px; }
-.glegend span { display: inline-flex; align-items: center; gap: 6px; }
-.glegend .slot { width: 12px; height: 12px; }
+.grade-card { margin-top: 16px; padding: 12px 10px 12px 12px; }
+.grow { display: grid; grid-template-columns: 44px repeat(${horasGrade.length}, 1fr); column-gap: 2px; align-items: center; height: 42px; }
+.grow + .grow { border-top: .6px solid rgba(198,163,106,.3); }
+.grow.wk { border-top: 1.2px solid ${C.dourado}; margin-top: 3px; padding-top: 3px; height: 48px; }
+.grow > b { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.05; }
+.grow > b span { font-family: ${SANS}; font-weight: 500; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: ${C.ouroEsc}; }
+.grow > b i { font-style: normal; font-family: ${SERIF}; font-weight: 600; font-size: 19px; color: ${C.vinho}; }
+.slot { justify-self: stretch; display: flex; align-items: center; justify-content: center; height: 32px; border-radius: 6px; border: 1.1px solid ${C.vinho}; background: #fff;
+  font-family: ${SANS}; font-style: normal; font-weight: 600; font-size: 11px; color: ${C.vinho}; letter-spacing: -.3px; }
+.slot.ex { border-color: ${C.dourado}; background: rgba(198,163,106,.25); color: ${C.ouroEsc}; }
+.slot.oc { border-color: #D6C6B6; background: #ECE1D6; color: #B49C88; text-decoration: line-through; }
+.glegend { display: flex; justify-content: center; gap: 18px; margin-top: 12px; padding-top: 10px; border-top: .6px solid rgba(198,163,106,.6); font-size: 12px; }
+.glegend span { display: inline-flex; align-items: center; gap: 7px; }
+.glegend .slot { width: 26px; height: 22px; font-size: 10px; }
 
 /* espaçamento das páginas 2 e 3 (conteúdo mais enxuto) */
 .pg-cal:not(.compact) .kicker { margin-top: 62px; }
@@ -581,7 +585,7 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .dot.on { background: ${C.dourado}; color: ${C.off}; }
 `;
 
-let html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agenda de Dezembro 2026 — Mayara Dias | Studio Beauty</title><style>${CSS}</style></head><body>${DEFS}${p1}${pRegras}${pCal}${pGrade}${pValores}</body></html>`;
+let html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agenda de Dezembro 2026 — Mayara Dias | Studio Beauty</title><style>${CSS}</style></head><body>${DEFS}${p1}${pRegras}${pCal}${pGrades}${pValores}</body></html>`;
 html = html.replace(/R\$ (?=\d)/g, () => 'R$\u00a0'); // "R$" nunca separado do valor
 fs.mkdirSync(path.join(DIR, 'build'), { recursive: true });
 fs.writeFileSync(path.join(DIR, 'build', 'agenda.html'), html);
@@ -592,7 +596,7 @@ await page.setContent(html, { waitUntil: 'load' });
 await page.evaluate(() => document.fonts.ready);
 // página de valores: compacta automaticamente se a lista não couber
 await page.evaluate(() => {
-  const p = document.getElementById('p5'); const nav = p.querySelector('.nav');
+  const p = document.getElementById('p6'); const nav = p.querySelector('.nav');
   const sobra = () => nav.getBoundingClientRect().top - Math.max(...[...p.children].filter((c) => getComputedStyle(c).position !== 'absolute').map((c) => c.getBoundingClientRect().bottom));
   for (const c of ['dense', 'xdense']) { if (sobra() >= 4) break; p.classList.add(c); }
 });
