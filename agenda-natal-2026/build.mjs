@@ -506,7 +506,7 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 `;
 
 let html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agenda de Natal 2026 — Mayara Dias | Studio Beauty</title><style>${CSS}</style></head><body>${DEFS}${p1}${p2}${p3}${p4}</body></html>`;
-html = html.replace(/R\$ (?=\d)/g, 'R$&nbsp;'); // "R$" nunca separado do valor
+html = html.replace(/R\$ (?=\d)/g, () => 'R$\u00a0'); // "R$" nunca separado do valor
 fs.mkdirSync(path.join(DIR, 'build'), { recursive: true });
 fs.writeFileSync(path.join(DIR, 'build', 'agenda.html'), html);
 
