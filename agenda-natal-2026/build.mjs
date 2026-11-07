@@ -109,7 +109,8 @@ function nav(page) {
   const prev = page > 1 ? `<a class="nbtn" href="#p${page - 1}">← Voltar</a>` : '<span></span>';
   const dots = [1, 2, 3, 4].map((i) => `<a class="dot ${i === page ? 'on' : ''}" href="#p${i}">${i}</a>`).join('');
   const next = page < 4 ? `<a class="nbtn solid" href="#p${page + 1}">Avançar →</a>` : `<a class="nbtn solid" href="${esc(D.whatsapp_link)}">WhatsApp →</a>`;
-  return `<nav class="nav">${prev}<a class="nbtn" href="#p1">Capa</a><span class="dots">${dots}</span>${next}</nav>`;
+  const foot = page < 4 ? `<span>${page} / 4</span><em>arraste para o lado →</em>` : `<span>4 / 4</span><em>Agende pelo WhatsApp ${esc(D.whatsapp_exibicao)}</em>`;
+  return `<nav class="nav">${prev}<a class="nbtn" href="#p1">Capa</a><span class="dots">${dots}</span>${next}</nav><div class="imgfoot">${foot}</div>`;
 }
 const frame = (dark = false) => `<div class="frame ${dark ? 'dark' : ''}"></div><div class="corners">${spark(10, 10, 20)}${spark(510, 10, 20)}${spark(10, 930, 20)}${spark(510, 930, 20)}</div>`;
 const header = (kicker, title, icon, extraCls = '') => `<div class="kicker">${kicker}</div><h2 class="title ${extraCls}">${title} ${ICON[icon] || icon}</h2>${orn(170)}`;
@@ -137,6 +138,7 @@ const p1 = `<section class="page cover" id="p1">
   <p class="quote">“Seu momento de beleza para as festas<br>começa aqui!”</p>
   <a class="cta" href="#p2">Abrir minha agenda <span>→</span></a>
   <div class="mini-index"><a href="#p2">Calendário</a><i>·</i><a href="#p3">Regras</a><i>·</i><a href="#p4">Valores</a></div>
+  <div class="swipe">Arraste para ver a agenda <span>→</span></div>
 </section>`;
 
 // ---------- PÁGINA 2 — CALENDÁRIO ----------
@@ -444,6 +446,15 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .xdense .ty { font-size: 12.5px; line-height: 1.4; }
 .xdense .lead { display: none; }
 
+/* versão em imagem (status / stories): sem botões */
+.imgfoot, .swipe { display: none !important; }
+.imgmode .nav, .imgmode .cta, .imgmode .mini-index { display: none !important; }
+.imgmode .imgfoot { display: flex !important; position: absolute !important; left: 40px; right: 40px; bottom: 40px; z-index: 10 !important; align-items: center; justify-content: space-between; padding-top: 12px; border-top: .8px solid ${C.dourado}; }
+.imgfoot span { font-family: ${SERIF}; font-weight: 500; font-size: 15px; color: ${C.ouroEsc}; }
+.imgfoot em { font-family: ${SANS}; font-style: normal; font-weight: 500; font-size: 11.5px; letter-spacing: 2.4px; text-transform: uppercase; color: ${C.vinho}; }
+.imgmode .swipe { display: block !important; margin-top: 30px; padding: 13px 30px; border: 1px solid ${C.dourado}; border-radius: 40px; font-family: ${SANS}; font-weight: 500; font-size: 13px; letter-spacing: 3.5px; text-transform: uppercase; color: ${C.dourado}; }
+.swipe span { letter-spacing: 0; }
+
 /* navegação */
 .nav { position: absolute !important; left: 40px; right: 40px; bottom: 36px; height: 48px; z-index: 10 !important; display: flex; align-items: center; justify-content: space-between;
   border-top: .8px solid ${C.dourado}; border-bottom: .8px solid ${C.dourado}; }
@@ -494,7 +505,18 @@ if (overflow.some((o) => o.folga < 0)) console.warn('ATENÇÃO: conteúdo passou
 const VIEW_SCRIPT = `<script>(function(){if(navigator.webdriver)return;var d=document.documentElement;d.classList.add('view');function fit(){var z=Math.min(1,(window.innerWidth-16)/540);document.querySelectorAll('.page').forEach(function(p){p.style.zoom=z;});}fit();window.addEventListener('resize',fit);})();<\/script>`;
 fs.writeFileSync(OUT.replace(/\.pdf$/i, '.html'), (await page.content()).replace('</body>', VIEW_SCRIPT + '</body>'));
 
+const renderizado = await page.content();
 await page.pdf({ path: OUT, width: '540px', height: '960px', printBackground: true, preferCSSPageSize: true });
+// imagens 1080x1920 para status do WhatsApp / stories (sem botões)
+const imgDir = path.join(path.dirname(OUT), 'imagens');
+fs.mkdirSync(imgDir, { recursive: true });
+const ctx = await browser.newContext({ viewport: { width: 540, height: 960 }, deviceScaleFactor: 2 });
+const ip = await ctx.newPage();
+await ip.setContent(renderizado, { waitUntil: 'load' });
+await ip.evaluate(() => document.documentElement.classList.add('imgmode'));
+await ip.evaluate(() => document.fonts.ready);
+for (let i = 1; i <= 4; i++) await ip.locator('#p' + i).screenshot({ path: path.join(imgDir, `Agenda_Natal_2026_pagina_${i}.jpg`), type: 'jpeg', quality: 92 });
+console.log('Imagens geradas em', imgDir);
 await browser.close();
 try {
   const { execFileSync } = await import('node:child_process');
