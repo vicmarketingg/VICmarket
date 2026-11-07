@@ -147,7 +147,7 @@ const p1 = `<section class="page cover" id="p1">
   <h1 class="lockup"><span class="lk-a">Agenda</span><span class="lk-b">de Dezembro</span><span class="lk-c"><i></i>2026<i></i></span></h1>
   <p class="quote">“Seu momento de beleza para as festas<br>começa aqui!”</p>
   <a class="cta" href="#p2">Abrir minha agenda <span>→</span></a>
-  <div class="mini-index"><a href="#p2">Calendário</a><i>·</i><a href="#p3">Regras</a><i>·</i><a href="#p4">Valores</a></div>
+  <div class="mini-index"><a href="#p2">Regras</a><i>·</i><a href="#p3">Calendário</a><i>·</i><a href="#p4">Valores</a></div>
   <div class="swipe">Arraste para ver a agenda <span>→</span></div>
 </section>`;
 
@@ -197,7 +197,7 @@ if (usaDisp) {
   porDia = `<p class="note">A disponibilidade de cada dia será atualizada aqui. Confirme sua vaga com a Mayara pelo WhatsApp.</p>`;
 }
 
-const p2 = `<section class="page inner ${usaDisp ? 'compact' : ''}" id="p2">
+const pCal = `<section class="page inner pg-cal ${usaDisp ? 'compact' : ''}" id="p3">
   ${frame()}
   <svg class="abs sprigs" style="left:0;top:0" width="540" height="960" viewBox="0 0 540 960">${sprig(-14, -18, 120, 34, 21, { op: .75 })}${sprig(554, -18, 120, 146, 22, { op: .75, flip: true })}</svg>
   ${header('✦ &nbsp;Segunda a sábado&nbsp; ✦', 'Agenda de Dezembro', 'bow', 'one')}
@@ -212,12 +212,12 @@ const p2 = `<section class="page inner ${usaDisp ? 'compact' : ''}" id="p2">
     <h3 class="hh">Horários de atendimento</h3>${normais}
   </div>
   ${porDia}
-  ${nav(2)}
+  ${nav(3)}
 </section>`;
 
 // ---------- PÁGINA 3 — REGRAS ----------
 const item = (n, title, body) => `<div class="ri"><div class="rn">${String(n).padStart(2, '0')}</div><div><h3>${title}</h3>${body}</div></div>`;
-const p3 = `<section class="page inner" id="p3">
+const pRegras = `<section class="page inner pg-regras" id="p2">
   ${frame()}
   <svg class="abs sprigs" style="left:0;top:0" width="540" height="960" viewBox="0 0 540 960">${sprig(-14, -18, 120, 34, 31, { op: .75 })}${sprig(554, -18, 120, 146, 32, { op: .75, flip: true })}</svg>
   ${header('✦ &nbsp;Antes de agendar&nbsp; ✦', 'Alguns detalhes<br>importantes', 'heart', 'two')}
@@ -231,7 +231,7 @@ const p3 = `<section class="page inner" id="p3">
     ${bow(404, -30, 66, 12)}
     ${item(extrasTxt ? 4 : 3, 'Cancelamentos e reagendamentos', `<p>Em caso de cancelamento, desistência ou falta, <b>o sinal não será reembolsado</b>.</p><p>Para reagendar, avise com <b>pelo menos 24 horas de antecedência</b>. A nova data dependerá da disponibilidade da agenda.</p>`)}
   </div>
-  ${nav(3)}
+  ${nav(2)}
 </section>`;
 
 // ---------- PÁGINA 4 — VALORES ----------
@@ -496,22 +496,22 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .swipe span { letter-spacing: 0; }
 
 /* espaçamento das páginas 2 e 3 (conteúdo mais enxuto) */
-#p2:not(.compact) .kicker { margin-top: 62px; }
-#p2:not(.compact) .cal-card { margin-top: 18px; padding: 10px 20px 14px; }
-#p2:not(.compact) .cell { height: 56px; }
-#p2:not(.compact) .cell b { font-size: 21px; }
-#p2:not(.compact) .cell.fechado b { width: 36px; height: 36px; font-size: 16px; }
-#p2:not(.compact) .legend { margin-top: 16px; }
-#p2:not(.compact) .hours-card { margin-top: 22px; padding: 18px 22px 16px; }
-#p2:not(.compact) .note { margin-top: 20px; }
-#p3 .kicker { margin-top: 62px; }
-#p3 .lead { margin-top: 14px; font-size: 18px; }
-#p3 .rules-card { margin-top: 20px; padding: 6px 24px; }
-#p3 .ri { padding: 16px 0 14px; grid-template-columns: 50px 1fr; }
-#p3 .rn { font-size: 32px; }
-#p3 .ri h3 { font-size: 12.5px; margin-bottom: 8px; }
-#p3 .ri p { font-size: 14.5px; line-height: 1.55; }
-#p3 .wine-card { margin-top: 18px; padding: 4px 24px; }
+.pg-cal:not(.compact) .kicker { margin-top: 62px; }
+.pg-cal:not(.compact) .cal-card { margin-top: 18px; padding: 10px 20px 14px; }
+.pg-cal:not(.compact) .cell { height: 56px; }
+.pg-cal:not(.compact) .cell b { font-size: 21px; }
+.pg-cal:not(.compact) .cell.fechado b { width: 36px; height: 36px; font-size: 16px; }
+.pg-cal:not(.compact) .legend { margin-top: 16px; }
+.pg-cal:not(.compact) .hours-card { margin-top: 22px; padding: 18px 22px 16px; }
+.pg-cal:not(.compact) .note { margin-top: 20px; }
+.pg-regras .kicker { margin-top: 62px; }
+.pg-regras .lead { margin-top: 14px; font-size: 18px; }
+.pg-regras .rules-card { margin-top: 20px; padding: 6px 24px; }
+.pg-regras .ri { padding: 16px 0 14px; grid-template-columns: 50px 1fr; }
+.pg-regras .rn { font-size: 32px; }
+.pg-regras .ri h3 { font-size: 12.5px; margin-bottom: 8px; }
+.pg-regras .ri p { font-size: 14.5px; line-height: 1.55; }
+.pg-regras .wine-card { margin-top: 18px; padding: 4px 24px; }
 
 /* navegação */
 .nav { position: absolute !important; left: 40px; right: 40px; bottom: 36px; height: 48px; z-index: 10 !important; display: flex; align-items: center; justify-content: space-between;
@@ -523,7 +523,7 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .dot.on { background: ${C.dourado}; color: ${C.off}; }
 `;
 
-let html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agenda de Dezembro 2026 — Mayara Dias | Studio Beauty</title><style>${CSS}</style></head><body>${DEFS}${p1}${p2}${p3}${p4}</body></html>`;
+let html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agenda de Dezembro 2026 — Mayara Dias | Studio Beauty</title><style>${CSS}</style></head><body>${DEFS}${p1}${pRegras}${pCal}${p4}</body></html>`;
 html = html.replace(/R\$ (?=\d)/g, () => 'R$\u00a0'); // "R$" nunca separado do valor
 fs.mkdirSync(path.join(DIR, 'build'), { recursive: true });
 fs.writeFileSync(path.join(DIR, 'build', 'agenda.html'), html);

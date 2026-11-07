@@ -5,8 +5,8 @@ PDF interativo de 4 páginas (formato vertical para celular), pronto para enviar
 | Página | Conteúdo |
 |---|---|
 | 1 | Capa "DEZEMBRO, DEZEMBRO!" + botão **ABRIR MINHA AGENDA →** |
-| 2 | Calendário real de dezembro/2026 (seg → dom, dia 1 numa terça), dias sem atendimento e horários de atendimento |
-| 3 | Regras da agenda (reajuste, sinal de R$ 50,00, cancelamentos e reagendamentos) |
+| 2 | Regras da agenda — "Antes de agendar" (reajuste, sinal de R$ 50,00, horários extras, cancelamentos) |
+| 3 | Calendário real de dezembro/2026 (seg → dom, dia 1 numa terça), dias sem atendimento e horários de atendimento |
 | 4 | Tabela de serviços e valores + agradecimento e WhatsApp |
 
 Navegação: **← Voltar**, **✦ Capa**, **1 2 3 4** e **Avançar →** em todas as páginas internas (na última, o botão leva ao WhatsApp).
@@ -33,7 +33,7 @@ node build.mjs
 
 O script avisa no terminal se algum conteúdo passou do limite da página.
 
-### Horários de atendimento (páginas 2 e 3)
+### Horários de atendimento (páginas 3 e 2)
 ```json
 "horario_atendimento": { "dias": "Segunda a sábado", "inicio": "9h", "fim": "20h" },
 "horarios_extras": [
@@ -43,7 +43,7 @@ O script avisa no terminal se algum conteúdo passou do limite da página.
 ```
 Os horários extras aparecem no quadro da página 2 e como regra na página 3. Use `"horarios_extras": []` para não mostrar.
 
-### Disponibilidade de cada dia (página 2)
+### Disponibilidade de cada dia (página 3)
 Use o número do dia. `status` aceita `"vagas"`, `"poucas"` ou `"lotado"`; `horarios` é opcional.
 ```json
 "disponibilidade": {
