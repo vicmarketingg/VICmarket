@@ -5,8 +5,8 @@ PDF interativo de 4 páginas (formato vertical para celular), pronto para enviar
 | Página | Conteúdo |
 |---|---|
 | 1 | Capa "DEZEMBRO, DEZEMBRO!" + botão **ABRIR MINHA AGENDA →** |
-| 2 | Calendário real de dezembro/2026 (seg → dom, dia 1 numa terça), dias sem atendimento, horários normais e extras |
-| 3 | Regras da agenda (abertura, reajuste, sinal, horários extras, cancelamentos) |
+| 2 | Calendário real de dezembro/2026 (seg → dom, dia 1 numa terça), dias sem atendimento e horários de atendimento |
+| 3 | Regras da agenda (reajuste, sinal de R$ 50,00, cancelamentos e reagendamentos) |
 | 4 | Tabela de serviços e valores + agradecimento e WhatsApp |
 
 Navegação: **← Voltar**, **✦ Capa**, **1 2 3 4** e **Avançar →** em todas as páginas internas (na última, o botão leva ao WhatsApp).

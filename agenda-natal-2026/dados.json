@@ -8,28 +8,6 @@
     27
   ],
   "horarios_normais": [],
-  "horarios_extras": [
-    {
-      "hora": "07h",
-      "detalhe": "+ R$ 20,00"
-    },
-    {
-      "hora": "08h",
-      "detalhe": "+ R$ 20,00"
-    },
-    {
-      "hora": "21h",
-      "detalhe": "extra"
-    },
-    {
-      "hora": "22h",
-      "detalhe": "extra"
-    },
-    {
-      "hora": "23h",
-      "detalhe": "extra"
-    }
-  ],
   "disponibilidade": {},
   "servicos": [
     {

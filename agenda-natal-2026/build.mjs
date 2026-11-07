@@ -163,7 +163,6 @@ const legenda = `<div class="legend">
 const normais = (D.horarios_normais || []).length
   ? `<div class="times">${D.horarios_normais.map((h) => `<span>${esc(h)}</span>`).join('')}</div>`
   : `<div class="soon"><em>Em breve</em><span>os horários serão divulgados aqui</span></div>`;
-const extras = `<div class="leaders">${(D.horarios_extras || []).map((h) => `<div class="ld"><b>${esc(h.hora)}</b><i></i><span>${esc(h.detalhe)}</span></div>`).join('')}</div>`;
 
 let porDia;
 if (usaDisp) {
@@ -189,11 +188,7 @@ const p2 = `<section class="page inner ${usaDisp ? 'compact' : ''}" id="p2">
     ${legenda}
   </div>
   <div class="card hours-card" ${T(35)}>
-    <div class="hcols">
-      <div><h3>Horários normais</h3>${normais}</div>
-      <div><h3>Horários extras</h3>${extras}</div>
-    </div>
-    <p class="fine">Horários extras são <b>possibilidades de atendimento, não vagas confirmadas</b>. 07h e 08h têm taxa extra de R$ 20,00.</p>
+    <h3 class="hh">Horários de atendimento</h3>${normais}
   </div>
   ${porDia}
   ${nav(2)}
@@ -207,14 +202,12 @@ const p3 = `<section class="page inner" id="p3">
   ${header('✦ &nbsp;Antes de agendar&nbsp; ✦', 'Alguns detalhes<br>importantes', 'heart', 'two')}
   <p class="lead">“Sem mil regras, só organização e bom senso.”</p>
   <div class="card rules-card" ${T(51)}>
-    ${item(1, 'Abertura da agenda', `<div class="dates"><div><b>08/11</b><span>Clientes fixas</span></div><i></i><div><b>11/11</b><span>Abertura geral</span></div></div>`)}
-    ${item(2, 'Reajuste de valores', `<p>Os valores dos serviços serão reajustados a partir de <b>20 de novembro de 2026</b>.</p>`)}
-    ${item(3, 'Confirmação do horário', `<p>Para garantir o agendamento, é necessário pagar antecipadamente um sinal de <b>50% do valor do procedimento</b>. Os outros 50% são pagos no dia do atendimento.</p>`)}
-    ${item(4, 'Horários extras', `<p>Os atendimentos das <b>7h e 8h</b> têm taxa adicional de <b>R$ 20,00</b>, paga junto com o sinal. Os horários das <b>21h, 22h e 23h</b> também são considerados extras.</p>`)}
+    ${item(1, 'Reajuste de valores', `<p>Os valores dos serviços serão reajustados a partir de <b>20 de novembro de 2026</b>.</p>`)}
+    ${item(2, 'Confirmação do horário', `<p>Para garantir o agendamento, é necessário pagar antecipadamente um sinal de <b>R$ 50,00</b>. O restante é pago no dia do atendimento.</p>`)}
   </div>
   <div class="card wine-card" ${T(55, C.vinho)}>
     ${bow(404, -30, 66, 12)}
-    ${item(5, 'Cancelamentos e reagendamentos', `<p>Em caso de cancelamento, desistência ou falta, <b>o sinal não será reembolsado</b>.</p><p>Para reagendar, avise com <b>pelo menos 24 horas de antecedência</b>. A nova data dependerá da disponibilidade da agenda.</p>`)}
+    ${item(3, 'Cancelamentos e reagendamentos', `<p>Em caso de cancelamento, desistência ou falta, <b>o sinal não será reembolsado</b>.</p><p>Para reagendar, avise com <b>pelo menos 24 horas de antecedência</b>. A nova data dependerá da disponibilidade da agenda.</p>`)}
   </div>
   ${nav(3)}
 </section>`;
@@ -356,6 +349,9 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 
 /* horários */
 .hours-card { margin-top: 16px; padding: 18px 20px 14px; }
+.hh { padding-bottom: 7px; border-bottom: .8px solid ${C.dourado}; margin-bottom: 10px; text-align: center; }
+.hours-card .soon { align-items: center; text-align: center; }
+.hours-card .times { grid-template-columns: repeat(5, 1fr); text-align: center; }
 .hcols { display: grid; grid-template-columns: 1fr 1.15fr; gap: 22px; }
 .hcols h3 { padding-bottom: 7px; border-bottom: .8px solid ${C.dourado}; margin-bottom: 8px; }
 .soon { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding-top: 4px; }
@@ -457,6 +453,24 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .imgfoot em { font-family: ${SANS}; font-style: normal; font-weight: 500; font-size: 11.5px; letter-spacing: 2.4px; text-transform: uppercase; color: ${C.vinho}; }
 .imgmode .swipe { display: block !important; margin-top: 30px; padding: 13px 30px; border: 1px solid ${C.dourado}; border-radius: 40px; font-family: ${SANS}; font-weight: 500; font-size: 13px; letter-spacing: 3.5px; text-transform: uppercase; color: ${C.dourado}; }
 .swipe span { letter-spacing: 0; }
+
+/* espaçamento das páginas 2 e 3 (conteúdo mais enxuto) */
+#p2:not(.compact) .kicker { margin-top: 74px; }
+#p2:not(.compact) .cal-card { margin-top: 28px; padding: 14px 20px 18px; }
+#p2:not(.compact) .cell { height: 58px; }
+#p2:not(.compact) .cell b { font-size: 21px; }
+#p2:not(.compact) .cell.fechado b { width: 36px; height: 36px; font-size: 16px; }
+#p2:not(.compact) .legend { margin-top: 16px; }
+#p2:not(.compact) .hours-card { margin-top: 26px; padding: 20px 22px 18px; }
+#p2:not(.compact) .note { margin-top: 26px; }
+#p3 .kicker { margin-top: 80px; }
+#p3 .lead { margin-top: 14px; font-size: 18px; }
+#p3 .rules-card { margin-top: 34px; padding: 10px 26px; }
+#p3 .ri { padding: 22px 0 20px; grid-template-columns: 54px 1fr; }
+#p3 .rn { font-size: 32px; }
+#p3 .ri h3 { font-size: 12.5px; margin-bottom: 8px; }
+#p3 .ri p { font-size: 15.5px; line-height: 1.6; }
+#p3 .wine-card { margin-top: 30px; padding: 8px 26px; }
 
 /* navegação */
 .nav { position: absolute !important; left: 40px; right: 40px; bottom: 36px; height: 48px; z-index: 10 !important; display: flex; align-items: center; justify-content: space-between;
