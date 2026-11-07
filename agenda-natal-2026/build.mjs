@@ -12,7 +12,7 @@ const { chromium } = require('playwright');
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const dadosPath = path.resolve(DIR, process.argv[2] || 'dados.json');
 const D = JSON.parse(fs.readFileSync(dadosPath, 'utf8'));
-const OUT = process.argv[3] ? path.resolve(process.argv[3]) : path.join(DIR, 'Agenda_Natal_2026_Mayara_Dias.pdf');
+const OUT = process.argv[3] ? path.resolve(process.argv[3]) : path.join(DIR, 'Agenda_de_Dezembro_2026_Mayara_Dias.pdf');
 
 // ---------- paleta ----------
 const C = { bege: '#F5E8DC', off: '#FFF9F2', marrom: '#593728', vinho: '#8B1E2D', dourado: '#C6A36A', ouroEsc: '#9C7840', vinhoEsc: '#5E1019' };
@@ -638,7 +638,7 @@ const ip = await ctx.newPage();
 await ip.setContent(renderizado, { waitUntil: 'load' });
 await ip.evaluate(() => document.documentElement.classList.add('imgmode'));
 await ip.evaluate(() => document.fonts.ready);
-for (let i = 1; i <= TOTAL; i++) await ip.locator('#p' + i).screenshot({ path: path.join(imgDir, `Agenda_Natal_2026_pagina_${i}.jpg`), type: 'jpeg', quality: 92 });
+for (let i = 1; i <= TOTAL; i++) await ip.locator('#p' + i).screenshot({ path: path.join(imgDir, `Agenda_de_Dezembro_2026_pagina_${i}.jpg`), type: 'jpeg', quality: 92 });
 console.log('Imagens geradas em', imgDir);
 console.log('Convite interativo:', await gerarConvite({ browser, renderizado, outDir: path.join(path.dirname(OUT), 'convite'), D }));
 await browser.close();
