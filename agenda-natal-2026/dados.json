@@ -103,6 +103,7 @@
   ],
   "linhas_vazias_tabela": 7,
   "grade_horarios": {
-    "ocupados": {}
+    "ocupados": {},
+    "incluir_extras": false
   }
 }

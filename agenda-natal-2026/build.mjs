@@ -240,9 +240,11 @@ const pRegras = `<section class="page inner pg-regras" id="p2">
 
 // ---------- PÁGINA 4 — GRADE DE HORÁRIOS (toque abre o WhatsApp) ----------
 const hNum = (h) => parseInt(String(h), 10);
-const horasExtras = new Set(gruposExtras.flatMap((g) => g.horas.map(hNum)));
+const horasExtrasTodas = new Set(gruposExtras.flatMap((g) => g.horas.map(hNum)));
 const hIni = hNum(H.inicio || '9h'), hFim = hNum(H.fim || '20h');
-const horasGrade = [...new Set([...Array.from({ length: hFim - hIni + 1 }, (_, k) => hIni + k), ...horasExtras])].sort((a, b) => a - b);
+const gradeComExtras = !!(D.grade_horarios && D.grade_horarios.incluir_extras);
+const horasExtras = gradeComExtras ? horasExtrasTodas : new Set();
+const horasGrade = [...new Set([...Array.from({ length: hFim - hIni + 1 }, (_, k) => hIni + k), ...(gradeComExtras ? horasExtras : [])])].sort((a, b) => a - b);
 const ocupados = (D.grade_horarios && D.grade_horarios.ocupados) || {};
 const NOME_LONGO = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado', 'domingo'];
 const waBase = String(D.whatsapp_link || '').split('?')[0];
@@ -256,21 +258,21 @@ function linhasGrade(de, ate) {
     const occ = new Set((ocupados[String(d)] || ocupados[dd] || []).map(hNum));
     const slots = horasGrade.map((h) => {
       const ex = horasExtras.has(h) ? ' ex' : '';
-      if (occ.has(h)) return `<span class="slot oc${ex}">${h}</span>`;
+      if (occ.has(h)) return `<span class="slot oc${ex}">${h}h</span>`;
       const msg = `Olá, Mayara! Quero agendar no dia ${dd}/12 (${NOME_LONGO[dow]}) às ${h}h.${ex ? ' (horário extra)' : ''}`;
-      return `<a class="slot${ex}" href="${esc(waBase)}?text=${encodeURIComponent(msg)}">${h}</a>`;
+      return `<a class="slot${ex}" href="${esc(waBase)}?text=${encodeURIComponent(msg)}">${h}h</a>`;
     }).join('');
     out += `<div class="grow${dow === 0 && !primeira ? ' wk' : ''}"><b><span>${NOMES_DIA[dow]}</span><i>${dd}</i></b>${slots}</div>`;
     primeira = false;
   }
   return out;
 }
-const legendaGrade = `<div class="glegend"><span><i class="slot">9</i>livre</span><span><i class="slot ex">7</i>extra + ${esc((gruposExtras[0] || {}).taxa || '')}</span><span><i class="slot oc">10</i>ocupado</span></div>`;
+const legendaGrade = `<div class="glegend"><span><i class="slot">9h</i>livre · toque para agendar</span>${gradeComExtras ? `<span><i class="slot ex">7h</i>extra + ${esc((gruposExtras[0] || {}).taxa || '')}</span>` : ''}<span><i class="slot oc">10h</i>ocupado</span></div>`;
 const pGrades = QUINZENAS.map((q, k) => `<section class="page inner pg-grade" id="p${q.id}">
   ${frame()}
   <svg class="abs sprigs" style="left:0;top:0" width="540" height="960" viewBox="0 0 540 960">${sprig(-14, -18, 120, 34, 61 + k * 2, { op: .75 })}${sprig(554, -18, 120, 146, 62 + k * 2, { op: .75, flip: true })}</svg>
   ${header(`✦ &nbsp;${q.nome}&nbsp; ✦`, 'Horários de Dezembro', 'bow', 'one')}
-  <p class="lead sm">${q.faixa} · toque no horário para agendar pelo WhatsApp</p>
+  <p class="lead sm">${q.faixa} · das ${esc(H.inicio)} às ${esc(H.fim)}</p>
   <div class="card grade-card" ${T(71 + k)}>
     <div class="gbody">${linhasGrade(q.de, q.ate)}</div>
     ${legendaGrade}
@@ -543,19 +545,19 @@ h3 { font-family: ${SANS}; font-weight: 500; font-size: 11.5px; letter-spacing: 
 .pg-grade .kicker { margin-top: 56px; }
 .lead.sm { font-size: 14px; margin-top: 6px; }
 .grade-card { margin-top: 16px; padding: 12px 10px 12px 12px; }
-.grow { display: grid; grid-template-columns: 44px repeat(${horasGrade.length}, 1fr); column-gap: 2px; align-items: center; height: 42px; }
+.grow { display: grid; grid-template-columns: 48px repeat(${horasGrade.length}, 1fr); column-gap: 4px; align-items: center; height: 42px; }
 .grow + .grow { border-top: .6px solid rgba(198,163,106,.3); }
 .grow.wk { border-top: 1.2px solid ${C.dourado}; margin-top: 3px; padding-top: 3px; height: 48px; }
 .grow > b { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.05; }
 .grow > b span { font-family: ${SANS}; font-weight: 500; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: ${C.ouroEsc}; }
 .grow > b i { font-style: normal; font-family: ${SERIF}; font-weight: 600; font-size: 19px; color: ${C.vinho}; }
 .slot { justify-self: stretch; display: flex; align-items: center; justify-content: center; height: 32px; border-radius: 6px; border: 1.1px solid ${C.vinho}; background: #fff;
-  font-family: ${SANS}; font-style: normal; font-weight: 600; font-size: 11px; color: ${C.vinho}; letter-spacing: -.3px; }
+  font-family: ${SANS}; font-style: normal; font-weight: 600; font-size: 13px; color: ${C.vinho}; letter-spacing: -.2px; }
 .slot.ex { border-color: ${C.dourado}; background: rgba(198,163,106,.25); color: ${C.ouroEsc}; }
 .slot.oc { border-color: #D6C6B6; background: #ECE1D6; color: #B49C88; text-decoration: line-through; }
 .glegend { display: flex; justify-content: center; gap: 18px; margin-top: 12px; padding-top: 10px; border-top: .6px solid rgba(198,163,106,.6); font-size: 12px; }
 .glegend span { display: inline-flex; align-items: center; gap: 7px; }
-.glegend .slot { width: 26px; height: 22px; font-size: 10px; }
+.glegend .slot { width: 34px; height: 24px; font-size: 11px; }
 
 /* espaçamento das páginas 2 e 3 (conteúdo mais enxuto) */
 .pg-cal:not(.compact) .kicker { margin-top: 62px; }

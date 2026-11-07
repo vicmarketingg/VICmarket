@@ -56,9 +56,9 @@ Use o número do dia. `status` aceita `"vagas"`, `"poucas"` ou `"lotado"`; `hora
 Com dados aqui, o calendário mostra o status em cada dia e a página entra automaticamente no modo compacto, com a tabela "VAGAS POR DIA". Dias sem atendimento (13, 24, 27 e domingos) são ignorados.
 
 ### Grade de horários (páginas 4 e 5)
-Os horários saem de `horario_atendimento` (de hora em hora) + `horarios_extras`. Para marcar horários ocupados:
+Os horários saem de `horario_atendimento` (de hora em hora). Os extras só entram na grade com `"incluir_extras": true`. Para marcar horários ocupados:
 ```json
-"grade_horarios": { "ocupados": { "5": ["9h", "14h"], "12": ["18h"] } }
+"grade_horarios": { "incluir_extras": false, "ocupados": { "5": ["9h", "14h"], "12": ["18h"] } }
 ```
 Horário ocupado aparece riscado e sem link; os livres abrem o WhatsApp com "Olá, Mayara! Quero agendar no dia 05/12 (sábado) às 10h."
 
