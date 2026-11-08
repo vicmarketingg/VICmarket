@@ -12,7 +12,7 @@ const { chromium } = require('playwright');
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const dadosPath = path.resolve(DIR, process.argv[2] || 'dados.json');
 const D = JSON.parse(fs.readFileSync(dadosPath, 'utf8'));
-const OUT = process.argv[3] ? path.resolve(process.argv[3]) : path.join(DIR, 'Agenda_de_Dezembro_2026_Mayara_Dias.pdf');
+const OUT = process.argv[3] ? path.resolve(process.argv[3]) : path.join(DIR, 'Agenda de Dezembro - Mayara Dias.pdf');
 
 // ---------- paleta ----------
 const C = { bege: '#F5E8DC', off: '#FFF9F2', marrom: '#593728', vinho: '#8B1E2D', dourado: '#C6A36A', ouroEsc: '#9C7840', vinhoEsc: '#5E1019' };

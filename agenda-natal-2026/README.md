@@ -16,8 +16,8 @@ Os links internos apontam direto para a página, o que funciona na maioria dos l
 
 Arquivos gerados:
 - `imagens/Agenda_de_Dezembro_2026_pagina_1..6.jpg` — 1080×1920, para mandar direto na conversa, no status do WhatsApp ou nos stories (sem botões, com "arraste para o lado").
-- `Agenda_de_Dezembro_2026_Mayara_Dias.pdf` — PDF interativo com botões de navegação.
-- `Agenda_de_Dezembro_2026_Mayara_Dias.html` — mesma agenda para abrir no navegador.
+- `Agenda de Dezembro - Mayara Dias.pdf` — PDF interativo com botões de navegação.
+- `Agenda de Dezembro - Mayara Dias.html` — mesma agenda para abrir no navegador.
 - `convite/` — **convite interativo** (envelope com selo de cera que abre e mostra a agenda deslizando). Para virar link, publique a pasta inteira (veja abaixo).
 
 ## Convite interativo: como publicar o link
