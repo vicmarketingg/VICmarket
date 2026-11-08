@@ -167,7 +167,7 @@ const fmtDia = (d) => `${String(d).padStart(2, '0')}/12`;
 const domingos = []; for (let d = 1; d <= diasNoMes; d++) if (ehDomingo(d)) domingos.push(d);
 const juntar = (a) => (a.length > 1 ? a.slice(0, -1).join(', ') + ' e ' + a.at(-1) : a.join(''));
 const outrosFechados = semAtend.filter((d) => !ehDomingo(d)).map(fmtDia);
-const txtSem = `domingos (${juntar(domingos.map(String))}/12)${outrosFechados.length ? ' e ' + juntar(outrosFechados) : ''}`;
+const txtSem = `domingos (${juntar(domingos.map(String))}/12)${outrosFechados.length === 1 ? ' e ' + outrosFechados[0] : outrosFechados.length ? ', ' + juntar(outrosFechados) : ''}`;
 const legenda = `<div class="legend">
   <span><i class="lg fechado"></i><b>Sem atendimento:</b> ${txtSem}</span>
   ${usaDisp ? '<span><i class="lg vagas"></i>vagas</span><span><i class="lg poucas"></i>poucas vagas</span><span><i class="lg lotado"></i>lotado</span>' : ''}

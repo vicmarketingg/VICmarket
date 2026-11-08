@@ -4,7 +4,9 @@
   "whatsapp_link": "https://wa.me/5521981826692",
   "dias_sem_atendimento": [
     13,
-    27
+    24,
+    27,
+    31
   ],
   "horario_atendimento": {
     "dias": "Segunda a sábado",
