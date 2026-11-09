@@ -54,13 +54,22 @@ function wrap(text, o, maxW){
 function fitSize(text, o, maxW){
   setFont(ctx, o); const w = ctx.measureText(text).width; return w > maxW ? o.size * maxW / w : o.size;
 }
+// optical centering: baseline/x derived from real glyph bounds
+function placeText(c, text, x, y, o){
+  c.textBaseline = 'alphabetic'; c.textAlign = 'left';
+  const m = c.measureText(text);
+  const L = m.actualBoundingBoxLeft, R = m.actualBoundingBoxRight;
+  let yb;
+  if (o.fam === 'Script') yb = y + (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2;
+  else { const cap = c.measureText('H').actualBoundingBoxAscent; yb = y + cap / 2; }
+  const px = o.align === 'left' ? x + L : x - (R - L) / 2;
+  return {px, yb};
+}
 function drawLine(c, text, x, y, o, a){
-  setFont(c, o); c.textBaseline = 'middle'; c.textAlign = 'left';
+  setFont(c, o);
   const words = text.split(' ');
-  const space = c.measureText(' ').width + (o.track||0);
-  const ws = words.map(w => c.measureText(w).width);
-  const total = ws.reduce((s, v) => s + v, 0) + space * (words.length - 1);
-  let px = o.align === 'left' ? x : x - total/2;
+  const {px: px0, yb} = placeText(c, text, x, y, o);
+  const offs = words.map((w, i) => i ? c.measureText(words.slice(0, i).join(' ') + ' ').width : 0);
   const ex = a.exit != null ? eIn3(prog(a.t, a.exit, a.exit + (a.exitDur||.5))) : 0;
   words.forEach((w, i) => {
     const st = a.start + i * (a.stagger ?? .07);
@@ -71,14 +80,12 @@ function drawLine(c, text, x, y, o, a){
       const dy = (1 - p) * (o.rise ?? 36) - ex * 40;
       const bl = (1 - p) * 8 + ex * 10;
       if (bl > .4) c.filter = `blur(${bl.toFixed(1)}px)`;
-      c.fillStyle = paint(c, o.color || NAVY, y - o.size*.55 + dy, y + o.size*.5 + dy);
+      c.fillStyle = paint(c, o.color || NAVY, y - o.size*.5 + dy, y + o.size*.45 + dy);
       if (o.shadow){ c.shadowColor = o.shadow; c.shadowBlur = 14; c.shadowOffsetY = 5; }
-      c.fillText(w, px, y + dy);
+      c.fillText(w, px0 + offs[i], yb + dy);
       c.restore();
     }
-    px += ws[i] + space;
   });
-  return total;
 }
 function drawPara(c, lines, x, y, lh, o, a){
   lines.forEach((ln, i) => drawLine(c, ln, x, y + i*lh, o, {...a, start: a.start + i*(a.lineDelay ?? .2)}));
@@ -90,9 +97,10 @@ function headline(text, x, y, o, a){
   if (alpha <= 0.002) return;
   const sc = lerp(a.fromScale ?? 1.35, 1, p) * (1 + ex*.2);
   octx.setTransform(1,0,0,1,0,0); octx.clearRect(0,0,W,H);
-  setFont(octx, o); octx.textAlign = 'center'; octx.textBaseline = 'middle';
-  octx.fillStyle = paint(octx, o.color || NAVY, y - o.size*.5, y + o.size*.5);
-  octx.fillText(text, x, y);
+  setFont(octx, o);
+  const pl = placeText(octx, text, x, y, o);
+  octx.fillStyle = paint(octx, o.color || NAVY, y - o.size*.42, y + o.size*.42);
+  octx.fillText(text, pl.px, pl.yb);
   if (a.shine != null){
     const sp = prog(a.t, a.shine, a.shine + 1.0);
     if (sp > 0 && sp < 1){
@@ -322,13 +330,13 @@ function cardRow(y, h, icon, lines, t, start, exit){
   ctx.fillStyle = g; ctx.fill();
   ctx.restore();
   iconBadge(x0 + 6, y, R, prog(t, start + .1, start + .7), icon);
-  const tx = x0 + R + 50;
+  const tx = x0 + R + 26, tcx = (tx + x1) / 2;
   const tot = lines.reduce((s, l) => s + l.lh, 0);
   let yy = y - tot/2;
   lines.forEach((l, i) => {
     yy += l.lh/2;
-    const size = fitSize(l.text, l.o, x1 - tx - 30);
-    drawLine(ctx, l.text, tx, yy, {...l.o, size, align: 'left', rise: 20}, {t, start: start + .2 + i*.12, stagger: .05});
+    const size = fitSize(l.text, l.o, x1 - tx - 50);
+    drawLine(ctx, l.text, tcx, yy, {...l.o, size, rise: 20}, {t, start: start + .2 + i*.12, stagger: .05});
     yy += l.lh/2;
   });
   ctx.restore();
@@ -404,8 +412,8 @@ function scene1(t){
   drawPara(ctx, ['Sim, você que faz', 'parte do nosso time!'], CX, 1120, 88,
     {fam:'Pop', wt:800, size:66, color:'navy'}, {t, start:2.3, stagger:.06});
   tag(CX, 1430, 900, 270, -0.05, t, 3.5, [
-    {text:'Tem um convite especial', y:-58, o:{fam:'Pop', wt:800, size:fitSize('Tem um convite especial', {fam:'Pop', wt:800, size:62}, 800)}},
-    {text:'esperando por você...', y:52, o:{fam:'Script', size:118}},
+    {text:'Tem um convite especial', y:-48, o:{fam:'Pop', wt:800, size:fitSize('Tem um convite especial', {fam:'Pop', wt:800, size:62}, 800)}},
+    {text:'esperando por você...', y:60, o:{fam:'Script', size:118}},
   ]);
   swoosh(960, 1270, 1000, 1560, 120, t, 4.2, .6, true, 6, '#1a6ff0');
   ctx.restore();
@@ -484,7 +492,7 @@ function scene4(t){
     {t, start:20.5, dur:.7, fromScale:1.35, blur:14, shine:21.0});
   const cp = eOut5(prog(t, 20.85, 21.5));
   if (cp > 0){
-    const y0 = 660 + (1 - cp) * 60, x0 = 150, w = 780, h = 520;
+    const y0 = 660 + (1 - cp) * 60, x0 = 150, w = 780, h = 560;
     ctx.save(); ctx.globalAlpha *= cp;
     ctx.translate(CX, y0 + h/2); ctx.rotate((1 - cp) * -.06); ctx.translate(-CX, -(y0 + h/2));
     ctx.shadowColor = 'rgba(10,45,120,.25)'; ctx.shadowBlur = 40; ctx.shadowOffsetY = 18;
@@ -497,11 +505,11 @@ function scene4(t){
       ctx.beginPath(); ctx.arc(rx, y0 + 45, 8, 0, 6.283); ctx.fillStyle = '#e8f0fc'; ctx.fill(); }
     ctx.restore();
   }
-  headline('04', CX, 880, {fam:'Anton', size:320, color:'blue', shadowBlur:16, shadowY:8}, {t, start:21.2, dur:.85, fromScale:1.6, blur:18, shine:22.0});
-  headline('DE DEZEMBRO', CX, 1060, {fam:'Anton', size:104, track:4, color:'navy', shadowBlur:0, shadowY:0}, {t, start:21.55, dur:.6, fromScale:1.2, blur:10});
-  headline('DE 2026', CX, 1135, {fam:'Pop', wt:800, size:56, track:18, color:ROYAL, shadowBlur:0, shadowY:0}, {t, start:21.8, dur:.6, fromScale:1.2, blur:8});
-  cardRow(1300, 150, 'clock', [{text:'ÀS 16H30', lh:90, o:{fam:'Anton', size:100, track:3, color:'navy'}}], t, 22.4);
-  cardRow(1500, 210, 'pin', [
+  headline('04', CX, 878, {fam:'Anton', size:270, color:'blue', shadowBlur:16, shadowY:8}, {t, start:21.2, dur:.85, fromScale:1.6, blur:18, shine:22.0});
+  headline('DE DEZEMBRO', CX, 1080, {fam:'Anton', size:100, track:4, color:'navy', shadowBlur:0, shadowY:0}, {t, start:21.55, dur:.6, fromScale:1.2, blur:10});
+  headline('DE 2026', CX, 1160, {fam:'Pop', wt:800, size:56, track:18, color:ROYAL, shadowBlur:0, shadowY:0}, {t, start:21.8, dur:.6, fromScale:1.2, blur:8});
+  cardRow(1325, 150, 'clock', [{text:'ÀS 16H30', lh:90, o:{fam:'Anton', size:100, track:3, color:'navy'}}], t, 22.4);
+  cardRow(1525, 200, 'pin', [
     {text:'Estrada do Vigário', lh:62, o:{fam:'Pop', wt:800, size:50, color:'navy'}},
     {text:'Geral, 773', lh:62, o:{fam:'Pop', wt:800, size:50, color:'navy'}},
     {text:'– Vigário Geral', lh:56, o:{fam:'Pop', wt:700, size:44, color:ROYAL}},
@@ -520,8 +528,8 @@ function scene5(t){
   drawPara(ctx, l1, CX, 470, 86, {...o1, color:'navy'}, {t, start:26.9, stagger:.04, lineDelay:.18, exit:ex, exitDur:.5});
   const ty = 470 + l1.length*86 + 190;
   tag(CX, ty, 920, 280, -0.05, t, 29.0, [
-    {text:'Sua presença faz parte', y:-62, o:{fam:'Pop', wt:800, size:fitSize('Sua presença faz parte', {fam:'Pop', wt:800, size:64}, 820)}},
-    {text:'dessa história!', y:55, o:{fam:'Script', size:126}},
+    {text:'Sua presença faz parte', y:-52, o:{fam:'Pop', wt:800, size:fitSize('Sua presença faz parte', {fam:'Pop', wt:800, size:64}, 820)}},
+    {text:'dessa história!', y:63, o:{fam:'Script', size:126}},
   ], ex + .1);
   const fin = eOut3(prog(t, 31.9, 33));
   rays(t, CX, 1250, fin * .9);
