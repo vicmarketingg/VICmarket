@@ -405,17 +405,16 @@ function scene1(t){
   const out = eIn3(prog(t, 5.6, 6.35));
   ctx.save(); ctx.globalAlpha = 1 - out;
   camera(lerp(1, 1.05, eIO3(prog(t, 0, 5.6))) * (1 + out*1.8));
-  headline('EI,', CX, 470, {fam:'Anton', size:150, track:6, color:'navy'}, {t, start:.7, dur:.8, fromScale:1.6, blur:18});
-  headline('VOCÊ!', CX, 790, {fam:'Anton', size:fitSize('VOCÊ!', {fam:'Anton', size:420, track:8}, 820), track:8, color:'blue', shadowBlur:30, shadowY:14},
-    {t, start:1.15, dur:.95, fromScale:1.9, blur:22, shine:2.0});
-  swoosh(250, 1010, 830, 1000, 26, t, 1.9, .6, false, 10);
-  drawPara(ctx, ['Sim, você que faz', 'parte do nosso time!'], CX, 1120, 88,
-    {fam:'Pop', wt:800, size:66, color:'navy'}, {t, start:2.3, stagger:.06});
-  tag(CX, 1430, 900, 270, -0.05, t, 3.5, [
+  drawPara(ctx, ['Sim, você que', 'faz parte do'], CX, 560, 112,
+    {fam:'Pop', wt:800, size:92, color:'navy'}, {t, start:.6, stagger:.07, lineDelay:.2});
+  headline('NOSSO TIME!', CX, 850, {fam:'Anton', size:fitSize('NOSSO TIME!', {fam:'Anton', size:280, track:6}, 920), track:6, color:'blue', shadowBlur:30, shadowY:14},
+    {t, start:1.15, dur:.95, fromScale:1.8, blur:22, shine:2.0});
+  swoosh(230, 1030, 850, 1020, 26, t, 1.9, .6, false, 10);
+  tag(CX, 1300, 900, 270, -0.05, t, 2.8, [
     {text:'Tem um convite especial', y:-48, o:{fam:'Pop', wt:800, size:fitSize('Tem um convite especial', {fam:'Pop', wt:800, size:62}, 800)}},
     {text:'esperando por você...', y:60, o:{fam:'Script', size:118}},
   ]);
-  swoosh(960, 1270, 1000, 1560, 120, t, 4.2, .6, true, 6, '#1a6ff0');
+  swoosh(960, 1140, 1000, 1430, 120, t, 3.5, .6, true, 6, '#1a6ff0');
   ctx.restore();
 }
 
