@@ -221,8 +221,12 @@ while t < 31.95:
     t += step
 
 # FX
-add(impact(), 1.2, 0.55)                 # "EI, VOCÊ!"
-add(bell(84, 3.0), 1.2, 0.2, 0.3)
+add(bell(84, 3.0), 0.3, 0.16, 0.3)       # logo reveal
+add(swoosh(1.2), 0.7, 0.8)
+add(riser(1.2), 0.8, 0.8)
+add(impact(), 2.0, 0.6)                  # confetti + GRANDE ALEGRIA
+add(crash(2.5), 2.0, 0.7)
+add(bell(88, 2.0), 2.45, 0.18, -0.3)
 add(swoosh(1.0), 5.5, 0.9)               # transition 1
 add(riser(2.0), 12.0, 1.0)               # build to the invitation
 add(crash(3.5), 14.0, 1.0)

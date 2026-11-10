@@ -129,7 +129,7 @@ const R1 = rngF(11);
 const bokeh = Array.from({length: 26}, () => ({
   x: R1()*W, y: R1()*H, r: 60 + R1()*190, blue: R1() < .65, ph: R1()*6.28, sp: .15 + R1()*.35,
   dx: (R1()-.5)*16, dy: -5 - R1()*14 }));
-const dark = t => eIO3(prog(t, 13.85, 14.1)) * (1 - eIO3(prog(t, 19.55, 20.3)));
+const dark = t => Math.max(1 - eIO3(prog(t, 1.75, 2.15)), eIO3(prog(t, 13.85, 14.1)) * (1 - eIO3(prog(t, 19.55, 20.3))));
 
 function background(t){
   const d = dark(t);
@@ -247,14 +247,24 @@ function makeRain(seed, n, t0, span){
     vx: (r()-.5)*40, vy: 130 + r()*130, w: 12 + r()*14, h: 6 + r()*8, rot: r()*6.28, vr: (r()-.5)*4,
     flip: r()*6.28, vf: 3 + r()*6, col: CCOL[Math.floor(r()*6)], sway: r()*6.28 }));
 }
+function makeCannon(seed, n, t0, ox, oy, ang0, power){
+  const r = rngF(seed);
+  return Array.from({length: n}, () => { const ang = ang0 + (r()-.5)*.5, sp = (.55 + r()*.6) * power;
+    return { t0: t0 + r()*.12, x: ox, y: oy, vx: Math.cos(ang)*sp, vy: Math.sin(ang)*sp,
+      w: 14 + r()*18, h: 7 + r()*9, rot: r()*6.28, vr: (r()-.5)*10, flip: r()*6.28, vf: 4 + r()*8,
+      col: CCOL[Math.floor(r()*6)], sway: r()*6.28, k: 1.4 + r()*.8, back: true }; });
+}
 const CONF = [
+  ...makeCannon(505, 60, 2.0, -20, 1750, -1.05, 3000),
+  ...makeCannon(606, 60, 2.0, W + 20, 1750, -2.09, 3000),
   ...makeConfetti(101, 170, 14.0, CX, CY, 2400),
   ...makeConfetti(202, 110, 16.75, CX, 1000, 1700),
   ...makeRain(303, 60, 14.6, 5),
   ...makeRain(404, 110, 31.9, 3),
 ];
-function confetti(t){
+function confetti(t, back=false){
   for (const p of CONF){
+    if (!!p.back !== back) continue;
     const dt = t - p.t0; if (dt < 0) continue;
     let x, y;
     if (p.rain){ x = p.x + p.vx*dt + Math.sin(dt*2 + p.sway)*30; y = p.y + p.vy*dt; }
@@ -392,9 +402,21 @@ function logoAt(cx, cy, w, alpha, scale=1){
   ctx.drawImage(logo, -w/2, -h/2, w, h); ctx.restore();
 }
 function header(t){
-  const a = eOut3(prog(t, 0.25, 1.1)) * (1 - prog(t, 13.6, 13.95)) + eOut3(prog(t, 20.3, 21.0)) * (1 - prog(t, 31.2, 31.7));
-  const y = 215 + Math.sin(t*1.2) * 4 + (1 - eOut3(prog(t, .25, 1.1))) * -30;
-  logoAt(CX, y, 440, clamp(a));
+  const a = eOut3(prog(t, 0.15, 0.9)) * (1 - prog(t, 13.6, 13.95)) + eOut3(prog(t, 20.3, 21.0)) * (1 - prog(t, 31.2, 31.7));
+  const k = eIO3(prog(t, 1.7, 2.15));
+  const rv = eOut5(prog(t, 0.15, 1.1));
+  const y = lerp(900, 215 + Math.sin(t*1.2) * 4, k);
+  const w = lerp(780, 440, k) * lerp(.82, 1, rv);
+  if (k < 1){ // white halo so the logo reads on the deep blue intro
+    ctx.save(); ctx.globalAlpha = rv * (1 - k);
+    const g = ctx.createRadialGradient(CX, y, 30, CX, y, 560);
+    g.addColorStop(0, 'rgba(255,255,255,.97)'); g.addColorStop(.45, 'rgba(235,244,255,.75)'); g.addColorStop(1, 'rgba(200,225,255,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, y - 600, W, 1200); ctx.restore();
+  }
+  ctx.save();
+  const bl = (1 - rv) * 14; if (bl > .4) ctx.filter = `blur(${bl.toFixed(1)}px)`;
+  logoAt(CX, y, w, clamp(a));
+  ctx.restore();
 }
 
 function camera(scale, panY=0){ ctx.translate(CX, CY); ctx.scale(scale, scale); ctx.translate(-CX, -CY + panY); }
@@ -405,16 +427,17 @@ function scene1(t){
   const out = eIn3(prog(t, 5.6, 6.35));
   ctx.save(); ctx.globalAlpha = 1 - out;
   camera(lerp(1, 1.05, eIO3(prog(t, 0, 5.6))) * (1 + out*1.8));
-  drawPara(ctx, ['Sim, você que', 'faz parte do'], CX, 560, 112,
-    {fam:'Pop', wt:800, size:92, color:'navy'}, {t, start:.6, stagger:.07, lineDelay:.2});
-  headline('NOSSO TIME!', CX, 850, {fam:'Anton', size:fitSize('NOSSO TIME!', {fam:'Anton', size:280, track:6}, 920), track:6, color:'blue', shadowBlur:30, shadowY:14},
-    {t, start:1.15, dur:.95, fromScale:1.8, blur:22, shine:2.0});
-  swoosh(230, 1030, 850, 1020, 26, t, 1.9, .6, false, 10);
-  tag(CX, 1300, 900, 270, -0.05, t, 2.8, [
-    {text:'Tem um convite especial', y:-48, o:{fam:'Pop', wt:800, size:fitSize('Tem um convite especial', {fam:'Pop', wt:800, size:62}, 800)}},
-    {text:'esperando por você...', y:60, o:{fam:'Script', size:118}},
+  drawLine(ctx, 'É com', CX, 480, {fam:'Pop', wt:800, size:84, color:'navy'}, {t, start:2.05});
+  headline('GRANDE', CX, 650, {fam:'Anton', size:fitSize('GRANDE', {fam:'Anton', size:250, track:8}, 800), track:8, color:'navy'},
+    {t, start:2.2, dur:.8, fromScale:1.6, blur:18});
+  headline('ALEGRIA', CX, 935, {fam:'Anton', size:fitSize('ALEGRIA', {fam:'Anton', size:270, track:8}, 940), track:8, color:'blue', shadowBlur:30, shadowY:14},
+    {t, start:2.45, dur:.9, fromScale:1.8, blur:22, shine:3.1});
+  drawLine(ctx, 'que convidamos você', CX, 1150, {fam:'Pop', wt:800, size:fitSize('que convidamos você', {fam:'Pop', wt:800, size:80}, 920), color:'navy'}, {t, start:3.0, stagger:.08});
+  tag(CX, 1395, 880, 270, -0.05, t, 3.55, [
+    {text:'para celebrar', y:-50, o:{fam:'Pop', wt:800, size:66}},
+    {text:'conosco!', y:58, o:{fam:'Script', size:140}},
   ]);
-  swoosh(960, 1140, 1000, 1430, 120, t, 3.5, .6, true, 6, '#1a6ff0');
+  swoosh(950, 1235, 990, 1525, 120, t, 4.25, .6, true, 6, '#1a6ff0');
   ctx.restore();
 }
 
@@ -560,15 +583,16 @@ function render(t){
   background(t);
   particles(t, false);
   header(t);
+  confetti(t, true);
   scene1(t); scene2(t); scene3(t); scene4(t); scene5(t);
   ctx.setTransform(1,0,0,1,0,0); ctx.globalAlpha = 1; ctx.filter = 'none';
   bottomBand(t);
   confetti(t);
   particles(t, true);
-  flare(t, 6.1, 960); flare(t, 20.0, 1000); flare(t, 26.5, 900); flare(t, 32.0, 760);
+  flare(t, 1.25, 900); flare(t, 6.1, 960); flare(t, 20.0, 1000); flare(t, 26.5, 900); flare(t, 32.0, 760);
   vignette();
   const k = clamp(t / .6), e = eIO3(prog(t, 34.1, 35));
-  if (k < 1){ ctx.fillStyle = `rgba(255,255,255,${1 - k})`; ctx.fillRect(0, 0, W, H); }
+  if (k < 1){ ctx.fillStyle = `rgba(5,22,74,${1 - k})`; ctx.fillRect(0, 0, W, H); }
   if (e > 0){ ctx.fillStyle = `rgba(255,255,255,${e})`; ctx.fillRect(0, 0, W, H); }
 }
 window.render = render;
