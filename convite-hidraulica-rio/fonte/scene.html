@@ -508,13 +508,13 @@ function scene4(t){
   ctx.save(); ctx.translate(0, (1 - inp) * 800); ctx.globalAlpha = inp * (1 - out);
   camera(lerp(1, 1.03, prog(t, 20.3, 26.2)) * (1 + out * .2));
   if (out > 0) ctx.filter = `blur(${(out*12).toFixed(1)}px)`;
-  headline('NOSSO ENCONTRO JÁ TEM', CX, 420, {fam:'Anton', size:fitSize('NOSSO ENCONTRO JÁ TEM', {fam:'Anton', size:100, track:3}, 900), track:3, color:'navy', shadowBlur:10, shadowY:4},
+  headline('NOSSO ENCONTRO JÁ TEM', CX, 400, {fam:'Anton', size:fitSize('NOSSO ENCONTRO JÁ TEM', {fam:'Anton', size:100, track:3}, 900), track:3, color:'navy', shadowBlur:10, shadowY:4},
     {t, start:20.25, dur:.6, fromScale:1.15, blur:10});
-  headline('DATA MARCADA!', CX, 545, {fam:'Anton', size:fitSize('DATA MARCADA!', {fam:'Anton', size:170, track:4}, 930), track:4, color:'blue'},
+  headline('DATA MARCADA!', CX, 522, {fam:'Anton', size:fitSize('DATA MARCADA!', {fam:'Anton', size:170, track:4}, 930), track:4, color:'blue'},
     {t, start:20.5, dur:.7, fromScale:1.35, blur:14, shine:21.0});
   const cp = eOut5(prog(t, 20.85, 21.5));
   if (cp > 0){
-    const y0 = 660 + (1 - cp) * 60, x0 = 150, w = 780, h = 560;
+    const y0 = 630 + (1 - cp) * 60, x0 = 150, w = 780, h = 560;
     ctx.save(); ctx.globalAlpha *= cp;
     ctx.translate(CX, y0 + h/2); ctx.rotate((1 - cp) * -.06); ctx.translate(-CX, -(y0 + h/2));
     ctx.shadowColor = 'rgba(10,45,120,.25)'; ctx.shadowBlur = 40; ctx.shadowOffsetY = 18;
@@ -527,14 +527,15 @@ function scene4(t){
       ctx.beginPath(); ctx.arc(rx, y0 + 45, 8, 0, 6.283); ctx.fillStyle = '#e8f0fc'; ctx.fill(); }
     ctx.restore();
   }
-  headline('04', CX, 878, {fam:'Anton', size:270, color:'blue', shadowBlur:16, shadowY:8}, {t, start:21.2, dur:.85, fromScale:1.6, blur:18, shine:22.0});
-  headline('DE DEZEMBRO', CX, 1080, {fam:'Anton', size:100, track:4, color:'navy', shadowBlur:0, shadowY:0}, {t, start:21.55, dur:.6, fromScale:1.2, blur:10});
-  headline('DE 2026', CX, 1160, {fam:'Pop', wt:800, size:56, track:18, color:ROYAL, shadowBlur:0, shadowY:0}, {t, start:21.8, dur:.6, fromScale:1.2, blur:8});
-  cardRow(1325, 150, 'clock', [{text:'ÀS 16H30', lh:90, o:{fam:'Anton', size:100, track:3, color:'navy'}}], t, 22.4);
-  cardRow(1525, 200, 'pin', [
-    {text:'Estrada do Vigário', lh:62, o:{fam:'Pop', wt:800, size:50, color:'navy'}},
-    {text:'Geral, 773', lh:62, o:{fam:'Pop', wt:800, size:50, color:'navy'}},
-    {text:'– Vigário Geral', lh:56, o:{fam:'Pop', wt:700, size:44, color:ROYAL}},
+  headline('04', CX, 848, {fam:'Anton', size:270, color:'blue', shadowBlur:16, shadowY:8}, {t, start:21.2, dur:.85, fromScale:1.6, blur:18, shine:22.0});
+  headline('DE DEZEMBRO', CX, 1050, {fam:'Anton', size:100, track:4, color:'navy', shadowBlur:0, shadowY:0}, {t, start:21.55, dur:.6, fromScale:1.2, blur:10});
+  headline('DE 2026', CX, 1130, {fam:'Pop', wt:800, size:56, track:18, color:ROYAL, shadowBlur:0, shadowY:0}, {t, start:21.8, dur:.6, fromScale:1.2, blur:8});
+  cardRow(1268, 140, 'clock', [{text:'ÀS 16H30', lh:90, o:{fam:'Anton', size:100, track:3, color:'navy'}}], t, 22.4);
+  cardRow(1482, 262, 'pin', [
+    {text:'ESPAÇO LAR', lh:84, o:{fam:'Anton', size:72, track:4, color:'blue'}},
+    {text:'Estrada do Vigário', lh:56, o:{fam:'Pop', wt:800, size:46, color:'navy'}},
+    {text:'Geral, 773', lh:56, o:{fam:'Pop', wt:800, size:46, color:'navy'}},
+    {text:'– Vigário Geral', lh:52, o:{fam:'Pop', wt:700, size:40, color:ROYAL}},
   ], t, 23.4);
   ctx.restore();
 }
