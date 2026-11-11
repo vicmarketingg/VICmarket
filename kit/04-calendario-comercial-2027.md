@@ -34,11 +34,12 @@ A maioria das pessoas recebe o salário **até o 5º dia útil** do mês, e muit
 |---|---|---|---|---|
 | 06 a 09/02 | Carnaval (terça: 09/02) | Bebidas, gelo, carvão, petiscos, descartáveis, água | 29/01 | 20/01 |
 | 10/02 (qua) | Quarta-feira de Cinzas — início da Quaresma | Peixes, ovos, legumes (menos carne vermelha às sextas para quem segue a tradição) | 08/02 | 01/02 |
+| 12, 19 e 26/02 (sex) | Sextas da Quaresma | Peixes, bacalhau, sardinha e atum, ovos, legumes; receitas sem carne vermelha | toda quinta | 01/02 |
 
 ## MARÇO
 | Data | Ocasião | O que vender | Começar a divulgar | Avisar compras |
 |---|---|---|---|---|
-| Sextas da Quaresma | Sexta do Peixe | Peixes, frutos do mar, bacalhau | toda quinta | fevereiro |
+| 05, 12 e 19/03 (sex) | Sextas da Quaresma (continua) | Peixes, bacalhau, sardinha e atum, ovos, legumes; receitas sem carne vermelha | toda quinta | fevereiro |
 | 08/03 (seg) | Dia Internacional da Mulher | Flores, chocolates, vinhos, cestas | 03/03 | 20/02 |
 | 15/03 (seg) | Dia do Consumidor | Semana de ofertas ("Semana do Consumidor") | 08/03 | 25/02 |
 | 26/03 (sex) | Sexta-feira Santa — feriado | Bacalhau, peixes, azeite, batata; horário da loja | 15/03 | 01/03 |
