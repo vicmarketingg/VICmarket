@@ -3,151 +3,140 @@
 <head>
 <meta charset="utf-8">
 <title>Novembro Azul — Eder Fagundes Advocacia</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,600;1,700;1,800&family=Poppins:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
   :root{
     --gold:#A97A34;
-    --gold-soft:#C49A55;
-    --black:#141414;
-    --chumbo:#383D3B;
-    --white:#FFFFFF;
-    --cream:#F4EFE6;
-    --blue:#6C9AD6;       /* azul da campanha, uso pontual */
-    --blue-deep:#2E5C9A;
+    --gold-grad:linear-gradient(100deg,#8C6227 0%,#D9B26A 45%,#A97A34 70%,#E2C07E 100%);
+    --ink:#141414;
+    --cream:#EFE9DF;
+    --tan:#C9A97A;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  .slide *{font-variant-numeric:lining-nums}
-  h1,h2,p{text-wrap:pretty}
-  body{background:#666;font-family:'Poppins',sans-serif;display:flex;flex-wrap:wrap;gap:40px;padding:40px}
-  .slide{
-    width:1080px;height:1350px;position:relative;overflow:hidden;
-    padding:110px 100px;display:flex;flex-direction:column;
-  }
-  .dark{background:var(--black);color:var(--white)}
-  .chumbo{background:var(--chumbo);color:var(--white)}
-  .light{background:var(--cream);color:var(--black)}
+  body{background:#555;display:flex;flex-wrap:wrap;gap:40px;padding:40px;font-family:'Poppins',sans-serif}
+  .slide{width:1080px;height:1350px;position:relative;overflow:hidden;font-variant-numeric:lining-nums}
+  .slide h2,.slide h3,.slide p{text-wrap:pretty}
 
-  /* moldura fina dourada */
-  .frame{position:absolute;inset:44px;border:1px solid rgba(169,122,52,.45);pointer-events:none}
-  .light .frame{border-color:rgba(169,122,52,.55)}
+  /* FOTO: para usar uma imagem real, adicione style="background-image:url(fotos/x.jpg)" no .photo */
+  .photo{position:absolute;inset:0;background-size:cover;background-position:center}
+  .shade{position:absolute;inset:0}
 
-  .kicker{
-    font-family:'Poppins';font-weight:500;font-size:24px;letter-spacing:.32em;
-    text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:22px;
-  }
-  .kicker::before{content:"";width:64px;height:1px;background:var(--gold)}
+  .dark{background:#0E0C0A;color:#fff}
+  .dark .photo{background-image:
+      radial-gradient(ellipse 70% 55% at 85% 95%,rgba(120,82,40,.55),transparent 70%),
+      radial-gradient(ellipse 60% 45% at 100% 40%,rgba(46,92,154,.28),transparent 70%),
+      radial-gradient(ellipse 80% 60% at 10% 0%,rgba(70,50,30,.45),transparent 70%)}
+  .dark .shade{background:linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.35))}
 
-  .slide:not(.cover) .num{margin-top:auto}
-  .num{font-family:'Cormorant Garamond';font-weight:500;font-size:150px;line-height:1;color:var(--gold);margin-bottom:24px}
+  .gold{background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .u{text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:10px}
 
-  h1,h2{font-family:'Cormorant Garamond';font-weight:500;letter-spacing:-.005em}
-  h2{font-size:92px;line-height:1.04;margin-top:48px}
-  h2 em{font-style:italic;color:var(--gold)}
-  .light h2 em{color:var(--gold)}
+  .watermark{position:absolute;font-family:'Playfair Display';font-weight:400;line-height:.8;color:rgba(169,122,52,.10);pointer-events:none}
 
-  .rule{width:120px;height:1px;background:var(--gold);margin:60px 0 52px}
-  p.body{font-family:'Poppins';font-weight:300;font-size:36px;line-height:1.55;max-width:860px}
-  .dark p.body,.chumbo p.body{color:rgba(255,255,255,.82)}
-  .light p.body{color:#2a2a2a}
+  /* monograma EF (reconstrução — substituir pelo arquivo oficial) */
+  .mono{position:relative;display:inline-block;width:72px;height:96px}
+  .mono span{position:absolute;font-family:'Playfair Display';font-weight:400;font-size:100px;line-height:1;top:-8px}
+  .mono .e{left:0}
+  .mono .f{left:20px;top:8px}
 
-  /* rodapé */
-  .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end}
-  .count{font-family:'Poppins';font-size:22px;letter-spacing:.28em;color:var(--gold)}
-  .swipe{font-family:'Poppins';font-size:22px;letter-spacing:.28em;text-transform:uppercase;opacity:.7;display:flex;align-items:center;gap:14px}
+  .content{position:absolute;left:70px;right:70px;top:300px}
 
-  /* logotipo (reconstrução tipográfica — substituir pelo arquivo oficial) */
-  .logo{display:flex;align-items:center;gap:20px}
-  .mono{font-family:'Cormorant Garamond';font-weight:600;font-size:64px;color:var(--gold);line-height:1;position:relative;width:70px;height:70px}
-  .mono span{position:absolute}
-  .mono .e{left:0;top:0}
-  .mono .f{left:24px;top:8px;font-style:italic}
-  .wordmark{display:flex;flex-direction:column;border-left:1px solid var(--gold);padding-left:20px}
-  .wordmark b{font-family:'Cormorant Garamond';font-weight:600;font-size:30px;letter-spacing:.12em}
-  .wordmark small{font-family:'Poppins';font-size:13px;letter-spacing:.55em;margin-top:6px;display:flex;align-items:center;gap:10px}
-  .wordmark small::before,.wordmark small::after{content:"";width:18px;height:1px;background:currentColor;opacity:.7}
-  .dark .wordmark,.chumbo .wordmark{color:var(--white)}
-  .light .wordmark{color:var(--black)}
+  .handle{position:absolute;left:70px;bottom:92px;font-size:28px}
+  .dark .handle{color:rgba(255,255,255,.85)}
+  .light .handle{color:#444}
+  .foot-mono{position:absolute;right:90px;bottom:70px}
 
-  /* capa */
-  .cover h1{font-size:200px;line-height:.92;margin-top:auto}
-  .cover h1 .azul{display:block;font-style:italic;color:var(--blue)}
-  .cover .tag{font-family:'Poppins';font-weight:300;font-size:38px;line-height:1.5;margin-top:56px;max-width:780px;color:rgba(255,255,255,.85)}
-  .cover .tag strong{font-weight:500;color:var(--gold-soft)}
-  .ribbon{position:absolute;right:130px;top:180px;width:150px}
-  .glow{position:absolute;right:-260px;top:-200px;width:900px;height:900px;border-radius:50%;
-        background:radial-gradient(circle,rgba(46,92,154,.30) 0%,rgba(46,92,154,0) 65%)}
+  .dark h2.title{font-family:'Playfair Display';font-weight:400;font-size:118px;line-height:1.02;letter-spacing:-.01em}
+  .dark h2.title em{font-weight:800;font-style:italic}
+  .dark .sub{font-family:'Playfair Display';font-size:66px;line-height:1.18;margin-top:40px;color:#f2ede4}
+  .dark .sub b{font-weight:600}
+  .dark .body{font-weight:600;font-size:44px;line-height:1.5;margin-top:70px;max-width:900px}
 
-  /* fechamento */
-  .closing h2{font-size:96px}
-  .cta{margin-top:56px;display:inline-flex;align-items:center;gap:18px;border:1px solid var(--gold);
-       padding:26px 40px;font-size:24px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);align-self:flex-start}
-  .cta i{width:14px;height:14px;border-radius:50%;background:var(--blue);display:inline-block}
+  .ribbon{display:inline-block;width:70px;vertical-align:middle;margin-left:18px;transform:translateY(-14px)}
+
+  .light{background:var(--cream);color:var(--ink)}
+  .light .photo{background-image:
+      radial-gradient(ellipse 90% 70% at 70% 30%,rgba(255,255,255,.55),transparent 70%),
+      radial-gradient(ellipse 60% 60% at 0% 100%,rgba(169,122,52,.12),transparent 70%)}
+
+  .strip{position:absolute;top:0;right:0;bottom:0;width:300px;background-size:cover;background-position:center;
+    background-image:
+      radial-gradient(ellipse 120% 60% at 50% 55%,rgba(46,92,154,.55),transparent 75%),
+      linear-gradient(180deg,#1b1712,#2a2118 60%,#15110d)}
+  .strip .ribbon-big{position:absolute;left:50%;top:50%;width:150px;transform:translate(-50%,-50%)}
+
+  .s3 .content{right:360px;top:250px}
+  .s3 h2{font-family:'Playfair Display';font-weight:700;font-size:118px;line-height:1}
+  .s3 h3{font-family:'Playfair Display';font-weight:700;font-size:60px;line-height:1.1;margin-top:14px;letter-spacing:-.01em}
+  .s3 p{font-size:40px;line-height:1.45;margin-top:44px;color:#222}
+  .s3 p + p{margin-top:70px}
+  .s3 b{font-weight:600}
+
+  .s4 .logo{position:absolute;top:150px;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:30px}
+  .s4 .logo .word{display:flex;flex-direction:column;align-items:center}
+  .s4 .logo .word b{font-family:'Playfair Display';font-weight:400;font-size:54px;letter-spacing:.02em;font-variant:small-caps}
+  .s4 .logo .word small{font-family:'Playfair Display';font-size:18px;letter-spacing:.3em;margin-top:4px;padding-top:6px;border-top:1px solid var(--gold);color:var(--gold)}
+  .s4 .content{top:400px;left:90px;right:90px;text-align:center}
+  .s4 h2{font-family:'Playfair Display';font-weight:400;font-size:70px;line-height:1.15}
+  .s4 h2 em{font-weight:800;font-style:italic}
+  .s4 p.hl{font-size:44px;line-height:1.66;margin-top:60px;color:#1a1a1a}
+  .s4 p.hl b{font-weight:600}
+  .mark{background:var(--tan);padding:4px 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  .s4 .at{font-size:40px;font-weight:600;font-style:italic;margin-top:70px}
 </style>
 </head>
 <body>
 
 <!-- SLIDE 1 — CAPA -->
-<section class="slide dark cover" id="s1">
-  <div class="glow"></div>
-  <div class="frame"></div>
-  <svg class="ribbon" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs><linearGradient id="rb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7FA9E0"/><stop offset="1" stop-color="#2E5C9A"/></linearGradient></defs>
-    <!-- laço de conscientização -->
-    <path d="M150 280 L82 128 C66 92 72 30 100 30 C128 30 134 92 118 128 L50 280" stroke="url(#rb)" stroke-width="24" stroke-linejoin="round"/>
-  </svg>
-  <div class="kicker">Campanha de conscientização</div>
-  <h1>Novembro<span class="azul">Azul</span></h1>
-  <p class="tag">Cuidar de si também é uma forma de <strong>cuidar de quem você ama.</strong></p>
-  <div class="foot" style="margin-top:90px">
-    <div class="logo"><div class="mono"><span class="e">E</span><span class="f">F</span></div>
-      <div class="wordmark"><b>EDER FAGUNDES</b><small>ADVOCACIA</small></div></div>
-    <div class="swipe">Arraste <span style="color:var(--gold)">→</span></div>
+<section class="slide dark" id="s1">
+  <div class="photo"></div><div class="shade"></div>
+  <div class="watermark" style="font-size:1100px;right:-120px;top:120px;color:rgba(169,122,52,.07)">F</div>
+  <div class="content" style="top:330px">
+    <h2 class="title">Novembro<br><em class="gold">Azul</em><svg class="ribbon" viewBox="0 0 200 300" fill="none"><defs><linearGradient id="rb1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8DB4E8"/><stop offset="1" stop-color="#2E5C9A"/></linearGradient></defs><path d="M150 280 L82 128 C66 92 72 30 100 30 C128 30 134 92 118 128 L50 280" stroke="url(#rb1)" stroke-width="26" stroke-linejoin="round"/></svg></h2>
+    <p class="sub"><span class="u">Cuidar de si</span> também é uma forma de cuidar de <b class="gold">quem você ama</b>.</p>
   </div>
+  <div class="handle">@ederfagundes.adv</div>
+  <div class="foot-mono"><span class="mono"><span class="e gold">E</span><span class="f gold">F</span></span></div>
 </section>
 
 <!-- SLIDE 2 — CONSCIENTIZAÇÃO -->
-<section class="slide light" id="s2">
-  <div class="frame"></div>
-  <div class="num">01</div>
-  <div class="kicker">Conscientização</div>
-  <h2>Sua saúde também precisa ser <em>prioridade.</em></h2>
-  <div class="rule"></div>
-  <p class="body">Entre o trabalho, a família e os compromissos do dia a dia, o cuidado com a própria saúde não pode ficar para depois.</p>
-  <div class="foot">
-    <div class="logo"><div class="mono"><span class="e">E</span><span class="f">F</span></div>
-      <div class="wordmark"><b>EDER FAGUNDES</b><small>ADVOCACIA</small></div></div>
-    <div class="count">02 / 04</div>
+<section class="slide dark" id="s2">
+  <div class="photo"></div><div class="shade"></div>
+  <div class="content">
+    <h2 class="title" style="font-size:104px">Sua <span class="u">saúde</span> também precisa ser <em class="gold">prioridade</em>.</h2>
+    <p class="body">Entre o trabalho, a família e os compromissos do dia a dia, o cuidado com a própria saúde <span class="gold">não pode ficar para depois</span>.</p>
   </div>
+  <div class="handle">@ederfagundes.adv</div>
+  <div class="foot-mono"><span class="mono"><span class="e gold">E</span><span class="f gold">F</span></span></div>
 </section>
 
 <!-- SLIDE 3 — REFLEXÃO -->
-<section class="slide chumbo" id="s3">
-  <div class="frame"></div>
-  <div class="num">02</div>
-  <div class="kicker">Reflexão</div>
-  <h2>Prevenir também é um ato de <em>responsabilidade.</em></h2>
-  <div class="rule"></div>
-  <p class="body">Manter o acompanhamento médico em dia e conversar sobre saúde são atitudes importantes em todas as fases da vida.</p>
-  <div class="foot">
-    <div class="logo"><div class="mono"><span class="e">E</span><span class="f">F</span></div>
-      <div class="wordmark"><b>EDER FAGUNDES</b><small>ADVOCACIA</small></div></div>
-    <div class="count">03 / 04</div>
+<section class="slide light s3" id="s3">
+  <div class="photo"></div>
+  <div class="watermark" style="font-size:1250px;left:-40px;top:60px">E</div>
+  <div class="strip">
+    <svg class="ribbon-big" viewBox="0 0 200 300" fill="none"><defs><linearGradient id="rb3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8DB4E8"/><stop offset="1" stop-color="#2E5C9A"/></linearGradient></defs><path d="M150 280 L82 128 C66 92 72 30 100 30 C128 30 134 92 118 128 L50 280" stroke="url(#rb3)" stroke-width="22" stroke-linejoin="round"/></svg>
   </div>
+  <div class="content">
+    <h2 class="gold">Prevenir</h2>
+    <h3>também é um ato de responsabilidade.</h3>
+    <p>Manter o <span class="u">acompanhamento médico</span> em dia e <b>conversar sobre saúde</b> são atitudes importantes em <b>todas as fases</b> da <span class="u">vida</span>.</p>
+  </div>
+  <div class="handle">@ederfagundes.adv</div>
 </section>
 
 <!-- SLIDE 4 — FECHAMENTO -->
-<section class="slide dark closing" id="s4">
-  <div class="glow" style="right:auto;left:-380px;top:auto;bottom:-380px"></div>
-  <div class="frame"></div>
-  <div class="num">03</div>
-  <div class="kicker">Novembro Azul</div>
-  <h2>Não espere um <em>sinal de alerta</em> para olhar para a sua saúde.</h2>
-  <div class="rule"></div>
-  <p class="body">Aproveite o Novembro Azul para conversar com um profissional de saúde, esclarecer suas dúvidas e manter seus cuidados em dia.</p>
-  <div class="foot">
-    <div class="logo"><div class="mono"><span class="e">E</span><span class="f">F</span></div>
-      <div class="wordmark"><b>EDER FAGUNDES</b><small>ADVOCACIA</small></div></div>
-    <div class="count">04 / 04</div>
+<section class="slide light s4" id="s4">
+  <div class="photo"></div>
+  <div class="watermark" style="font-size:1250px;right:-60px;top:160px">F</div>
+  <div class="logo">
+    <span class="mono" style="transform:scale(1.25)"><span class="e gold">E</span><span class="f gold">F</span></span>
+    <div class="word"><b class="gold">Eder Fagundes</b><small>ADVOCACIA</small></div>
+  </div>
+  <div class="content">
+    <h2>Não espere um <em class="gold">sinal de alerta</em> para olhar para a sua saúde.</h2>
+    <p class="hl">Aproveite o <b>Novembro Azul</b> para <span class="mark">conversar com um profissional de saúde, esclarecer suas dúvidas e manter seus cuidados em dia.</span></p>
+    <p class="at">@ederfagundes.adv</p>
   </div>
 </section>
 
