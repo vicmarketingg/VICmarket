@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-PT"><head><meta charset="utf-8">
+<title>Carrossel Black Friday</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Jost:wght@400;500;600&display=swap">
+<style>
+*{box-sizing:border-box;margin:0}
+body{background:#111;padding:40px;display:flex;flex-direction:column;gap:40px;align-items:center;font-family:Jost,Arial,sans-serif}
+.slide{position:relative;width:1080px;height:1350px;overflow:hidden;color:#FFF8F0;
+ background:radial-gradient(ellipse 70% 55% at 70% 45%,rgba(212,175,106,.18),transparent 60%),radial-gradient(ellipse at 15% 0%,#6E1628,#3E0B17 50%,#1E040B 100%);padding:96px 88px}
+.slide::before{content:"";position:absolute;inset:36px;border:1.5px solid rgba(233,201,138,.45);border-radius:28px;pointer-events:none;z-index:3}
+.top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:4}
+.marca{font:500 22px Jost;letter-spacing:.3em;color:#E9C98A;text-transform:uppercase}
+.pag{font:500 22px Jost;letter-spacing:.2em;color:#E9C98A}
+.tag{display:inline-block;font:600 26px Jost;letter-spacing:.24em;text-transform:uppercase;color:#1E040B;background:linear-gradient(135deg,#E9C98A,#C9A257 55%,#A9813C);padding:14px 30px;border-radius:999px;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+h1,h2{font-family:"Playfair Display",Georgia,serif;font-weight:500;line-height:1.04;letter-spacing:-.01em}
+em{font-style:italic;color:#E9C98A}
+.eyebrow{font:600 24px Jost;letter-spacing:.26em;text-transform:uppercase;color:#E9C98A}
+p.txt{font:400 34px/1.45 Jost;color:#F3E6D8}
+.foto{position:absolute;z-index:1;filter:drop-shadow(0 40px 50px rgba(0,0,0,.6));-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
+.anel{position:absolute;border:2px solid rgba(233,201,138,.5);border-radius:50%;z-index:0}
+.selo{position:absolute;z-index:4;width:250px;height:250px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(145deg,#E9C98A,#C9A257 55%,#A9813C);color:#3A0A15;transform:rotate(-10deg);box-shadow:0 24px 50px rgba(0,0,0,.5)}
+.selo b{font:600 92px/1 Jost;letter-spacing:-.02em}
+.selo span{font:600 20px Jost;letter-spacing:.2em;text-transform:uppercase;margin-top:6px}
+.faixa{position:absolute;left:-60px;right:-60px;padding:18px 0;white-space:nowrap;font:600 26px Jost;letter-spacing:.24em;text-transform:uppercase;z-index:2}
+.faixa.ouro{background:linear-gradient(90deg,#B58C42,#E9C98A 30%,#C9A257 60%,#E9C98A 85%,#B58C42);color:#3A0A15;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.faixa.vinho{background:#2A0610;color:#E9C98A;border-top:1.5px solid rgba(233,201,138,.5);border-bottom:1.5px solid rgba(233,201,138,.5)}
+.card{border-radius:26px;padding:40px 44px;background:linear-gradient(145deg,#E9C98A,#C9A257 55%,#A9813C);color:#3A0A15;box-shadow:0 24px 50px rgba(0,0,0,.4);position:relative}
+.card h3{font:500 54px/1.05 "Playfair Display",Georgia,serif;margin-bottom:12px;padding-right:120px}
+.card p{font:400 32px/1.4 Jost}
+.card .off{position:absolute;top:30px;right:34px;font:600 24px Jost;letter-spacing:.14em;background:#3A0A15;color:#E9C98A;padding:10px 18px;border-radius:999px}
+.card.esc{background:rgba(42,6,16,.75);border:1.5px solid rgba(233,201,138,.55);color:#FFF8F0}
+.card.esc h3{color:#FFF8F0}.card.esc p{color:#F3E6D8}.card.esc .off{background:linear-gradient(135deg,#E9C98A,#B58C42);color:#3A0A15}
+.rodape{position:absolute;left:88px;right:88px;bottom:84px;display:flex;justify-content:space-between;align-items:center;z-index:4;font:600 22px Jost;letter-spacing:.22em;text-transform:uppercase;color:#E9C98A}
+.seta{display:inline-flex;align-items:center;gap:14px}
+.seta i{display:inline-block;width:64px;height:2px;background:#E9C98A;position:relative}
+.seta i::after{content:"";position:absolute;right:0;top:-7px;width:14px;height:14px;border-top:2px solid #E9C98A;border-right:2px solid #E9C98A;transform:rotate(45deg)}
+.btn{display:inline-block;font:600 30px Jost;letter-spacing:.18em;text-transform:uppercase;color:#3A0A15;background:linear-gradient(135deg,#E9C98A,#C9A257 50%,#B58C42);padding:28px 54px;border-radius:999px;box-shadow:0 16px 40px rgba(0,0,0,.45)}
+.quote-i{width:84px;height:84px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#E9C98A,#B58C42);color:#3A0A15;font:italic 600 76px/1 "Playfair Display",Georgia,serif;padding-top:30px}
+.cd{display:flex;gap:18px}
+.cd div{width:150px;padding:22px 0;border-radius:20px;text-align:center;background:linear-gradient(145deg,#E9C98A,#B58C42);color:#3A0A15}
+.cd b{display:block;font:500 64px/1 "Playfair Display",Georgia,serif}
+.cd span{font:600 18px Jost;letter-spacing:.18em;text-transform:uppercase}
+</style></head><body>
+
+<!-- 1. CAPA -->
+<section class="slide" id="s1">
+<div class="top"><span class="marca">Sollange Almada Binha</span><span class="pag">01/07</span></div>
+<div class="anel" style="width:560px;height:560px;right:-70px;top:300px"></div>
+<img class="foto" src="../fotos/recortes/sollange-vermelho-pose.webp" style="right:-110px;bottom:0;height:940px" alt="">
+<div style="position:relative;z-index:4;margin-top:110px;max-width:540px">
+<span class="tag">Black Friday</span>
+<h1 style="font-size:118px;margin:44px 0 30px">Investe <em>em ti</em> com desconto.</h1>
+<p class="txt" style="max-width:470px">Todos os programas da Sollange com condições especiais.</p>
+</div>
+<div class="selo" style="left:100px;bottom:200px;width:220px;height:220px"><b>-20%</b><span>em tudo</span></div>
+<div class="faixa ouro" style="bottom:70px;transform:rotate(-3deg)">Só até 29 de novembro ✦ Black Friday ✦ Só até 29 de novembro ✦ Black Friday ✦</div>
+</section>
+
+<!-- 2. GANCHO -->
+<section class="slide" id="s2">
+<div class="top"><span class="marca">Sollange Almada Binha</span><span class="pag">02/07</span></div>
+<div style="position:relative;z-index:4;margin-top:150px">
+<div class="quote-i">“</div>
+<h2 style="font-size:96px;margin:56px 0 48px">Fazes tudo por todos.<br><em>Quando foi a última vez que fizeste algo por ti?</em></h2>
+<p class="txt" style="max-width:820px">Se te sentes cansada, dividida, a calar o que sentes ou a adiar o que é teu, não é falta de capacidade.</p>
+<p class="txt" style="max-width:820px;margin-top:28px;color:#FFF8F0"><b style="font-weight:600">É sinal de que chegou o momento de voltares a ti.</b></p>
+</div>
+<div class="rodape"><span>Black Friday · até 29/11</span><span class="seta">Desliza <i></i></span></div>
+</section>
+
+<!-- 3. MENTORIAS -->
+<section class="slide" id="s3">
+<div class="top"><span class="marca">Sollange Almada Binha</span><span class="pag">03/07</span></div>
+<div style="position:relative;z-index:4;margin-top:150px">
+<p class="eyebrow">Mentorias de 6 meses</p>
+<h2 style="font-size:92px;margin:24px 0 56px">O processo <em>mais profundo</em>.</h2>
+<div class="card" style="margin-bottom:36px;padding:52px 48px"><span class="off">-20%</span><h3>Mentoria Soberana</h3><p>Para quem tem resultados, mas sente que se afastou de si. Seis meses para voltares a liderar a tua vida.</p></div>
+<div class="card" style="padding:52px 48px"><span class="off">-20%</span><h3>Mentoria VOZ</h3><p>Para quem tem medo de falar e de se expor. Trabalhamos a origem do medo, muito além de falar em público.</p></div>
+</div>
+<div class="rodape"><span>Black Friday · até 29/11</span><span class="seta">Desliza <i></i></span></div>
+</section>
+
+<!-- 4. INTENSIVOS -->
+<section class="slide" id="s4">
+<div class="top"><span class="marca">Sollange Almada Binha</span><span class="pag">04/07</span></div>
+<div style="position:relative;z-index:4;margin-top:150px">
+<p class="eyebrow">Programas intensivos</p>
+<h2 style="font-size:92px;margin:24px 0 50px">Um tema, <em>um foco</em>.</h2>
+<div class="card esc" style="margin-bottom:30px;padding:44px 48px"><span class="off">-20%</span><h3 style="font-size:58px">Reinventa-te</h3><p>Para mudar de carreira ou recomeçar.</p></div>
+<div class="card esc" style="margin-bottom:30px;padding:44px 48px"><span class="off">-20%</span><h3 style="font-size:58px">Voz &amp; Essência</h3><p>Para deixares de te calar para não desagradar.</p></div>
+<div class="card esc" style="padding:44px 48px"><span class="off">-20%</span><h3 style="font-size:52px">Empreender com Equilíbrio</h3><p>Para o negócio deixar de consumir a tua vida.</p></div>
+</div>
+<div class="rodape"><span>Black Friday · até 29/11</span><span class="seta">Desliza <i></i></span></div>
+</section>
+
+<!-- 5. PRIMEIROS PASSOS -->
+<section class="slide" id="s5">
+<div class="top"><span class="marca">Sollange Almada Binha</span><span class="pag">05/07</span></div>
+<div style="position:relative;z-index:4;margin-top:150px">
+<p class="eyebrow">Primeiros passos</p>
+<h2 style="font-size:92px;margin:24px 0 50px">Para começares <em>hoje</em>.</h2>
+<div class="card esc" style="margin-bottom:30px;padding:44px 48px"><span class="off">-20%</span><h3 style="font-size:58px">Essência</h3><p>Um primeiro passo para te conheceres.</p></div>
+<div class="card esc" style="margin-bottom:30px;padding:44px 48px"><span class="off">-20%</span><h3 style="font-size:58px">Direção</h3><p>Para parares de adiar decisões e objectivos.</p></div>
+<div class="card esc" style="padding:44px 48px"><span class="off">-20%</span><h3 style="font-size:58px">Corpo Revela</h3><p>Para entenderes padrões que não consegues explicar.</p></div>
+</div>
+<div class="rodape"><span>Black Friday · até 29/11</span><span class="seta">Desliza <i></i></span></div>
+</section>
+
+<!-- 6. DEPOIMENTO -->
+<section class="slide" id="s6">
+<div class="top"><span class="marca">Sollange Almada Binha</span><span class="pag">06/07</span></div>
+<div class="anel" style="width:440px;height:440px;right:-60px;bottom:200px"></div>
+<img class="foto" src="../fotos/recortes/sollange-vermelho-sorriso.webp" style="right:-90px;bottom:0;height:700px" alt="">
+<div style="position:relative;z-index:4;margin-top:120px;max-width:640px">
+<p class="eyebrow">Quem já viveu este trabalho</p>
+<div class="quote-i" style="margin-top:44px">“</div>
+<h2 style="font-size:58px;line-height:1.22;margin:40px 0 36px;font-style:italic;font-weight:400">Hoje comecei a sessão a chorar e terminei a sorrir. Estou <em>renovada e pronta</em> para tomar decisões.</h2>
+<p style="font:500 26px Jost;letter-spacing:.14em;color:#E9C98A;text-transform:uppercase">A. T. · Cliente de terapia</p>
+</div>
+<div class="rodape"><span>Black Friday · até 29/11</span><span class="seta">Desliza <i></i></span></div>
+</section>
+
+<!-- 7. CTA -->
+<section class="slide" id="s7">
+<div class="top"><span class="marca">Sollange Almada Binha</span><span class="pag">07/07</span></div>
+<div class="anel" style="width:500px;height:500px;right:-110px;top:330px"></div>
+<img class="foto" src="../fotos/recortes/sollange-preto.webp" style="right:-200px;bottom:0;height:860px" alt="">
+<div style="position:relative;z-index:4;margin-top:110px;max-width:560px">
+<span class="tag">Black Friday</span>
+<h2 style="font-size:100px;margin:44px 0 36px"><em>-20%</em> em todos os programas.</h2>
+<p class="txt" style="margin-bottom:44px">O desconto termina a <b style="color:#E9C98A;font-weight:600">29 de novembro</b>, às 23h59.</p>
+<span class="btn">Link na bio</span>
+<p class="txt" style="margin-top:34px;font-size:28px;color:#E3D2C2">Ou comenta <b style="color:#E9C98A">BLACK</b> e eu envio-te o link.</p>
+</div>
+<div class="faixa vinho" style="bottom:110px;transform:rotate(2deg)">Mentorias ✦ Terapia ✦ Coaching ✦ Só até 29 de novembro ✦ Mentorias ✦ Terapia ✦</div>
+</section>
+</body></html>
