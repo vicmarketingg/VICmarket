@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-PT"><head><meta charset="utf-8">
+<title>Carrossel emocional</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..800;1,400..700&family=Jost:wght@400;500;600&family=Pinyon+Script&display=swap">
+<style>
+*{box-sizing:border-box;margin:0}
+body{background:#111;padding:40px;display:flex;flex-direction:column;gap:40px;align-items:center}
+.slide{position:relative;width:1080px;height:1350px;overflow:hidden;color:#FFF8F0;font-family:Jost,Arial,sans-serif;background:radial-gradient(ellipse at 20% 0%,#5E1222,#3A0A15 45%,#1A030A 100%)}
+.slide::after{content:"";position:absolute;inset:30px;border:1.5px solid rgba(233,201,138,.45);border-radius:24px;pointer-events:none;z-index:6}
+.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.veu{position:absolute;inset:0;z-index:1}
+.c{position:absolute;z-index:3;left:96px;right:96px}
+.eyebrow{font:600 22px Jost;letter-spacing:.26em;text-transform:uppercase;color:#E9C98A}
+h1,h2{font-family:"Playfair Display",Georgia,serif;font-weight:500;line-height:1.08;letter-spacing:-.01em;text-shadow:0 4px 30px rgba(0,0,0,.35)}
+em{font-style:italic;color:#E9C98A}
+p.t{font:400 34px/1.5 Jost;color:#F6ECE0;text-shadow:0 2px 16px rgba(0,0,0,.4)}
+.script{font:400 84px/1 "Pinyon Script",cursive;color:#E9C98A}
+.seta{position:absolute;z-index:4;right:96px;bottom:84px;display:flex;align-items:center;gap:14px;font:600 20px Jost;letter-spacing:.22em;text-transform:uppercase;color:#E9C98A}
+.seta i{display:inline-block;width:60px;height:2px;background:#E9C98A;position:relative}
+.seta i::after{content:"";position:absolute;right:0;top:-6px;width:13px;height:13px;border-top:2px solid #E9C98A;border-right:2px solid #E9C98A;transform:rotate(45deg)}
+.linha{width:90px;height:2px;background:#E9C98A;margin:34px 0}
+.lista{list-style:none;padding:0;margin-top:40px}
+.lista li{display:flex;gap:22px;align-items:baseline;font:italic 400 54px/1.3 "Playfair Display",Georgia,serif;color:#FFF8F0;padding:16px 0;border-bottom:1px solid rgba(233,201,138,.25)}
+.lista li::before{content:"✦";font:400 26px Jost;color:#E9C98A;font-style:normal}
+.tag{display:inline-block;font:600 24px Jost;letter-spacing:.24em;text-transform:uppercase;color:#1E040B;background:linear-gradient(135deg,#F3D9A0,#C9A257 55%,#A9813C);padding:13px 28px;border-radius:999px;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.btn{display:inline-flex;align-items:center;gap:18px;font:600 26px Jost;letter-spacing:.16em;text-transform:uppercase;color:#3A0A15;background:linear-gradient(135deg,#F3D9A0,#C9A257 50%,#B58C42);padding:24px 44px;border-radius:999px;box-shadow:0 16px 40px rgba(0,0,0,.45)}
+.data{display:inline-flex;align-items:center;gap:14px;padding:12px 26px;border:2px solid #E9C98A;border-radius:999px;font:600 24px Jost;letter-spacing:.14em;background:rgba(26,3,10,.45)}
+</style></head><body>
+
+<!-- 1 -->
+<section class="slide" id="e1">
+<img class="bg" src="emocional/banco.jpg" alt="">
+<div class="veu" style="background:linear-gradient(180deg,rgba(26,3,10,.15) 30%,rgba(42,6,16,.75) 62%,rgba(26,3,10,.97) 100%)"></div>
+<div class="c" style="bottom:150px">
+<h1 style="font-size:96px">Há quanto tempo não te <em>sentas contigo?</em></h1>
+<p class="t" style="margin-top:30px;max-width:780px">Sem pressa. Sem culpa.<br>Sem ninguém a precisar de ti.</p>
+</div>
+<div class="seta">Desliza <i></i></div>
+</section>
+
+<!-- 2 -->
+<section class="slide" id="e2">
+<div class="c" style="top:110px;bottom:150px;display:flex;flex-direction:column;justify-content:center">
+<p class="eyebrow">Talvez te reconheças</p>
+<h2 style="font-size:100px;margin-top:40px">Passaste anos a cuidar de todos.</h2>
+<ul class="lista">
+<li>A ser a forte.</li>
+<li>A dar conta de tudo.</li>
+<li>A dizer “está tudo bem”.</li>
+</ul>
+<p class="t" style="margin-top:56px;font-size:42px">E algures pelo caminho, <b style="color:#E9C98A;font-weight:600">deixaste de te ouvir.</b></p>
+</div>
+<div class="seta">Desliza <i></i></div>
+</section>
+
+<!-- 3 -->
+<section class="slide" id="e3">
+<img class="bg" src="emocional/horizonte.jpg" alt="">
+<div class="veu" style="background:linear-gradient(180deg,rgba(26,3,10,.92) 0%,rgba(42,6,16,.6) 34%,rgba(26,3,10,0) 58%,rgba(26,3,10,.25) 100%)"></div>
+<div class="c" style="top:120px">
+<h2 style="font-size:80px">Voltar a ti <em>não é egoísmo.</em></h2>
+<p class="t" style="margin-top:24px;max-width:820px">É o primeiro passo para tudo o resto.</p>
+</div>
+<div class="seta">Desliza <i></i></div>
+</section>
+
+<!-- 4 -->
+<section class="slide" id="e4">
+<div class="c" style="top:110px;bottom:150px;display:flex;flex-direction:column;justify-content:center">
+<p class="script" style="font-size:110px">Imagina…</p>
+<ul class="lista" style="margin-top:36px">
+<li>Acordar e reconhecer-te.</li>
+<li>Decidir sem medo.</li>
+<li>Dizer não sem culpa.</li>
+<li>Falar e ser ouvida.</li>
+<li>Ocupar o teu lugar.</li>
+</ul>
+<p class="t" style="margin-top:52px;font-size:38px">Não é um sonho distante. <b style="color:#E9C98A;font-weight:600">É um processo.</b> E começa com uma decisão.</p>
+</div>
+<div class="seta">Desliza <i></i></div>
+</section>
+
+<!-- 5 -->
+<section class="slide" id="e5">
+<img class="bg" src="emocional/sorriso.jpg" alt="" style="object-position:30% 50%">
+<div class="veu" style="background:linear-gradient(180deg,rgba(26,3,10,0) 22%,rgba(42,6,16,.7) 46%,rgba(26,3,10,.97) 70%)"></div>
+<div class="c" style="bottom:110px">
+<p class="script" style="font-size:76px">Este é o teu sinal.</p>
+<span class="tag" style="margin-top:26px">Black Friday</span>
+<h2 style="font-size:66px;margin-top:26px">Todos os meus programas com <em>20% de desconto.</em></h2>
+<p class="t" style="margin-top:18px;font-size:30px">Do primeiro passo à mentoria de 6 meses.</p>
+<div style="display:flex;gap:22px;align-items:center;margin-top:34px;flex-wrap:wrap">
+<span class="btn">Link na bio</span>
+<span class="data">Só até 29/11</span>
+</div>
+</div>
+</section>
+</body></html>
