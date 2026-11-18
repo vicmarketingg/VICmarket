@@ -1,8 +1,12 @@
-/* Textos dos carrosséis — Dra. Lívia Serpa, no estilo dos posts dela.
- * Marcação: **negrito**, *itálico*, _sublinhado_ (pode combinar: *_assim_*).
- * Tipos de lâmina: cover (abertura), text (parágrafos), list (pergunta + itens numerados),
- * step (número grande + parágrafo), end (caixa bege + nota em itálico).
- * Qualquer lâmina aceita photo: 'fotos/arquivo.jpg' para usar uma foto real como fundo. */
+/* Textos dos carrosséis — Dra. Lívia Serpa.
+ * Layout editorial (colagem), com a identidade da Lívia: azul-marinho, rosé, rosé-dourado e mármore.
+ * Marcação: **negrito**, *itálico* (no título vira destaque rosé-dourado), _sublinhado_.
+ * Tipos de lâmina:
+ *   cover  { kicker, kicker2, title }               abertura escura com moldura oval
+ *   card   { num, title, body: [..], dark? }         card de borda ondulada com clipe
+ *   caps   { num, title, lead, body }                título gigante em caixa alta, fundo claro
+ *   oval   { num, title, body: [..], word }          moldura oval à esquerda, texto à direita
+ *   end    { kicker, title, sub }                    fechamento escuro */
 module.exports = [
   {
     slug: '01-mitos-tecnologias',
@@ -15,12 +19,12 @@ Eu amo estudar tecnologias. E é justamente por isso que acredito que entusiasmo
 
 Qual desses mitos você já ouviu por aí? Me conta nos comentários e salve para revisar antes da próxima decisão de compra. 🤍`,
     slides: [
-      { type: 'cover', paras: ['Tem **mitos** sobre *tecnologias* que custam caro na hora de _investir_.'] },
-      { type: 'text', paras: ['**Mito 1:** *“Quanto mais moderno, melhor o investimento.”*', 'Na prática, um equipamento só é um bom **investimento** quando faz sentido para as _demandas reais_ da sua prática.'] },
-      { type: 'text', paras: ['**Mito 2:** *“Se está em alta, eu preciso ter.”*', 'Uma *tendência* de mercado não é, por si só, **indicação de investimento**. _Entusiasmo_ e _análise_ precisam caminhar juntos.'] },
-      { type: 'text', paras: ['**Mito 3:** *“Assisti à demonstração, então sei fazer.”*', '*Ver* ajuda a entender etapas. **Competência** exige fundamentos, critérios, segurança e, quando necessário, _prática supervisionada_.'] },
-      { type: 'text', paras: ['**Mito 4:** *“Combinar tecnologias sempre potencializa.”*', '*Combinar* não é somar recursos. A associação precisa de **justificativa**, e às vezes a melhor decisão é _não combinar_.'] },
-      { type: 'end', paras: ['Eu sou **apaixonada** por estudar *tecnologias*. Por isso acredito que _entusiasmo_ e _análise_ precisam caminhar juntos.'], note: 'Qual desses mitos você já ouviu? Me conta nos comentários.' }
+      { type: 'cover', kicker: 'Antes de investir\nem uma tecnologia.', kicker2: 'Leia isto.', title: '4 *mitos* que custam caro.' },
+      { type: 'card', num: '01', title: 'quanto mais moderno, melhor', body: ['Um equipamento não se torna um bom investimento simplesmente por ser moderno.', 'Ele precisa fazer sentido para as **demandas reais** da sua prática.'] },
+      { type: 'caps', num: '02', title: 'Tendência não é indicação', lead: 'Se está em alta, eu preciso ter?', body: 'Uma tecnologia em evidência nas redes não é, por si só, indicação de investimento. Entusiasmo e análise precisam caminhar juntos.' },
+      { type: 'oval', num: '03', title: 'ver não é dominar', word: 'competência', body: ['Assistir a uma demonstração ajuda a visualizar etapas.', 'Mas competência exige **fundamentos, critérios, segurança e, quando necessário, prática supervisionada.**'] },
+      { type: 'card', dark: true, num: '04', title: 'combinar não é somar', body: ['Combinar tecnologias não significa simplesmente utilizar mais recursos.', 'A associação precisa de **justificativa**. Às vezes, a melhor decisão é não combinar.'] },
+      { type: 'end', kicker: 'Me conta nos comentários', title: 'Qual desses mitos *você já ouviu?*', sub: 'Salve este post para revisar antes da próxima decisão de compra.' }
     ]
   },
   {
@@ -36,12 +40,12 @@ Desejo por uma tecnologia não é, automaticamente, indicação para ela. Saber 
 
 Você costuma perguntar mais sobre o “como” ou sobre o “porquê”? Me conta aqui embaixo.`,
     slides: [
-      { type: 'cover', paras: ['Seguir um **protocolo** é diferente de *saber* _decidir_.'] },
-      { type: 'text', paras: ['O **protocolo** responde *_como_* fazer.', 'Ele tem seu *lugar*: organiza etapas e dá **segurança** a quem está aprendendo.'] },
-      { type: 'text', paras: ['O **raciocínio clínico** responde *_por que_* fazer.', 'É o que permite *avaliar* situações que não são idênticas e escolher um caminho com **critério**.'] },
-      { type: 'list', paras: ['Antes de *indicar*, eu me **pergunto**:'], items: ['O que _motivou_ essa procura?', 'Quais são as **necessidades reais** do caso?', 'Existe *indicação*? Quais são os **limites** e os **riscos**?', 'Essa conduta está dentro da minha _habilitação_?'] },
-      { type: 'text', paras: ['*Desejo* não é **indicação**.', 'Saber _escutar_ a demanda sem transformar a preferência inicial em **decisão clínica**.'] },
-      { type: 'end', paras: ['Desenvolver esse **raciocínio** é aprender a integrar *conhecimentos* para _decidir_ com mais clareza.'], note: 'Essa é uma das construções da Mentoria RCE®.' }
+      { type: 'cover', kicker: 'Protocolo responde\ncomo fazer.', kicker2: 'Raciocínio responde\npor que fazer.', title: 'Seguir não é *decidir.*' },
+      { type: 'card', num: '01', title: 'o protocolo tem seu lugar', body: ['Ele organiza etapas e dá segurança a quem está aprendendo.', 'Mas ele responde ao **como**. A prática também exige entender o **porquê**.'] },
+      { type: 'caps', num: '02', title: 'Critério antes da conduta', lead: 'Situações clínicas não são idênticas.', body: 'Raciocínio clínico é o que permite avaliar cada caso e escolher um caminho com critério, e não por repetição.' },
+      { type: 'oval', num: '03', title: 'antes de indicar, eu me pergunto', word: 'avaliação', body: ['O que motivou essa procura?', 'Quais são as necessidades reais do caso?', 'Existe indicação? Quais os limites e os riscos?', '**Isso está dentro da minha habilitação?**'] },
+      { type: 'card', dark: true, num: '04', title: 'desejo não é indicação', body: ['Saber escutar a demanda sem transformar a preferência inicial em **decisão clínica**.', 'É uma das habilidades que eu mais valorizo.'] },
+      { type: 'end', kicker: 'Mentoria RCE®', title: 'Essa é uma das construções da *Mentoria RCE®*.', sub: 'Você pergunta mais “como” ou “por quê”? Me conta aqui embaixo.' }
     ]
   },
   {
@@ -55,13 +59,13 @@ Carreira não é corrida para colecionar técnicas. É construção.
 
 Salve este plano e comece pelo passo 1. Qual tecnologia está no topo da sua lista de estudos?`,
     slides: [
-      { type: 'cover', paras: ['Pare de **colecionar** cursos. *Monte um* _plano de estudos_.'] },
-      { type: 'step', num: '1', paras: ['**Comece pela sua prática.**', 'Liste as _demandas_ que aparecem com frequência no seu atendimento. Elas mostram o que vale *aprofundar* primeiro.'] },
-      { type: 'step', num: '2', paras: ['**Confirme sua habilitação.**', 'Antes de escolher uma *tecnologia*, verifique o que a sua _profissão_ permite realizar.'] },
-      { type: 'step', num: '3', paras: ['**Aprofunde um tema por vez.**', '_Fundamentos_, indicações, contraindicações e *riscos* antes de partir para o próximo recurso.'] },
-      { type: 'step', num: '4', paras: ['**Escolha boas referências.**', 'Formações com espaço para *dúvidas* e, quando possível, a chance de acompanhar a _prática_ de profissionais experientes.'] },
-      { type: 'step', num: '5', paras: ['**Revise e atualize.**', 'Tecnologia muda. Reserve tempo para a _atualização contínua_ do que você já usa.'] },
-      { type: 'end', paras: ['Carreira não é uma *corrida* para colecionar técnicas. É **construção**.'], note: 'Salve este plano e comece pelo passo 1.' }
+      { type: 'cover', kicker: 'Não colecione\ncursos.', kicker2: '5 passos para\ncomeçar.', title: 'Monte um *plano de estudos.*' },
+      { type: 'card', num: '01', title: 'comece pela sua prática', body: ['Liste as demandas que aparecem com frequência no seu atendimento.', 'Elas mostram o que vale **aprofundar primeiro**.'] },
+      { type: 'caps', num: '02', title: 'Confirme sua habilitação', lead: 'Antes da tecnologia, a sua profissão.', body: 'Verifique o que a sua habilitação permite realizar antes de escolher o que estudar.' },
+      { type: 'oval', num: '03', title: 'um tema por vez', word: 'profundidade', body: ['Fundamentos, indicações, contraindicações e riscos', '**antes de partir para o próximo recurso.**'] },
+      { type: 'card', dark: true, num: '04', title: 'escolha boas referências', body: ['Formações com espaço para dúvidas e, quando possível, a chance de **acompanhar a prática** de profissionais experientes.'] },
+      { type: 'caps', num: '05', title: 'Revise e atualize', lead: 'Tecnologia muda.', body: 'Reserve tempo para a atualização contínua do que você já usa.' },
+      { type: 'end', kicker: 'Salve este plano', title: 'Carreira não é corrida. *É construção.*', sub: 'Comece pelo passo 01. Qual tecnologia está no topo da sua lista?' }
     ]
   }
 ];
