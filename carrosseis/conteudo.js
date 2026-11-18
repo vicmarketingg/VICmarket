@@ -1,6 +1,8 @@
-/* Textos dos carrosséis — Dra. Lívia Serpa.
- * Tipos de lâmina: cover, myth, statement, list, step, end.
- * Use *texto* para itálico rosé nos títulos. */
+/* Textos dos carrosséis — Dra. Lívia Serpa, no estilo dos posts dela.
+ * Marcação: **negrito**, *itálico*, _sublinhado_ (pode combinar: *_assim_*).
+ * Tipos de lâmina: cover (abertura), text (parágrafos), list (pergunta + itens numerados),
+ * step (número grande + parágrafo), end (caixa bege + nota em itálico).
+ * Qualquer lâmina aceita photo: 'fotos/arquivo.jpg' para usar uma foto real como fundo. */
 module.exports = [
   {
     slug: '01-mitos-tecnologias',
@@ -13,12 +15,12 @@ Eu amo estudar tecnologias. E é justamente por isso que acredito que entusiasmo
 
 Qual desses mitos você já ouviu por aí? Me conta nos comentários e salve para revisar antes da próxima decisão de compra. 🤍`,
     slides: [
-      { type: 'cover', eyebrow: 'Tecnologias na estética', title: '4 mitos que custam caro *na hora de investir*' },
-      { type: 'myth', label: 'Mito 1', quote: 'Quanto mais moderno, melhor o investimento.', truth: 'Um equipamento só é um bom investimento quando faz sentido para as demandas reais da sua prática.' },
-      { type: 'myth', label: 'Mito 2', quote: 'Se está em alta, eu preciso ter.', truth: 'Tendência de mercado não é, por si só, indicação de investimento. Entusiasmo e análise precisam caminhar juntos.' },
-      { type: 'myth', label: 'Mito 3', quote: 'Assisti à demonstração, então sei fazer.', truth: 'Ver ajuda a entender etapas. Competência exige fundamentos, critérios, segurança e, quando necessário, prática supervisionada.' },
-      { type: 'myth', label: 'Mito 4', quote: 'Combinar tecnologias sempre potencializa.', truth: 'Combinar não é somar recursos. A associação precisa de justificativa, e às vezes a melhor decisão é não combinar.' },
-      { type: 'end', title: 'Qual desses mitos *você já ouviu?*', body: 'Conta nos comentários e salve para revisar antes da próxima decisão de compra.', cta: 'Salve este post' }
+      { type: 'cover', paras: ['Tem **mitos** sobre *tecnologias* que custam caro na hora de _investir_.'] },
+      { type: 'text', paras: ['**Mito 1:** *“Quanto mais moderno, melhor o investimento.”*', 'Na prática, um equipamento só é um bom **investimento** quando faz sentido para as _demandas reais_ da sua prática.'] },
+      { type: 'text', paras: ['**Mito 2:** *“Se está em alta, eu preciso ter.”*', 'Uma *tendência* de mercado não é, por si só, **indicação de investimento**. _Entusiasmo_ e _análise_ precisam caminhar juntos.'] },
+      { type: 'text', paras: ['**Mito 3:** *“Assisti à demonstração, então sei fazer.”*', '*Ver* ajuda a entender etapas. **Competência** exige fundamentos, critérios, segurança e, quando necessário, _prática supervisionada_.'] },
+      { type: 'text', paras: ['**Mito 4:** *“Combinar tecnologias sempre potencializa.”*', '*Combinar* não é somar recursos. A associação precisa de **justificativa**, e às vezes a melhor decisão é _não combinar_.'] },
+      { type: 'end', paras: ['Eu sou **apaixonada** por estudar *tecnologias*. Por isso acredito que _entusiasmo_ e _análise_ precisam caminhar juntos.'], note: 'Qual desses mitos você já ouviu? Me conta nos comentários.' }
     ]
   },
   {
@@ -34,12 +36,12 @@ Desejo por uma tecnologia não é, automaticamente, indicação para ela. Saber 
 
 Você costuma perguntar mais sobre o “como” ou sobre o “porquê”? Me conta aqui embaixo.`,
     slides: [
-      { type: 'cover', eyebrow: 'Raciocínio clínico', title: 'Seguir um protocolo é diferente de *saber decidir*' },
-      { type: 'statement', kicker: 'Protocolo', title: 'Responde *como* fazer.', body: 'Ele tem seu lugar: organiza etapas e dá segurança a quem está aprendendo.' },
-      { type: 'statement', kicker: 'Raciocínio clínico', title: 'Responde *por que* fazer.', body: 'É o que permite avaliar situações que não são idênticas e escolher um caminho com critério.' },
-      { type: 'list', title: '4 perguntas que *mudam uma avaliação*', items: ['O que motivou essa procura?', 'Quais são as necessidades reais do caso?', 'Existe indicação? Quais são os limites e os riscos?', 'Essa conduta está dentro da minha habilitação?'] },
-      { type: 'statement', kicker: 'Lembre sempre', title: 'Desejo *não é* indicação.', body: 'Escutar a demanda sem transformar a preferência inicial em decisão clínica.' },
-      { type: 'end', title: 'É esse olhar que guia a *Mentoria RCE®*', body: 'Raciocínio Clínico Estratégico: integrar conhecimentos para decidir com mais clareza.', cta: 'Você pergunta mais “como” ou “por quê”?' }
+      { type: 'cover', paras: ['Seguir um **protocolo** é diferente de *saber* _decidir_.'] },
+      { type: 'text', paras: ['O **protocolo** responde *_como_* fazer.', 'Ele tem seu *lugar*: organiza etapas e dá **segurança** a quem está aprendendo.'] },
+      { type: 'text', paras: ['O **raciocínio clínico** responde *_por que_* fazer.', 'É o que permite *avaliar* situações que não são idênticas e escolher um caminho com **critério**.'] },
+      { type: 'list', paras: ['Antes de *indicar*, eu me **pergunto**:'], items: ['O que _motivou_ essa procura?', 'Quais são as **necessidades reais** do caso?', 'Existe *indicação*? Quais são os **limites** e os **riscos**?', 'Essa conduta está dentro da minha _habilitação_?'] },
+      { type: 'text', paras: ['*Desejo* não é **indicação**.', 'Saber _escutar_ a demanda sem transformar a preferência inicial em **decisão clínica**.'] },
+      { type: 'end', paras: ['Desenvolver esse **raciocínio** é aprender a integrar *conhecimentos* para _decidir_ com mais clareza.'], note: 'Essa é uma das construções da Mentoria RCE®.' }
     ]
   },
   {
@@ -53,13 +55,13 @@ Carreira não é corrida para colecionar técnicas. É construção.
 
 Salve este plano e comece pelo passo 1. Qual tecnologia está no topo da sua lista de estudos?`,
     slides: [
-      { type: 'cover', eyebrow: 'Formação em estética', title: 'Pare de colecionar cursos. *Monte um plano de estudos.*' },
-      { type: 'step', num: '1', title: 'Comece pela sua prática', body: 'Liste as demandas que aparecem com frequência no seu atendimento. Elas mostram o que vale aprofundar primeiro.' },
-      { type: 'step', num: '2', title: 'Confirme sua habilitação', body: 'Antes de escolher uma tecnologia, verifique o que a sua profissão permite realizar.' },
-      { type: 'step', num: '3', title: 'Aprofunde um tema por vez', body: 'Fundamentos, indicações, contraindicações e riscos antes de partir para o próximo recurso.' },
-      { type: 'step', num: '4', title: 'Escolha boas referências', body: 'Formações com espaço para dúvidas e, quando possível, a chance de acompanhar a prática de profissionais experientes.' },
-      { type: 'step', num: '5', title: 'Revise e atualize', body: 'Tecnologia muda. Reserve tempo para a atualização contínua do que você já usa.' },
-      { type: 'end', title: 'Carreira não é corrida. *É construção.*', body: 'Salve este plano e comece pelo passo 1.', cta: 'Qual tecnologia está no topo da sua lista?' }
+      { type: 'cover', paras: ['Pare de **colecionar** cursos. *Monte um* _plano de estudos_.'] },
+      { type: 'step', num: '1', paras: ['**Comece pela sua prática.**', 'Liste as _demandas_ que aparecem com frequência no seu atendimento. Elas mostram o que vale *aprofundar* primeiro.'] },
+      { type: 'step', num: '2', paras: ['**Confirme sua habilitação.**', 'Antes de escolher uma *tecnologia*, verifique o que a sua _profissão_ permite realizar.'] },
+      { type: 'step', num: '3', paras: ['**Aprofunde um tema por vez.**', '_Fundamentos_, indicações, contraindicações e *riscos* antes de partir para o próximo recurso.'] },
+      { type: 'step', num: '4', paras: ['**Escolha boas referências.**', 'Formações com espaço para *dúvidas* e, quando possível, a chance de acompanhar a _prática_ de profissionais experientes.'] },
+      { type: 'step', num: '5', paras: ['**Revise e atualize.**', 'Tecnologia muda. Reserve tempo para a _atualização contínua_ do que você já usa.'] },
+      { type: 'end', paras: ['Carreira não é uma *corrida* para colecionar técnicas. É **construção**.'], note: 'Salve este plano e comece pelo passo 1.' }
     ]
   }
 ];

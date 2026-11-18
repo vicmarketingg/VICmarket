@@ -1,5 +1,7 @@
-/* Gera os carrosséis em PNG (1080×1350) a partir de conteudo.js.
+/* Gera os carrosséis em PNG (1080×1350) a partir de conteudo.js, na identidade visual da Lívia:
+ * mármore rosé, Playfair Display com negrito/itálico/sublinhado, texto azul-marinho, assinatura ao pé.
  * Uso: NODE_PATH=<pasta com playwright> node carrosseis/gerar.js
+ * Opcional: carrosseis/logo.png (logotipo original) e fotos em carrosseis/fotos/.
  * Saída: carrosseis/<slug>/01.png, 02.png… e legenda.txt */
 const fs = require('fs');
 const path = require('path');
@@ -7,110 +9,111 @@ const { chromium } = require('playwright');
 const carrosseis = require('./conteudo');
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const rich = (s) => esc(s).replace(/\*(.+?)\*/g, '<em>$1</em>');
+const rich = (s) => esc(s)
+  .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
+  .replace(/(^|[^\w])_(.+?)_(?=[^\w]|$)/g, '$1<u>$2</u>')
+  .replace(/\*(.+?)\*/g, '<i>$1</i>');
+
+const dataUrl = (file) => `data:image/${path.extname(file).slice(1).replace('jpg', 'jpeg')};base64,${fs.readFileSync(file).toString('base64')}`;
+const logoFile = path.join(__dirname, 'logo.png');
+const logo = fs.existsSync(logoFile) ? dataUrl(logoFile) : null;
+
+// Mármore rosé: manchas suaves + veios finos, com semente diferente por lâmina.
+function marble(seed) {
+  return `<svg class="bg" viewBox="0 0 1080 1350" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <filter id="m${seed}" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.0022 0.0035" numOctaves="4" seed="${seed}"/>
+        <feColorMatrix type="matrix" values="0 0 0 0 0.93  0 0 0 0 0.71  0 0 0 0 0.71  1.7 0 0 0 -0.6"/>
+      </filter>
+      <filter id="v${seed}" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="turbulence" baseFrequency="0.0016 0.0042" numOctaves="5" seed="${seed + 7}"/>
+        <feColorMatrix type="matrix" values="0 0 0 0 0.80  0 0 0 0 0.62  0 0 0 0 0.60  -2.4 0 0 0 0.62"/>
+        <feComponentTransfer><feFuncA type="table" tableValues="0 0.55 0.18 0 0 0 0 0 0 0"/></feComponentTransfer>
+      </filter>
+    </defs>
+    <rect width="1080" height="1350" fill="#FCEBE8"/>
+    <rect width="1080" height="1350" filter="url(#m${seed})" opacity=".85"/>
+    <rect width="1080" height="1350" filter="url(#v${seed})" opacity=".45"/>
+    <rect width="1080" height="1350" fill="url(#g${seed})"/>
+    <radialGradient id="g${seed}" cx=".5" cy=".45" r=".75"><stop offset="0" stop-color="#FFF7F5" stop-opacity=".55"/><stop offset="1" stop-color="#FFF7F5" stop-opacity="0"/></radialGradient>
+  </svg>`;
+}
 
 const CSS = `
-:root { --navy:#172B45; --navy-deep:#0F1F33; --navy-2:#243E59; --rose:#B98599; --rose-light:#EBDDE3; --rose-ink:#96647A; --off:#F6F7F8; --ink:#30343B; --muted:#6B7280;
-  --serif:'Cormorant Garamond', Georgia, serif; --sans:'Jost', 'Avenir Next', sans-serif; }
+:root { --ink:#0D1130; --rose-gold:#C8A586; --box:#E4DACE; --serif:'Playfair Display', Georgia, serif; }
 * { box-sizing:border-box; margin:0; }
-body { background:#fff; }
-.slide { width:1080px; height:1350px; position:relative; overflow:hidden; padding:190px 104px 170px; display:flex; flex-direction:column; justify-content:center;
-  font-family:var(--sans); color:var(--ink); background:var(--off); }
-.slide::before { content:''; position:absolute; inset:36px; border:1.5px solid rgba(23,43,69,.12); border-radius:6px; pointer-events:none; }
-.top { position:absolute; top:84px; left:104px; right:104px; display:flex; justify-content:space-between; align-items:center;
-  font-size:21px; letter-spacing:.28em; text-transform:uppercase; color:var(--navy-2); }
-.top .name { font-family:var(--serif); font-size:34px; letter-spacing:.02em; text-transform:none; color:var(--navy); }
-.top .name em { font-style:italic; color:var(--rose-ink); }
-.foot { position:absolute; bottom:84px; left:104px; right:104px; display:flex; justify-content:space-between; align-items:center;
-  font-size:20px; letter-spacing:.26em; text-transform:uppercase; color:var(--muted); }
-.foot::before { content:''; position:absolute; left:0; right:0; top:-28px; height:1.5px; background:rgba(23,43,69,.1); }
-.eyebrow { font-size:24px; letter-spacing:.3em; text-transform:uppercase; color:var(--rose-ink); font-weight:500; margin-bottom:40px; }
-h1, h2 { font-family:var(--serif); font-weight:500; color:var(--navy); line-height:1.04; letter-spacing:-.005em; }
-h1 em, h2 em { font-style:italic; color:var(--rose-ink); }
-p.body { font-size:38px; line-height:1.55; font-weight:300; color:var(--ink); margin-top:44px; max-width:840px; }
+.slide { width:1080px; height:1350px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:center; align-items:center;
+  padding:150px 110px 210px; text-align:center; font-family:var(--serif); color:var(--ink); background:#FCEBE8; }
+.bg, .photo, .shade { position:absolute; inset:0; width:100%; height:100%; }
+.photo { object-fit:cover; }
+.shade { background:linear-gradient(180deg, rgba(8,10,28,.25) 0%, rgba(8,10,28,.15) 45%, rgba(8,10,28,.6) 100%); }
+.content { position:relative; width:100%; }
+p { font-size:62px; line-height:1.28; letter-spacing:-.012em; font-weight:400; }
+p + p { margin-top:64px; font-size:52px; line-height:1.32; }
+b { font-weight:700; } i { font-style:italic; }
+u { text-decoration:underline; text-decoration-thickness:2.5px; text-underline-offset:9px; }
+.sign { position:absolute; bottom:86px; left:0; right:0; display:flex; flex-direction:column; align-items:center; gap:14px; }
+.sign img { max-width:230px; max-height:120px; }
+.sign span { font-size:22px; letter-spacing:.42em; padding-left:.42em; color:var(--ink); }
+.sign i { width:56px; height:1.5px; background:var(--rose-gold); display:block; }
 
-/* capa */
-.cover { background:radial-gradient(70% 55% at 100% 0%, rgba(185,133,153,.38), transparent 62%), radial-gradient(60% 50% at 0% 100%, rgba(36,62,89,.95), transparent 70%), var(--navy); color:#fff; }
-.cover::before { border-color:rgba(235,221,227,.18); }
-.cover .top, .cover .foot { color:#AFBDCD; }
-.cover .top .name { color:#fff; } .cover .top .name em { color:var(--rose-light); }
-.cover .foot::before { background:rgba(235,221,227,.16); }
-.cover .eyebrow { color:var(--rose-light); }
-.cover h1 { color:#fff; font-size:122px; line-height:1.0; }
-.cover h1 em { color:var(--rose-light); }
-.cover .rule { width:120px; height:2px; background:var(--rose); margin-top:64px; }
+.cover p { font-size:92px; line-height:1.16; letter-spacing:-.018em; }
+.step .num { display:block; font-style:italic; font-weight:400; font-size:230px; line-height:.9; color:var(--rose-gold); margin-bottom:40px; }
+.list p:first-child { margin-bottom:56px; }
+.items { list-style:none; padding:0; display:flex; flex-direction:column; gap:34px; }
+.items li { font-size:48px; line-height:1.3; letter-spacing:-.01em; }
+.items em { font-style:italic; font-weight:700; color:var(--rose-gold); margin-right:14px; }
+.end .box { background:rgba(228,218,206,.88); padding:70px 64px; box-shadow:0 30px 60px -40px rgba(13,17,48,.35); }
+.end .box p { font-size:58px; }
+.end .note { margin-top:56px; font-size:40px; font-style:italic; font-weight:700; color:var(--ink); }
 
-/* mito */
-.label { display:inline-flex; align-items:center; gap:18px; font-size:24px; letter-spacing:.3em; text-transform:uppercase; color:var(--rose-ink); font-weight:500; }
-.label i { width:46px; height:46px; border-radius:50%; border:1.5px solid var(--rose); display:grid; place-items:center; font-style:normal; font-size:24px; letter-spacing:0; color:var(--rose); }
-.quote { font-family:var(--serif); font-style:italic; font-size:88px; line-height:1.08; color:var(--navy); margin-top:40px; text-decoration:line-through; text-decoration-color:rgba(185,133,153,.75); text-decoration-thickness:3px; }
-.truth { margin-top:70px; padding-top:50px; border-top:1.5px solid rgba(23,43,69,.14); }
-.truth .k { font-size:22px; letter-spacing:.3em; text-transform:uppercase; color:var(--navy-2); font-weight:500; }
-.truth p { font-size:40px; line-height:1.5; font-weight:400; color:var(--ink); margin-top:22px; }
-
-/* afirmação */
-.statement h2 { font-size:112px; }
-.statement .eyebrow { margin-bottom:34px; }
-
-/* lista */
-.list h2 { font-size:88px; margin-bottom:60px; }
-.items { display:flex; flex-direction:column; }
-.item { display:grid; grid-template-columns:90px 1fr; align-items:baseline; padding:30px 0; border-top:1.5px solid rgba(23,43,69,.12); }
-.item:last-child { border-bottom:1.5px solid rgba(23,43,69,.12); }
-.item b { font-family:var(--serif); font-style:italic; font-weight:500; font-size:62px; color:var(--rose); line-height:1; }
-.item span { font-size:38px; line-height:1.4; color:var(--navy); }
-
-/* passo */
-.step .num { font-family:var(--serif); font-style:italic; font-size:300px; line-height:.8; color:var(--rose); font-weight:500; }
-.step h2 { font-size:96px; margin-top:50px; }
-
-/* fechamento */
-.end { background:radial-gradient(80% 60% at 100% 0%, #fff, transparent 60%), var(--rose-light); }
-.end h2 { font-size:104px; }
-.end .cta { display:inline-block; max-width:872px; margin-top:64px; background:var(--navy); color:#fff; border-radius:44px; padding:26px 46px; font-size:26px; line-height:1.45; letter-spacing:.16em; text-transform:uppercase; font-weight:500; }
+.has-photo { color:#fff; }
+.has-photo .sign span, .has-photo .end .note { color:#fff; }
+.has-photo .end .box p { color:var(--ink); }
 `;
 
-function slideHTML(s, i, total) {
-  const n = `${String(i + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
-  const top = `<div class="top"><span class="name">Lívia <em>Serpa</em></span><span>${n}</span></div>`;
-  const foot = `<div class="foot"><span>Sistema RCE®</span><span>${i + 1 < total ? 'Arraste →' : 'Salve · Compartilhe'}</span></div>`;
-  let inner = '';
+function slideHTML(s, i, c) {
+  const photo = s.photo ? path.join(__dirname, s.photo) : null;
+  if (photo && !fs.existsSync(photo)) throw new Error(`Foto não encontrada: ${s.photo}`);
+  const bg = photo ? `<img class="photo" src="${dataUrl(photo)}" alt=""><div class="shade"></div>` : marble(c * 20 + i + 3);
+  const sign = `<div class="sign">${logo ? `<img src="${logo}" alt="Lívia Serpa">` : '<i></i><span>LÍVIA SERPA</span>'}</div>`;
+  const paras = (s.paras || []).map((p) => `<p>${rich(p)}</p>`).join('');
+  let inner;
   switch (s.type) {
-    case 'cover':
-      inner = `<p class="eyebrow">${esc(s.eyebrow)}</p><h1>${rich(s.title)}</h1><div class="rule"></div>`; break;
-    case 'myth':
-      inner = `<span class="label"><i>✕</i>${esc(s.label)}</span><p class="quote">“${esc(s.quote)}”</p>
-        <div class="truth"><span class="k">Na prática</span><p>${esc(s.truth)}</p></div>`; break;
-    case 'statement':
-      inner = `<p class="eyebrow">${esc(s.kicker)}</p><h2>${rich(s.title)}</h2><p class="body">${esc(s.body)}</p>`; break;
-    case 'list':
-      inner = `<h2>${rich(s.title)}</h2><div class="items">${s.items.map((t, k) => `<div class="item"><b>${k + 1}</b><span>${esc(t)}</span></div>`).join('')}</div>`; break;
-    case 'step':
-      inner = `<span class="num">${esc(s.num)}</span><h2>${rich(s.title)}</h2><p class="body">${esc(s.body)}</p>`; break;
-    case 'end':
-      inner = `<h2>${rich(s.title)}</h2><p class="body">${esc(s.body)}</p><span class="cta">${esc(s.cta)}</span>`; break;
+    case 'cover': case 'text': inner = paras; break;
+    case 'step': inner = `<span class="num">${esc(s.num)}</span>${paras}`; break;
+    case 'list': inner = `${paras}<ol class="items">${s.items.map((t, k) => `<li><em>${k + 1}.</em>${rich(t)}</li>`).join('')}</ol>`; break;
+    case 'end': inner = `<div class="box">${paras}</div>${s.note ? `<p class="note">${rich(s.note)}</p>` : ''}`; break;
     default: throw new Error(`Tipo de lâmina desconhecido: ${s.type}`);
   }
-  return `<section class="slide ${s.type}">${top}<div>${inner}</div>${foot}</section>`;
+  return `<section class="slide ${s.type}${photo ? ' has-photo' : ''}">${bg}<div class="content">${inner}</div>${sign}</section>`;
 }
 
 (async () => {
   const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
   const page = await browser.newPage({ viewport: { width: 1080, height: 1350 }, deviceScaleFactor: 1 });
-  for (const c of carrosseis) {
+  for (const [c, car] of carrosseis.entries()) {
     const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
-      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-      <style>${CSS}</style></head><body>${c.slides.map((s, i) => slideHTML(s, i, c.slides.length)).join('')}</body></html>`;
+      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+      <style>${CSS}</style></head><body>${car.slides.map((s, i) => slideHTML(s, i, c)).join('')}</body></html>`;
     await page.setContent(html, { waitUntil: 'networkidle' });
     await page.evaluate(() => document.fonts.ready);
-    const fonts = await page.evaluate(() => [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family));
-    if (!fonts.some((f) => /Cormorant/.test(f)) || !fonts.some((f) => /Jost/.test(f))) throw new Error('As fontes não carregaram; as imagens sairiam com fonte substituta.');
-    const dir = path.join(__dirname, c.slug);
+    const ok = await page.evaluate(() => [...document.fonts].some((f) => f.status === 'loaded' && /Playfair/.test(f.family)));
+    if (!ok) throw new Error('A fonte Playfair Display não carregou; as imagens sairiam com fonte substituta.');
+    // Avisa se algum texto passou do espaço da lâmina (encostando na assinatura).
+    const overflow = await page.$$eval('.slide', (els) => els.map((el, k) => {
+      const c = el.querySelector('.content').getBoundingClientRect(); const s = el.querySelector('.sign').getBoundingClientRect();
+      return c.bottom > s.top - 30 || c.top < el.getBoundingClientRect().top + 60 ? k + 1 : 0;
+    }).filter(Boolean));
+    if (overflow.length) throw new Error(`${car.slug}: texto grande demais nas lâminas ${overflow.join(', ')}`);
+    const dir = path.join(__dirname, car.slug);
+    fs.rmSync(dir, { recursive: true, force: true });
     fs.mkdirSync(dir, { recursive: true });
     const els = await page.$$('.slide');
     for (let i = 0; i < els.length; i++) await els[i].screenshot({ path: path.join(dir, `${String(i + 1).padStart(2, '0')}.png`) });
-    fs.writeFileSync(path.join(dir, 'legenda.txt'), `${c.title}\n\n${c.caption}\n`);
-    console.log(`${c.slug}: ${els.length} lâminas`);
+    fs.writeFileSync(path.join(dir, 'legenda.txt'), `${car.title}\n\n${car.caption}\n`);
+    console.log(`${car.slug}: ${els.length} lâminas`);
   }
   await browser.close();
 })().catch((e) => { console.error(e.message); process.exit(1); });
