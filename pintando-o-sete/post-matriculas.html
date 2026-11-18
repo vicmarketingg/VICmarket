@@ -1,61 +1,70 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Lexend:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Fredoka:wght@700&family=Lexend:wght@400;600;800&display=swap">
 <style>
-:root{--navy:#123a8f;--sky:#86c3f7;--sky-d:#6aaef0;--yellow:#ffd21f;--red:#e8433a;--green:#17a06b;--blue:#1f5fd1;--white:#fff}
+:root{--bg:#f1f4fb;--navy:#13286e;--blue:#1f5fd1;--sky:#9cc9f5;--yellow:#ffd21f;--red:#e8433a;--green:#17a06b;--white:#fff}
 *{box-sizing:border-box;margin:0;padding:0}
 body{width:1080px;height:1350px;overflow:hidden;font-family:Lexend,sans-serif}
-.post{position:relative;width:1080px;height:1350px;background:var(--sky);overflow:hidden}
+.post{position:relative;width:1080px;height:1350px;background:var(--bg);overflow:hidden}
 .bg{position:absolute;inset:0}
-.title{position:absolute;left:70px;top:58px;font-family:Anton,Impact,sans-serif;line-height:.88;letter-spacing:-1px}
-.title .l1{display:block;font-size:196px;color:var(--navy)}
-.title .l2{display:flex;align-items:baseline;gap:30px}
-.title .ab{font-size:196px;color:var(--yellow);text-shadow:0 7px 0 var(--navy)}
-.title .yr{font-size:150px;letter-spacing:2px;text-shadow:0 6px 0 var(--navy)}
-.yr i{font-style:normal}.yr i:nth-child(1){color:var(--white)}.yr i:nth-child(2){color:var(--red)}.yr i:nth-child(3){color:var(--white)}.yr i:nth-child(4){color:var(--green)}
-.photo{position:absolute;left:70px;top:470px;width:940px;height:560px;border-radius:56px;overflow:hidden;
-  border:12px solid var(--white);box-shadow:0 22px 50px rgba(13,42,107,.28)}
-.photo img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
-.sticker{position:absolute;right:38px;top:400px;width:210px;height:210px;border-radius:50%;background:var(--yellow);
-  border:8px solid var(--white);transform:rotate(10deg);display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;color:var(--navy);box-shadow:0 12px 26px rgba(13,42,107,.3)}
-.sticker small{font-size:19px;font-weight:600;line-height:1.2}
-.sticker strong{font-family:Lexend,sans-serif;font-size:31px;line-height:1.25;font-weight:800;letter-spacing:.5px}
-.chips{position:absolute;left:70px;right:70px;top:1060px;display:flex;gap:16px}
-.chip{flex:1;background:var(--white);border-radius:999px;height:72px;display:flex;align-items:center;justify-content:center;gap:12px;
-  color:var(--navy);font-weight:800;font-size:27px;box-shadow:0 8px 20px rgba(13,42,107,.16)}
-.chip svg{width:36px;height:36px;flex:none}
-.bar{position:absolute;left:70px;right:70px;bottom:52px;height:138px;background:var(--navy);border-radius:70px;
-  display:flex;align-items:center;padding:0 44px 0 14px;gap:24px;color:var(--white)}
-.logo{width:110px;height:110px;border-radius:50%;background:#fff;overflow:hidden;flex:none;border:4px solid var(--yellow)}
+.title{position:absolute;left:64px;top:56px;z-index:1}
+.l1{display:block;font-family:Anton,Impact,sans-serif;font-size:162px;line-height:1;color:var(--navy);letter-spacing:-1px}
+.l2{display:flex;align-items:center;gap:26px;margin-top:-6px}
+.yr{font-family:Fredoka,sans-serif;font-weight:700;font-size:214px;line-height:.95;letter-spacing:-4px;
+  -webkit-text-stroke:10px var(--white);paint-order:stroke fill;filter:drop-shadow(0 8px 0 rgba(19,40,110,.18))}
+.yr i{font-style:normal}.yr i:nth-child(1){color:var(--blue)}.yr i:nth-child(2){color:var(--red)}.yr i:nth-child(3){color:var(--yellow)}.yr i:nth-child(4){color:var(--green)}
+.pill{background:var(--yellow);border-radius:999px;padding:6px 34px 10px;transform:rotate(-3deg);
+  font-family:Anton,Impact,sans-serif;font-size:104px;line-height:1.05;color:var(--navy)}
+.kids{position:absolute;left:-120px;top:306px;width:1310px;z-index:2;filter:drop-shadow(0 14px 24px rgba(19,40,110,.18))}
+.badge{position:absolute;right:14px;top:22px;width:236px;height:236px;z-index:1}
+.card{position:absolute;left:52px;bottom:236px;z-index:3;background:var(--white);border-radius:40px;padding:30px 34px;
+  display:flex;flex-direction:column;gap:20px;box-shadow:0 18px 40px rgba(19,40,110,.22)}
+.item{display:flex;align-items:center;gap:16px;color:var(--navy);font-size:31px;line-height:1.05}
+.item b{font-weight:800}
+.item svg{width:50px;height:50px;flex:none}
+.bar{position:absolute;left:52px;right:52px;bottom:52px;height:146px;background:var(--navy);border-radius:74px;z-index:4;
+  display:flex;align-items:center;padding:0 46px 0 16px;gap:24px;color:var(--white)}
+.logo{width:114px;height:114px;border-radius:50%;background:#fff;overflow:hidden;flex:none;border:4px solid var(--yellow)}
 .logo img{width:100%;height:100%;object-fit:cover}
 .name small{display:block;font-size:21px;letter-spacing:3px;font-weight:600;opacity:.85}
-.name strong{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:50px;line-height:1.02;color:var(--yellow)}
+.name strong{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:52px;line-height:1.02;color:var(--yellow)}
 .sep{width:3px;height:80px;background:rgba(255,255,255,.22);border-radius:2px;margin-left:auto}
 .wa{display:flex;align-items:center;gap:16px}
-.wa svg{width:62px;height:62px;flex:none}
+.wa svg{width:64px;height:64px;flex:none}
 .wa small{display:block;font-size:21px;opacity:.85}
-.wa strong{display:block;font-size:34px;font-weight:800}
+.wa strong{display:block;font-size:35px;font-weight:800}
 </style></head><body>
 <div class="post">
   <svg class="bg" viewBox="0 0 1080 1350" aria-hidden="true">
-    <path d="M-40 760 C 220 620, 520 860, 800 700 S 1060 560, 1140 620 L1140 1400 L-40 1400Z" fill="#76b6f3"/>
-    <path d="M880 -40 C 960 80, 1100 90, 1140 60 L1140 -40Z" fill="#9acff9"/>
+    <path d="M-20 -20 L300 -20 C 260 60, 120 70, 70 150 C 30 210, -10 200, -20 190Z" fill="#ffd21f"/>
+    <path d="M1100 520 C 1000 560, 960 640, 1010 720 C 1040 770, 1100 760, 1100 760Z" fill="#ffd21f"/>
+    <path d="M-20 1080 C 160 1010, 300 1110, 520 1060 S 860 960, 1100 1010 L1100 1370 L-20 1370Z" fill="#1f5fd1"/>
+    <path d="M-20 1150 C 200 1090, 380 1180, 600 1130 S 900 1060, 1100 1110 L1100 1370 L-20 1370Z" fill="#13286e"/>
   </svg>
 
   <div class="title">
     <span class="l1">MATRÍCULAS</span>
-    <span class="l2"><span class="ab">ABERTAS</span><span class="yr"><i>2</i><i>0</i><i>2</i><i>7</i></span></span>
+    <div class="l2"><span class="yr"><i>2</i><i>0</i><i>2</i><i>7</i></span><span class="pill">ABERTAS</span></div>
   </div>
 
-  <div class="photo"><img src="meninas_hd.jpg" alt=""></div>
+  <svg class="badge" viewBox="0 0 250 250">
+    <defs><path id="arc" d="M 58 196 A 92 92 0 1 1 192 196"/></defs>
+    <path d="M 58 196 A 92 92 0 1 1 192 196" fill="none" stroke="#1f5fd1" stroke-width="56" stroke-linecap="round"/>
+    <text font-family="Lexend" font-weight="800" font-size="21" fill="#fff" letter-spacing="1" dy="7.5">
+      <textPath href="#arc" startOffset="50%" text-anchor="middle">DO BERÇÁRIO AO PRÉ II</textPath>
+    </text>
+    <path d="M125 92 L133 116 L157 124 L133 132 L125 156 L117 132 L93 124 L117 116Z" fill="#ffd21f"/>
+  </svg>
 
-  <div class="sticker"><small>turmas do</small><strong>BERÇÁRIO</strong><small>ao</small><strong>PRÉ II</strong></div>
+  <img class="kids" src="meninas_cut.png" alt="">
 
-  <div class="chips">
-    <div class="chip"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="19" fill="#ffd21f"/><path d="M11 21l6 6 12-13" fill="none" stroke="#123a8f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Acolhimento</div>
-    <div class="chip"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="19" fill="#ffd21f"/><path d="M11 21l6 6 12-13" fill="none" stroke="#123a8f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Valores</div>
-    <div class="chip"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="19" fill="#ffd21f"/><path d="M11 21l6 6 12-13" fill="none" stroke="#123a8f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Aprendizado</div>
+  <svg style="position:absolute;left:960px;top:330px;width:80px;height:90px;z-index:3" viewBox="0 0 100 100"><path d="M50 4 L61 39 L96 50 L61 61 L50 96 L39 61 L4 50 L39 39Z" fill="#ffd21f" stroke="#13286e" stroke-width="3"/></svg>
+  <svg style="position:absolute;left:36px;top:470px;width:62px;height:62px;z-index:3" viewBox="0 0 100 100"><path d="M50 4 L61 39 L96 50 L61 61 L50 96 L39 61 L4 50 L39 39Z" fill="#1f5fd1"/></svg>
+
+  <div class="card">
+    <div class="item"><svg viewBox="0 0 50 50"><circle cx="25" cy="25" r="24" fill="#ffd21f"/><path d="M14 26l7 7 15-16" fill="none" stroke="#13286e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Acolhimento</b><br>de verdade</span></div>
+    <div class="item"><svg viewBox="0 0 50 50"><circle cx="25" cy="25" r="24" fill="#ffd21f"/><path d="M14 26l7 7 15-16" fill="none" stroke="#13286e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Valores e<br><b>aprendizado</b></span></div>
+    <div class="item"><svg viewBox="0 0 50 50"><circle cx="25" cy="25" r="24" fill="#ffd21f"/><path d="M14 26l7 7 15-16" fill="none" stroke="#13286e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Agende</b><br><b>sua visita</b></span></div>
   </div>
 
   <div class="bar">
@@ -63,8 +72,8 @@ body{width:1080px;height:1350px;overflow:hidden;font-family:Lexend,sans-serif}
     <div class="name"><small>JARDIM ESCOLA</small><strong>PINTANDO O SETE</strong></div>
     <div class="sep"></div>
     <div class="wa">
-      <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="31" fill="#ffd21f"/><path d="M32 14a17 17 0 0 0-14.6 25.7L15 49l9.6-2.5A17 17 0 1 0 32 14z" fill="#123a8f"/><path d="M25.5 23.5c.6-.4 1.6-.4 2 .4l1.6 3.6c.3.6 0 1.2-.4 1.7l-1 1.1c1.4 2.7 3.5 4.7 6.2 6l1.1-1.1c.4-.4 1.1-.6 1.7-.3l3.5 1.7c.7.4.8 1.3.4 2-.9 1.6-2.6 2.6-4.5 2.2-5.6-1.2-10.4-6-11.6-11.6-.3-1.6.4-3.4 1-4.4z" fill="#ffd21f"/></svg>
-      <div><small>Agende sua visita</small><strong>(21) 96621-6689</strong></div>
+      <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="31" fill="#ffd21f"/><path d="M32 14a17 17 0 0 0-14.6 25.7L15 49l9.6-2.5A17 17 0 1 0 32 14z" fill="#13286e"/><path d="M25.5 23.5c.6-.4 1.6-.4 2 .4l1.6 3.6c.3.6 0 1.2-.4 1.7l-1 1.1c1.4 2.7 3.5 4.7 6.2 6l1.1-1.1c.4-.4 1.1-.6 1.7-.3l3.5 1.7c.7.4.8 1.3.4 2-.9 1.6-2.6 2.6-4.5 2.2-5.6-1.2-10.4-6-11.6-11.6-.3-1.6.4-3.4 1-4.4z" fill="#ffd21f"/></svg>
+      <div><small>Matrículas pelo WhatsApp</small><strong>(21) 96621-6689</strong></div>
     </div>
   </div>
 </div>
