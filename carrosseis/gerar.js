@@ -1,8 +1,8 @@
 /* Gera os carrosséis em PNG (1080×1350) a partir de conteudo.js.
  * Identidade da Lívia: azul-marinho, rosé, rosé-dourado, mármore, Playfair Display nos títulos e Jost nos textos.
- * Cada carrossel tem um formato próprio (mito × verdade, comparativo, trilha), montado com os tipos de lâmina abaixo.
+ * Cada carrossel tem um formato próprio (mito × verdade, comparativo, calendário), montado com os tipos de lâmina abaixo.
  * Uso: NODE_PATH=<pasta com playwright> node carrosseis/gerar.js
- * Opcional: carrosseis/logo.png (logotipo original) e photo: 'fotos/x.jpg' (cover, foto, passo).
+ * Opcional: carrosseis/logo.png (logotipo original) e photo: 'fotos/x.jpg' (cover e foto).
  * Saída: carrosseis/<slug>/01.png, 02.png… e legenda.txt */
 const fs = require('fs');
 const path = require('path');
@@ -45,7 +45,7 @@ function marbleRect(x, y, w, h, seed) {
     <rect x="${x}" y="${y}" width="${w}" height="${h}" filter="url(#${m})"/>
     <rect x="${x}" y="${y}" width="${w}" height="${h}" filter="url(#${v})" opacity=".75"/>`;
 }
-// Rosé-gold metálico na horizontal, com reflexos ao longo da largura da lâmina (trilha e marcadores).
+// Rosé-gold metálico na horizontal, com reflexos ao longo da largura da lâmina.
 function metalH(gid) {
   return `<linearGradient id="${gid}" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${W}" y2="0">
     <stop offset="0" stop-color="#A9825F"/><stop offset=".18" stop-color="#F3E1CF"/><stop offset=".36" stop-color="#B08463"/>
@@ -66,12 +66,6 @@ const glow = (gid, cx, cy, o = 0.38) => `<radialGradient id="${gid}" cx="${cx}" 
 const ghostNum = (n, stroke) => `<text x="1060" y="1190" text-anchor="end" font-family="Playfair Display" font-style="italic" font-size="560"
   fill="none" stroke="${stroke}" stroke-width="3">${esc(n)}</text>`;
 const svg = (inner) => `<svg class="art" viewBox="0 0 ${W} ${H}" aria-hidden="true"><defs><filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="16"/></filter></defs>${inner}</svg>`;
-
-// Trilha ondulada do carrossel de passos: o período é a largura da lâmina, então a linha continua de uma lâmina para a outra.
-const PATH_Y = 520, PATH_A = 46;
-const pathY = (x) => PATH_Y + PATH_A * Math.sin((2 * Math.PI * x) / W);
-const pathD = (x0, x1) => { let d = ''; for (let x = x0; x <= x1; x += 12) d += `${d ? 'L' : 'M'}${x} ${pathY(x).toFixed(1)} `; return d; };
-const STEP_X = [190, 365, 540, 715, 890];
 
 const meta = (dark) => `<div class="meta ${dark ? 'on-dark' : ''}">
   <span>Dra. Lívia<br>Serpa</span><span>Tecnologias<br>aplicadas</span><span>Sistema<br>RCE®</span><span>${logo ? `<img src="${logo}" alt="Lívia Serpa">` : 'Educação<br>profissional'}</span></div>`;
@@ -134,46 +128,33 @@ function destaque(s, seed) {
     <div class="content"><h2>${rich(s.title)}</h2><p>${rich(s.sub)}</p></div>${meta(false)}</section>`;
 }
 
-/* ---------- Formato 3: trilha de passos ---------- */
-function trilhaCapa(s, seed, photo) {
-  const art = photo
-    ? svg(`<image href="${photo}" x="0" y="${-s.photoY || 0}" width="${W}" height="${s.photoH || H}" preserveAspectRatio="xMidYMin slice"/>
-        <linearGradient id="tg${seed}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E1A2C" stop-opacity=".05"/>
-        <stop offset=".26" stop-color="#0E1A2C" stop-opacity=".12"/><stop offset=".4" stop-color="#0E1A2C" stop-opacity=".95"/><stop offset=".6" stop-color="#0E1A2C" stop-opacity=".985"/><stop offset="1" stop-color="#0E1A2C" stop-opacity="1"/></linearGradient>
-        <rect width="${W}" height="${H}" fill="url(#tg${seed})"/>`)
-    : svg(`${glow(`tg${seed}`, '.9', '.1')}${bands(0.08)}`);
-  return `<section class="slide dark trilha-capa ${photo ? 'has-photo' : ''}">${art}
-    <div class="content"><p class="pkicker"><i></i>${rich(s.kicker)}</p><h1>${rich(s.title)}</h1>
-    <ol>${s.steps.map((t, k) => `<li><i></i><em>${String(k + 1).padStart(2, '0')}</em><span>${rich(t)}</span></li>`).join('')}</ol></div>${meta(true)}</section>`;
+/* ---------- Formato 3: calendário ---------- */
+// Folha de calendário de mesa com argolas rose-gold. A folha é o .content da lâmina.
+const rings = () => `<div class="binding">${[0, 1, 2, 3, 4, 5, 6].map(() => '<span></span>').join('')}</div>`;
+function calendarioCapa(s, seed) {
+  const art = svg(`${glow(`kg${seed}`, '.15', '.12')}${bands(0.07)}`);
+  return `<section class="slide dark cal-capa">${art}
+    <div class="sheet mini left">${rings()}<div class="sheet-body"><p class="slabel"><span>Janeiro</span></p><p class="bigday struck">1º</p></div></div>
+    <div class="sheet mini right">${rings()}<div class="sheet-body"><p class="slabel"><span>Dezembro</span></p><p class="bigday hoje"><span>hoje</span></p></div></div>
+    <div class="content"><p class="pkicker"><i></i>${rich(s.kicker)}</p><h1>${rich(s.title)}</h1></div>${meta(true)}</section>`;
 }
-function passo(s, seed, photo, total) {
-  const n = Number(s.num);
-  const onPhoto = !!photo;
-  const mg = id('mh');
-  const line = `url(#${mg})`;
-  const dots = STEP_X.slice(0, total).map((x, k) => (k + 1 === n ? ''
-    : `<circle cx="${x}" cy="${pathY(x).toFixed(1)}" r="11" fill="${k + 1 < n ? line : (onPhoto ? '#0E1A2C' : '#FBF8F6')}" stroke="${line}" stroke-width="3"/>`)).join('');
-  const x = STEP_X[n - 1], y = pathY(x);
-  const bg = onPhoto
-    ? `<image href="${photo}" width="${W}" height="${H}" preserveAspectRatio="xMidYMid slice"/><rect width="${W}" height="${H}" fill="#0E1A2C" opacity=".45"/>
-       <linearGradient id="sg${seed}" x1="0" y1="0" x2="0" y2="1"><stop offset=".35" stop-color="#0E1A2C" stop-opacity="0"/><stop offset=".62" stop-color="#0E1A2C" stop-opacity=".9"/><stop offset="1" stop-color="#0E1A2C" stop-opacity=".97"/></linearGradient>
-       <rect width="${W}" height="${H}" fill="url(#sg${seed})"/>`
-    : '';
-  const art = svg(`${bg}<defs>${metalH(mg)}</defs><path d="${pathD(0, W)}" fill="none" stroke="${line}" stroke-width="5" stroke-linecap="round"/>${dots}
-    <circle cx="${x}" cy="${y}" r="66" fill="none" stroke="${line}" stroke-width="2" opacity=".8"/>
-    <circle cx="${x}" cy="${y}" r="56" fill="#172B45" stroke="${line}" stroke-width="6"/>
-    <text x="${x}" y="${y + 19}" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="58" fill="#E7CDB4">${n}</text>
-    ${sparkle(x + 82, y - 76, 0.5)}`);
-  return `<section class="slide ${onPhoto ? 'dark' : 'light'} passo">${art}
-    <p class="steptag"><i></i>Passo ${n} de ${total}</p>
-    <div class="content"><h2>${rich(s.title)}</h2><p>${rich(s.body)}</p></div>${meta(onPhoto)}</section>`;
+function folha(s, seed, idx) {
+  const dark = !!s.dark;
+  const bg = dark ? `${glow(`fg${seed}`, '.85', '.9', 0.3)}${bands(0.07)}` : marbleRect(0, 0, W, H, seed);
+  let body = '';
+  if (s.items) body = `<ul class="todo">${s.items.map((t) => `<li><i></i><span>${rich(t)}</span></li>`).join('')}</ul>`;
+  else if (s.hoje) body = `<p class="bigday hoje small"><span>hoje</span></p><p class="ftext">${rich(s.body)}</p>`;
+  else body = `<p class="ftext">${rich(s.body)}</p>`;
+  return `<section class="slide ${dark ? 'dark' : 'light'} folha">${svg(bg)}
+    <div class="sheet content" style="transform:rotate(${idx % 2 ? 1.2 : -1.4}deg)">${rings()}<div class="sheet-body">
+      <p class="slabel"><span>${rich(s.label)}</span><span>Dezembro</span></p><h2>${rich(s.title)}</h2>${body}</div></div>${meta(dark)}</section>`;
 }
-function chegada(s, seed) {
-  const fx = 540, fy = pathY(fx);
+function virada(s, seed) {
   const mg = id('mh');
-  const art = svg(`${glow(`cg${seed}`, '.5', '.38', 0.3)}<defs>${metalH(mg)}</defs><path d="${pathD(0, fx)}" fill="none" stroke="url(#${mg})" stroke-width="5" stroke-linecap="round"/>
-    <circle cx="${fx}" cy="${fy}" r="70" fill="none" stroke="url(#${mg})" stroke-width="4"/>${sparkle(fx, fy, 0.95)}`);
-  return `<section class="slide dark chegada">${art}
+  const art = svg(`${glow(`rg${seed}`, '.8', '.2', 0.34)}${bands(0.07)}<defs>${metalH(mg)}</defs>
+    <text x="105" y="420" font-family="Playfair Display" font-size="270" letter-spacing="-6" fill="none" stroke="url(#${mg})" stroke-width="3">${esc(s.date)}</text>
+    <line x1="95" y1="335" x2="610" y2="300" stroke="url(#${mg})" stroke-width="7" stroke-linecap="round"/>`);
+  return `<section class="slide dark virada">${art}
     <div class="content"><p class="pkicker"><i></i>${rich(s.kicker)}</p><h1>${rich(s.title)}</h1><p class="sub">${rich(s.sub)}</p></div>${meta(true)}</section>`;
 }
 
@@ -257,34 +238,52 @@ ol, ul { list-style:none; }
 .destaque h2 { font-family:var(--serif); font-weight:400; font-size:132px; line-height:1.0; letter-spacing:-.03em; color:var(--navy); }
 .destaque p { margin:50px auto 0; max-width:800px; font-size:44px; line-height:1.38; color:var(--ink); }
 
-/* trilha */
-.trilha-capa .content { left:110px; right:110px; top:180px; }
-.trilha-capa h1 { font-family:var(--serif); font-weight:400; font-size:120px; line-height:1.0; letter-spacing:-.03em; }
-.trilha-capa ol { position:relative; margin-top:70px; }
-.trilha-capa ol::before { content:''; position:absolute; left:15px; top:42px; bottom:42px; width:3px; background:linear-gradient(180deg, #F3E1CF, #B08463 30%, #EBD3BC 55%, #9E7657 80%, #E7CDB4); }
-.trilha-capa li { position:relative; display:grid; grid-template-columns:62px 80px 1fr; align-items:center; height:86px; font-size:40px; color:#E6EBF2; }
-.trilha-capa li i { width:34px; height:34px; border-radius:50%; background:radial-gradient(circle, #13233A 46%, transparent 49%), linear-gradient(135deg, #F3E1CF 0%, #C8A586 28%, #8F6B50 50%, #E7CDB4 72%, #A9825F 100%); display:block; }
-.trilha-capa.has-photo .content { top:500px; }
-.trilha-capa.has-photo .pkicker { margin-bottom:18px; }
-.trilha-capa.has-photo h1 { font-size:96px; }
-.trilha-capa.has-photo ol { margin-top:40px; }
-.trilha-capa.has-photo li { height:72px; font-size:38px; }
-.trilha-capa li em { font-family:var(--serif); font-size:40px; }
-.passo .steptag { position:absolute; left:110px; top:200px; font-size:30px; letter-spacing:.22em; text-transform:uppercase; font-weight:600; color:#B08463; display:flex; align-items:center; gap:22px; }
-.passo .steptag i { width:90px; height:3px; display:block; background:linear-gradient(90deg, #F3E1CF, #B08463 45%, #E7CDB4); }
-.passo.light em { color:#B08463; }
-.passo.dark .steptag { color:#E2C6A9; }
-.passo .content { left:110px; right:110px; top:700px; }
-.passo h2 { font-family:var(--serif); font-weight:400; font-size:92px; line-height:1.03; letter-spacing:-.025em; color:var(--navy); }
-.passo.dark h2 { color:#fff; }
-.passo p { margin-top:36px; font-size:42px; line-height:1.4; max-width:860px; }
-.passo.dark p { color:#E6EBF2; }
-.chegada .content { left:110px; right:110px; top:660px; }
-.chegada h1 { font-family:var(--serif); font-weight:400; font-size:90px; line-height:1.02; letter-spacing:-.03em; }
-.chegada .sub { margin-top:40px; }
+/* calendário */
+.sheet { position:absolute; left:120px; width:840px; top:170px; min-height:820px; background:#FFFDFB; border-radius:12px; box-shadow:0 44px 80px -34px rgba(14,26,44,.6); transform-origin:center; }
+.binding { position:relative; height:76px; background:var(--navy); border-radius:12px 12px 0 0; }
+.binding span { position:absolute; top:-24px; width:22px; height:60px; border-radius:11px; background:linear-gradient(90deg, #8F6B50 0%, #F3E1CF 42%, #C8A586 68%, #8F6B50 100%); box-shadow:0 3px 6px rgba(0,0,0,.25); }
+.binding span:nth-child(1) { left:60px; }
+.binding span:nth-child(2) { left:176px; }
+.binding span:nth-child(3) { left:292px; }
+.binding span:nth-child(4) { left:408px; }
+.binding span:nth-child(5) { left:524px; }
+.binding span:nth-child(6) { left:640px; }
+.binding span:nth-child(7) { left:756px; }
+.sheet-body { padding:52px 72px 70px; }
+.slabel { display:flex; justify-content:space-between; font-size:26px; letter-spacing:.22em; text-transform:uppercase; color:#B08463; font-weight:600; padding-bottom:24px; border-bottom:2px solid #EFE4DA; }
+.sheet h2 { margin-top:54px; font-family:var(--serif); font-weight:400; font-size:84px; line-height:1.05; letter-spacing:-.025em; color:var(--navy); }
+.sheet em { color:#B08463; }
+.ftext { margin-top:44px; font-size:42px; line-height:1.4; color:var(--ink); }
+.todo { margin-top:44px; display:flex; flex-direction:column; gap:24px; }
+.todo li { display:flex; gap:26px; align-items:flex-start; font-size:38px; line-height:1.3; color:var(--ink); }
+.todo li i { flex:none; width:44px; height:44px; margin-top:4px; border-radius:50%; border:3px solid #B08463; }
+.bigday { font-family:var(--serif); color:var(--navy); line-height:1; text-align:center; }
+.bigday.struck { margin-top:30px; font-size:250px; position:relative; }
+.bigday.struck::after { content:''; position:absolute; left:8%; right:8%; top:52%; height:9px; border-radius:5px; background:linear-gradient(90deg, #8F6B50 0%, #F3E1CF 42%, #C8A586 68%, #8F6B50 100%); transform:rotate(-14deg); }
+.bigday.hoje { margin-top:70px; font-style:italic; font-size:150px; color:#B08463; }
+.bigday.hoje span { display:inline-block; padding:10px 46px 34px; border:4px solid #C8A586; border-radius:50%; transform:rotate(-6deg); }
+.bigday.hoje.small { margin-top:44px; font-size:110px; }
+.sheet.mini { width:420px; height:500px; min-height:0; top:150px; }
+.sheet.mini .binding { height:60px; }
+.sheet.mini .binding span { width:16px; height:44px; top:-18px; }
+.sheet.mini .binding span:nth-child(1) { left:36px; }
+.sheet.mini .binding span:nth-child(2) { left:94px; }
+.sheet.mini .binding span:nth-child(3) { left:152px; }
+.sheet.mini .binding span:nth-child(4) { left:210px; }
+.sheet.mini .binding span:nth-child(5) { left:268px; }
+.sheet.mini .binding span:nth-child(6) { left:326px; }
+.sheet.mini .binding span:nth-child(7) { left:384px; }
+.sheet.mini .sheet-body { padding:34px 40px; }
+.sheet.mini.left { left:110px; transform:rotate(-6deg); }
+.sheet.mini.right { left:550px; top:190px; transform:rotate(5deg); }
+.cal-capa .content { left:110px; right:110px; top:760px; }
+.cal-capa h1 { font-family:var(--serif); font-weight:400; font-size:100px; line-height:1.02; letter-spacing:-.03em; }
+.virada .content { left:110px; right:110px; top:540px; }
+.virada h1 { font-family:var(--serif); font-weight:400; font-size:84px; line-height:1.04; letter-spacing:-.025em; }
+.virada .sub { margin-top:36px; }
 `;
 
-function slideHTML(s, i, c, total) {
+function slideHTML(s, i, c) {
   const seed = c * 20 + i + 3;
   const photo = s.photo ? dataUrl(path.join(__dirname, s.photo)) : null;
   const needPhoto = () => { if (!photo) throw new Error(`Lâmina ${s.type} precisa de photo`); return photo; };
@@ -297,9 +296,9 @@ function slideHTML(s, i, c, total) {
     case 'versus': return versus(s);
     case 'checklist': return checklist(s, seed);
     case 'destaque': return destaque(s, seed);
-    case 'trilha-capa': return trilhaCapa(s, seed, photo);
-    case 'passo': return passo(s, seed, photo, total);
-    case 'chegada': return chegada(s, seed);
+    case 'calendario-capa': return calendarioCapa(s, seed);
+    case 'folha': return folha(s, seed, i);
+    case 'virada': return virada(s, seed);
     default: throw new Error(`Tipo de lâmina desconhecido: ${s.type}`);
   }
 }
@@ -308,10 +307,9 @@ function slideHTML(s, i, c, total) {
   const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
   const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
   for (const [c, car] of carrosseis.entries()) {
-    const total = car.slides.filter((s) => s.type === 'passo').length;
     const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
       <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-      <style>${CSS}</style></head><body>${car.slides.map((s, i) => slideHTML(s, i, c, total)).join('')}</body></html>`;
+      <style>${CSS}</style></head><body>${car.slides.map((s, i) => slideHTML(s, i, c)).join('')}</body></html>`;
     await page.setContent(html, { waitUntil: 'networkidle' });
     await page.evaluate(() => document.fonts.ready);
     const fams = await page.evaluate(() => [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family).join(','));

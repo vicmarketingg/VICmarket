@@ -2,7 +2,7 @@
  * Cada carrossel tem um formato próprio, para não parecerem o mesmo post:
  *   1. Mito × verdade   cover · mito / verdade (alternados) · resumo
  *   2. Comparativo      cover · versus · checklist · destaque · end
- *   3. Trilha           trilha-capa · passo (com a trilha atravessando as lâminas) · chegada
+ *   3. Calendário       calendario-capa · folha (folhas de calendário de mesa) · foto · virada
  * Marcação: **negrito**, *itálico* (vira destaque rosé-dourado), _sublinhado_.
  * Tipos de lâmina:
  *   cover / foto { photo, kicker, title, sub? }       foto inteira, texto na base
@@ -13,9 +13,9 @@
  *   checklist    { kicker, title, items: [..] }       folha com caixinhas marcadas
  *   destaque     { title, sub }                       frase grande sobre mármore
  *   end          { kicker, title, sub }               fechamento escuro
- *   trilha-capa  { kicker, title, steps: [..], photo? } capa com o mapa dos passos
- *   passo        { num, title, body, photo? }         passo N de 5, trilha contínua
- *   chegada      { kicker, title, sub }               fim da trilha */
+ *   calendario-capa { kicker, title }                 folhas “1º de janeiro” riscado e “hoje” circulado
+ *   folha        { label, title, body | items | hoje, dark? }  folha de calendário com argolas rose-gold
+ *   virada       { date, kicker, title, sub }         data riscada e pergunta final */
 module.exports = [
   {
     slug: '01-mitos-tecnologias',
@@ -63,23 +63,25 @@ Você costuma perguntar mais sobre o “como” ou sobre o “porquê”? Me con
     ]
   },
   {
-    slug: '03-plano-de-estudos',
-    title: 'Como montar seu plano de estudos em tecnologias',
-    caption: `Se eu pudesse dar um conselho para quem quer estudar tecnologias, seria este: não colecione cursos. Monte um plano.
+    slug: '03-nao-espere-o-ano-virar',
+    title: 'Você não precisa esperar o ano virar',
+    caption: `Todo fim de ano a gente faz a mesma lista: “ano que vem eu estudo mais”, “ano que vem eu me organizo”, “ano que vem eu invisto na minha carreira”.
 
-Comece pelas demandas reais da sua prática, confirme o que a sua habilitação permite, aprofunde um tema por vez e escolha boas referências.
+Mas a virada do ano é só uma data. As decisões que mudam uma trajetória acontecem em dias comuns, quando a gente decide parar de adiar.
 
-Carreira não é corrida para colecionar técnicas. É construção.
+Não precisa ser uma grande mudança. Pode ser escolher uma formação, reorganizar seus estudos ou buscar acompanhamento para amadurecer sua prática.
 
-Salve este plano e comece pelo passo 1. Qual tecnologia está no topo da sua lista de estudos?`,
+Janeiro vai chegar de qualquer jeito. Como você quer chegar nele?
+
+Me conta nos comentários qual decisão você não vai mais adiar. 🤍`,
     slides: [
-      { type: 'trilha-capa', photo: 'fotos/equipamento-tela.jpg', photoH: 1919, photoY: 330, kicker: 'Não colecione cursos', title: 'Monte um *plano de estudos.*', steps: ['Comece pela sua prática', 'Confirme sua habilitação', 'Um tema por vez', 'Escolha boas referências', 'Revise e atualize'] },
-      { type: 'passo', num: '1', title: 'Comece pela sua *prática.*', body: 'Liste as demandas que aparecem com frequência no seu atendimento. Elas mostram o que vale aprofundar primeiro.' },
-      { type: 'passo', num: '2', title: 'Confirme sua *habilitação.*', body: 'Antes de escolher uma tecnologia, verifique o que a sua profissão permite realizar.' },
-      { type: 'passo', num: '3', title: 'Um tema *por vez.*', body: 'Fundamentos, indicações, contraindicações e riscos antes de partir para o próximo recurso.' },
-      { type: 'passo', num: '4', title: 'Escolha boas *referências.*', body: 'Formações com espaço para dúvidas e, quando possível, a chance de acompanhar a prática.' },
-      { type: 'passo', num: '5', title: 'Revise e *atualize.*', body: 'Tecnologia muda. Reserve tempo para a atualização contínua do que você já usa.' },
-      { type: 'chegada', kicker: 'Salve este plano', title: 'Carreira não é corrida. *É construção.*', sub: 'Comece pelo passo 1. Qual tecnologia está no topo da sua lista?' }
+      { type: 'calendario-capa', kicker: 'Fim de ano', title: 'Você não precisa esperar o ano *virar.*' },
+      { type: 'folha', label: 'Todo fim de ano', title: 'A lista do *“ano que vem eu…”*', body: 'Estudar mais. Me organizar. Investir na carreira. Todo dezembro, a gente deixa as decisões para quando janeiro chegar.' },
+      { type: 'folha', dark: true, label: 'A verdade', title: 'A virada do ano é só uma *data.*', body: 'As decisões que mudam uma carreira acontecem em dias comuns, quando você decide parar de adiar.' },
+      { type: 'folha', label: 'Pergunta honesta', title: 'O que você está *adiando?*', items: ['Aquela formação que sempre fica para depois.', 'Estudar a fundo a tecnologia que você já usa.', 'Organizar seus estudos com um plano.', 'Buscar acompanhamento para amadurecer sua prática.'] },
+      { type: 'foto', photo: 'fotos/equipamento-tela.jpg', kicker: 'Decidir', title: 'Não é fazer tudo *de uma vez.*', sub: 'É dar o primeiro passo com clareza: entender o que a sua prática pede e o que você precisa aprender.' },
+      { type: 'folha', dark: true, label: 'Comece', hoje: true, title: 'A melhor data para decidir é esta:', body: 'Não precisa ser uma grande mudança. Uma decisão tomada hoje já muda a forma como você chega em janeiro.' },
+      { type: 'virada', date: '31.12', kicker: 'A decisão é sua', title: 'Janeiro vai chegar de qualquer jeito. *Como você quer chegar nele?*', sub: 'Me conta nos comentários qual decisão você não vai mais adiar.' }
     ]
   }
 ];
