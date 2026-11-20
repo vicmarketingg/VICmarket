@@ -140,28 +140,28 @@ em { font-style:italic; color:var(--gold-deep); }
 
 /* rodapé em grade, como no modelo */
 .meta { position:absolute; left:110px; right:110px; bottom:70px; display:grid; grid-template-columns:repeat(4, 1fr); align-items:end;
-  font-size:15px; line-height:1.3; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); }
+  font-size:19px; line-height:1.3; letter-spacing:.07em; text-transform:uppercase; color:var(--ink); }
 .meta span:nth-child(2) { text-align:center; padding-bottom:18px; } .meta span:nth-child(3) { text-align:center; } .meta span:nth-child(4) { text-align:right; }
 .meta img { max-height:64px; max-width:150px; display:inline-block; }
 .meta.on-dark { color:#E9EEF4; }
 .card .meta { color:var(--ink); } .card:not(.card-dark) .meta { color:#2A1E25; }
 .card-dark .meta { color:#E9EEF4; }
-.caps .meta { right:150px; } .faixa .meta { left:410px; }
+.caps .meta { right:150px; } .faixa .meta { left:410px; font-size:16px; }
 
 /* capa */
-.kicker { position:absolute; font-size:32px; line-height:1.32; letter-spacing:.03em; text-transform:uppercase; color:#F3F5F8; font-weight:400; }
-.cover .k1 { left:110px; top:300px; }
+.kicker { position:absolute; font-size:38px; line-height:1.32; letter-spacing:.03em; text-transform:uppercase; color:#F3F5F8; font-weight:400; }
+.cover .k1 { left:110px; top:286px; }
 .cover .k2 { left:110px; top:462px; color:#CFD8E3; }
 .cover h1 { left:110px; right:110px; top:650px; font-family:var(--serif); font-weight:400; font-size:136px; line-height:.98; letter-spacing:-.035em; color:#fff; }
 
 /* card ondulado */
-.card .content { left:236px; width:608px; top:236px; height:820px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; color:#F6EEF1; }
+.card .content { left:216px; width:648px; top:236px; height:820px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; color:#F6EEF1; }
 .card .spk { width:150px; height:150px; margin-bottom:26px; }
 .card-dark .content { color:var(--ink); }
-.card .num { display:block; font-family:var(--serif); font-size:58px; line-height:1; color:#E2C6A9; margin-bottom:10px; }
+.card .num { display:block; font-family:var(--serif); font-size:66px; line-height:1; color:#E2C6A9; margin-bottom:10px; }
 .card-dark .num { color:var(--gold-deep); }
-.card h2 { font-family:var(--serif); font-weight:600; font-size:60px; line-height:1.04; letter-spacing:-.015em; margin-bottom:40px; }
-.card p { font-size:31px; line-height:1.45; font-weight:300; }
+.card h2 { font-family:var(--serif); font-weight:600; font-size:72px; line-height:1.04; letter-spacing:-.015em; margin-bottom:40px; }
+.card p { font-size:41px; line-height:1.4; font-weight:400; }
 .card p + p { margin-top:30px; }
 
 /* título gigante */
@@ -169,25 +169,25 @@ em { font-style:italic; color:var(--gold-deep); }
 .dots-tl { left:-40px; top:-30px; -webkit-mask-image:radial-gradient(ellipse at 30% 30%, #000 0%, transparent 68%); }
 .dots-br { right:-40px; bottom:-40px; width:560px; height:360px; -webkit-mask-image:radial-gradient(ellipse at 70% 80%, #000 0%, transparent 68%); }
 .caps .content { left:90px; width:830px; top:210px; text-align:center; }
-.caps .num { display:block; font-weight:600; font-size:40px; color:var(--gold-deep); margin-bottom:26px; }
+.caps .num { display:block; font-weight:600; font-size:46px; color:var(--gold-deep); margin-bottom:26px; }
 .giant { width:1400px; margin-left:-285px; transform:scaleX(.593); transform-origin:center; font-family:var(--serif); font-weight:400; font-size:172px;
   line-height:.86; letter-spacing:-.01em; text-transform:uppercase; color:var(--gold-deep); }
 .giant em { color:var(--navy); font-style:normal; }
-.caps .lead { font-weight:600; font-size:38px; line-height:1.3; margin:52px auto 0; max-width:640px; color:var(--ink); }
-.caps p { font-size:33px; line-height:1.45; font-weight:300; margin:34px auto 0; max-width:640px; }
+.caps .lead { font-weight:600; font-size:48px; line-height:1.25; margin:52px auto 0; max-width:760px; color:var(--ink); }
+.caps p { font-size:42px; line-height:1.4; font-weight:400; margin:34px auto 0; max-width:760px; }
 
 /* faixa lateral */
 .faixa .content { left:430px; right:80px; top:360px; text-align:right; }
-.faixa .num { display:block; font-family:var(--serif); font-weight:600; font-size:64px; line-height:1; color:#7A4E5E; }
-.faixa h2 { font-family:var(--serif); font-weight:600; font-size:62px; line-height:1.0; letter-spacing:-.02em; color:var(--navy); margin:6px 0 40px; }
-.faixa p { font-size:32px; line-height:1.42; font-weight:300; }
+.faixa .num { display:block; font-family:var(--serif); font-weight:600; font-size:72px; line-height:1; color:#7A4E5E; }
+.faixa h2 { font-family:var(--serif); font-weight:600; font-size:72px; line-height:1.0; letter-spacing:-.02em; color:var(--navy); margin:6px 0 40px; }
+.faixa p { font-size:41px; line-height:1.38; font-weight:400; }
 .faixa p + p { margin-top:22px; }
 
 /* fechamento */
-.end .kicker { left:110px; top:360px; font-size:26px; letter-spacing:.2em; color:#E2C6A9; padding-left:210px; }
+.end .kicker { left:110px; top:356px; font-size:32px; letter-spacing:.2em; color:#E2C6A9; padding-left:210px; }
 .end .content { left:110px; right:110px; top:470px; }
 .end h1 { font-family:var(--serif); font-weight:400; font-size:116px; line-height:1.0; letter-spacing:-.03em; color:#fff; }
-.end .sub { margin-top:56px; font-size:32px; line-height:1.45; font-weight:300; color:#DCE3EC; max-width:600px; }
+.end .sub { margin-top:56px; font-size:42px; line-height:1.4; font-weight:400; color:#E6EBF2; max-width:820px; }
 `;
 
 function slideHTML(s, i, c) {
@@ -217,7 +217,8 @@ function slideHTML(s, i, c) {
     // Texto não pode encostar no rodapé nem sair da lâmina.
     const bad = await page.$$eval('.slide', (els) => els.map((el, k) => {
       const r = el.getBoundingClientRect(), c = el.querySelector('.content').getBoundingClientRect(), m = el.querySelector('.meta').getBoundingClientRect();
-      return c.bottom > m.top - 24 || c.right > r.right - 40 || c.left < r.left + 40 ? k + 1 : 0;
+      const box = el.querySelector('.content');
+      return c.bottom > m.top - 24 || c.right > r.right - 40 || c.left < r.left + 40 || (el.classList.contains('card') && box.scrollHeight > box.clientHeight + 2) ? k + 1 : 0;
     }).filter(Boolean));
     if (bad.length) throw new Error(`${car.slug}: texto grande demais nas lâminas ${bad.join(', ')}`);
     const dir = path.join(__dirname, car.slug);
