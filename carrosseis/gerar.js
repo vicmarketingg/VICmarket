@@ -2,7 +2,7 @@
  * Layout editorial de colagem, na identidade da Lívia: azul-marinho, rosé, rosé-dourado, mármore,
  * Playfair Display nos títulos e Jost nos textos de apoio.
  * Uso: NODE_PATH=<pasta com playwright> node carrosseis/gerar.js
- * Opcional: carrosseis/logo.png (logotipo original) e photo: 'fotos/x.jpg' em lâminas cover/oval.
+ * Opcional: carrosseis/logo.png (logotipo original) e photo: 'fotos/x.jpg' em lâminas cover/faixa.
  * Saída: carrosseis/<slug>/01.png, 02.png… e legenda.txt */
 const fs = require('fs');
 const path = require('path');
@@ -45,23 +45,6 @@ function marbleRect(x, y, w, h, seed, strong) {
     <rect x="${x}" y="${y}" width="${w}" height="${h}" filter="url(#${m})" opacity="${strong ? 1 : 0.8}"/>
     <rect x="${x}" y="${y}" width="${w}" height="${h}" filter="url(#${v})" opacity="${strong ? 0.75 : 0.5}"/>`;
 }
-// Moldura oval metálica, com mármore, foto ou azul-marinho dentro.
-function ovalFrame(cx, cy, rx, ry, inside, seed, word) {
-  const g = id('g'), c = id('c'), glow = id('r');
-  let fill;
-  if (inside === 'marble') fill = marbleRect(cx - rx, cy - ry, rx * 2, ry * 2, seed, true);
-  else if (inside && inside.photo) fill = `<image href="${inside.photo}" x="${cx - rx}" y="${cy - ry}" width="${rx * 2}" height="${ry * 2}" preserveAspectRatio="xMidYMid slice"/>`;
-  else fill = `<radialGradient id="${glow}" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#2E4A6B"/><stop offset=".6" stop-color="#172B45"/><stop offset="1" stop-color="#0E1A2C"/></radialGradient>
-      <rect x="${cx - rx}" y="${cy - ry}" width="${rx * 2}" height="${ry * 2}" fill="url(#${glow})"/>`;
-  const script = word ? `<text x="${cx + 10}" y="${cy + ry * 0.55}" text-anchor="middle" transform="rotate(-9 ${cx} ${cy + ry * 0.55})"
-      font-family="Playfair Display" font-style="italic" font-size="${Math.round(rx * 0.27)}" fill="#EBDDE3" opacity=".95">${esc(word)}</text>` : '';
-  return `<defs>${metal(g)}<clipPath id="${c}"><ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"/></clipPath></defs>
-    <ellipse cx="${cx + 14}" cy="${cy + 26}" rx="${rx + 22}" ry="${ry + 22}" fill="#0E1A2C" opacity=".22" filter="url(#soft)"/>
-    <g clip-path="url(#${c})">${fill}${script}</g>
-    <ellipse cx="${cx}" cy="${cy}" rx="${rx + 13}" ry="${ry + 13}" fill="none" stroke="url(#${g})" stroke-width="26"/>
-    <ellipse cx="${cx}" cy="${cy}" rx="${rx + 31}" ry="${ry + 31}" fill="none" stroke="url(#${g})" stroke-width="3" opacity=".9"/>
-    <ellipse cx="${cx}" cy="${cy}" rx="${rx + 2}" ry="${ry + 2}" fill="none" stroke="#5E4434" stroke-width="2" opacity=".5"/>`;
-}
 // Brilho de quatro pontas (no lugar das ilustrações do modelo).
 function sparkle(x, y, s) {
   const g = id('g');
@@ -96,10 +79,12 @@ const meta = (dark) => `<div class="meta ${dark ? 'on-dark' : ''}">
 
 /* ---------- Layouts ---------- */
 function cover(s, seed, photo) {
-  const art = svg(`<radialGradient id="cg${seed}" cx=".2" cy=".32" r=".45"><stop offset="0" stop-color="#C8A586" stop-opacity=".42"/><stop offset="1" stop-color="#C8A586" stop-opacity="0"/></radialGradient>
-    <rect width="${W}" height="${H}" fill="url(#cg${seed})"/>${bands()}
-    ${ovalFrame(70, 640, 290, 420, photo ? { photo } : 'marble', seed)}
-    <line x1="420" y1="418" x2="880" y2="418" stroke="#EBDDE3" stroke-opacity=".75" stroke-width="2"/>
+  const bg = photo
+    ? `<image href="${photo}" width="${W}" height="${H}" preserveAspectRatio="xMidYMid slice"/><rect width="${W}" height="${H}" fill="#0E1A2C" opacity=".62"/>`
+    : `<radialGradient id="cg${seed}" cx=".85" cy=".15" r=".6"><stop offset="0" stop-color="#C8A586" stop-opacity=".4"/><stop offset="1" stop-color="#C8A586" stop-opacity="0"/></radialGradient>
+       <rect width="${W}" height="${H}" fill="url(#cg${seed})"/>`;
+  const art = svg(`${bg}${bands()}
+    <line x1="110" y1="418" x2="880" y2="418" stroke="#EBDDE3" stroke-opacity=".75" stroke-width="2"/>
     <line x1="930" y1="458" x2="930" y2="590" stroke="#EBDDE3" stroke-opacity=".75" stroke-width="2"/>
     ${sparkle(930, 418, 0.9)}`);
   return `<section class="slide dark cover">${art}
@@ -115,20 +100,24 @@ function card(s, seed) {
     <div class="content"><svg class="spk" viewBox="-80 -80 160 160">${sparkle(0, 0, 0.95)}</svg><span class="num">${esc(s.num)}</span><h2>${rich(s.title)}</h2>${s.body.map((p) => `<p>${rich(p)}</p>`).join('')}</div>${meta(false)}</section>`;
 }
 function caps(s, seed) {
-  const art = svg(`${marbleRect(972, 70, 108, 1210, seed, true)}${ovalFrame(1130, 690, 150, 230, 'navy', seed)}`);
+  const art = svg(marbleRect(972, 70, 108, 1210, seed, true));
   return `<section class="slide light caps"><div class="dots dots-tl"></div><div class="dots dots-br"></div>${art}
     <div class="content"><span class="num">${esc(s.num)}</span><h2 class="giant"><span>${rich(s.title)}</span></h2>
     <p class="lead">${rich(s.lead)}</p><p>${rich(s.body)}</p></div>${meta(false)}</section>`;
 }
-function oval(s, seed, photo) {
-  const art = svg(`${marbleRect(0, 70, 240, 1210, seed, true)}${ovalFrame(300, 680, 255, 370, photo ? { photo } : 'navy', seed, photo ? null : s.word)}
-    ${sparkle(600, 300, 0.75)}`);
-  return `<section class="slide light oval"><div class="dots dots-br"></div>${art}
+function faixa(s, seed, photo) {
+  const strip = photo
+    ? `<image href="${photo}" x="0" y="70" width="360" height="1210" preserveAspectRatio="xMidYMid slice"/>`
+    : marbleRect(0, 70, 360, 1210, seed, true);
+  const word = s.word && !photo ? `<text x="0" y="0" transform="translate(205 675) rotate(-90)" text-anchor="middle"
+      font-family="Playfair Display" font-style="italic" font-size="118" fill="#172B45" opacity=".9">${esc(s.word)}</text>` : '';
+  const art = svg(`${strip}${word}<line x1="360" y1="70" x2="360" y2="1280" stroke="#C8A586" stroke-width="3"/>${sparkle(985, 285, 0.7)}`);
+  return `<section class="slide light faixa"><div class="dots dots-br"></div>${art}
     <div class="content"><span class="num">${esc(s.num)}</span><h2>${rich(s.title)}</h2>${s.body.map((p) => `<p>${rich(p)}</p>`).join('')}</div>${meta(false)}</section>`;
 }
 function end(s, seed) {
   const art = svg(`<radialGradient id="eg${seed}" cx=".85" cy=".45" r=".5"><stop offset="0" stop-color="#C8A586" stop-opacity=".35"/><stop offset="1" stop-color="#C8A586" stop-opacity="0"/></radialGradient>
-    <rect width="${W}" height="${H}" fill="url(#eg${seed})"/>${bands()}${ovalFrame(1040, 600, 220, 330, 'marble', seed)}
+    <rect width="${W}" height="${H}" fill="url(#eg${seed})"/>${bands()}
     <line x1="110" y1="402" x2="300" y2="402" stroke="#EBDDE3" stroke-opacity=".75" stroke-width="2"/>`);
   return `<section class="slide dark end">${art}<p class="kicker">${rich(s.kicker)}</p>
     <div class="content"><h1>${rich(s.title)}</h1><p class="sub">${rich(s.sub)}</p></div>${meta(true)}</section>`;
@@ -157,13 +146,13 @@ em { font-style:italic; color:var(--gold-deep); }
 .meta.on-dark { color:#E9EEF4; }
 .card .meta { color:var(--ink); } .card:not(.card-dark) .meta { color:#2A1E25; }
 .card-dark .meta { color:#E9EEF4; }
-.caps .meta { right:150px; } .oval .meta { left:280px; }
+.caps .meta { right:150px; } .faixa .meta { left:410px; }
 
 /* capa */
 .kicker { position:absolute; font-size:32px; line-height:1.32; letter-spacing:.03em; text-transform:uppercase; color:#F3F5F8; font-weight:400; }
-.cover .k1 { left:420px; top:300px; }
-.cover .k2 { left:420px; top:462px; color:#CFD8E3; }
-.cover h1 { left:420px; right:70px; top:640px; font-family:var(--serif); font-weight:400; font-size:118px; line-height:.98; letter-spacing:-.035em; color:#fff; }
+.cover .k1 { left:110px; top:300px; }
+.cover .k2 { left:110px; top:462px; color:#CFD8E3; }
+.cover h1 { left:110px; right:110px; top:650px; font-family:var(--serif); font-weight:400; font-size:136px; line-height:.98; letter-spacing:-.035em; color:#fff; }
 
 /* card ondulado */
 .card .content { left:236px; width:608px; top:236px; height:820px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; color:#F6EEF1; }
@@ -187,17 +176,17 @@ em { font-style:italic; color:var(--gold-deep); }
 .caps .lead { font-weight:600; font-size:38px; line-height:1.3; margin:52px auto 0; max-width:640px; color:var(--ink); }
 .caps p { font-size:33px; line-height:1.45; font-weight:300; margin:34px auto 0; max-width:640px; }
 
-/* moldura oval */
-.oval .content { left:620px; right:72px; top:350px; text-align:right; }
-.oval .num { display:block; font-family:var(--serif); font-weight:600; font-size:64px; line-height:1; color:#7A4E5E; }
-.oval h2 { font-family:var(--serif); font-weight:600; font-size:62px; line-height:1.0; letter-spacing:-.02em; color:var(--navy); margin:6px 0 40px; }
-.oval p { font-size:32px; line-height:1.42; font-weight:300; }
-.oval p + p { margin-top:22px; }
+/* faixa lateral */
+.faixa .content { left:430px; right:80px; top:360px; text-align:right; }
+.faixa .num { display:block; font-family:var(--serif); font-weight:600; font-size:64px; line-height:1; color:#7A4E5E; }
+.faixa h2 { font-family:var(--serif); font-weight:600; font-size:62px; line-height:1.0; letter-spacing:-.02em; color:var(--navy); margin:6px 0 40px; }
+.faixa p { font-size:32px; line-height:1.42; font-weight:300; }
+.faixa p + p { margin-top:22px; }
 
 /* fechamento */
 .end .kicker { left:110px; top:360px; font-size:26px; letter-spacing:.2em; color:#E2C6A9; padding-left:210px; }
-.end .content { left:110px; width:640px; top:470px; }
-.end h1 { font-family:var(--serif); font-weight:400; font-size:96px; line-height:1.0; letter-spacing:-.03em; color:#fff; }
+.end .content { left:110px; right:110px; top:470px; }
+.end h1 { font-family:var(--serif); font-weight:400; font-size:116px; line-height:1.0; letter-spacing:-.03em; color:#fff; }
 .end .sub { margin-top:56px; font-size:32px; line-height:1.45; font-weight:300; color:#DCE3EC; max-width:600px; }
 `;
 
@@ -208,7 +197,7 @@ function slideHTML(s, i, c) {
     case 'cover': return cover(s, seed, photo);
     case 'card': return card(s, seed);
     case 'caps': return caps(s, seed);
-    case 'oval': return oval(s, seed, photo);
+    case 'faixa': return faixa(s, seed, photo);
     case 'end': return end(s, seed);
     default: throw new Error(`Tipo de lâmina desconhecido: ${s.type}`);
   }

@@ -1,6 +1,6 @@
 # Carrosséis — Dra. Lívia Serpa
 
-Lâminas em PNG 1080×1350 (formato retrato do Instagram), em layout editorial de colagem (capa escura com moldura oval, card ondulado com clipe, título gigante em caixa alta, moldura oval com texto ao lado), nas cores e fontes da Lívia: azul-marinho, rosé, rosé-dourado, mármore, Playfair Display e Jost. Cada pasta tem a legenda em `legenda.txt`.
+Lâminas em PNG 1080×1350 (formato retrato do Instagram), em layout editorial de colagem (capa escura com faixas curvas, card ondulado com clipe, título gigante em caixa alta, faixa de mármore com palavra na vertical), nas cores e fontes da Lívia: azul-marinho, rosé, rosé-dourado, mármore, Playfair Display e Jost. Cada pasta tem a legenda em `legenda.txt`.
 
 | Pasta | Tema | Lâminas |
 |---|---|---|
@@ -12,7 +12,7 @@ Lâminas em PNG 1080×1350 (formato retrato do Instagram), em layout editorial d
 
 1. Edite os textos em `conteudo.js` (`**negrito**`, `*itálico*`, `_sublinhado_`).
 2. Logotipo: salve o arquivo original como `carrosseis/logo.png`; ele substitui a assinatura em texto.
-3. Fotos: coloque em `carrosseis/fotos/` e indique na lâmina (`cover` ou `oval`) com `photo: 'fotos/arquivo.jpg'`; a foto entra dentro da moldura oval.
+3. Fotos: coloque em `carrosseis/fotos/` e indique na lâmina (`cover` ou `faixa`) com `photo: 'fotos/arquivo.jpg'`; na capa a foto vira o fundo, na faixa ela substitui o mármore.
 4. Gere as imagens:
 
 ```
