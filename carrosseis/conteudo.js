@@ -1,14 +1,21 @@
 /* Textos dos carrosséis — Dra. Lívia Serpa.
- * Layout editorial (colagem), com a identidade da Lívia: azul-marinho, rosé, rosé-dourado e mármore.
- * Marcação: **negrito**, *itálico* (no título vira destaque rosé-dourado), _sublinhado_.
- * Qualquer cover ou end com photo: 'fotos/arquivo.jpg' vira lâmina com a foto inteira e o texto na base.
+ * Cada carrossel tem um formato próprio, para não parecerem o mesmo post:
+ *   1. Mito × verdade   cover · mito / verdade (alternados) · resumo
+ *   2. Comparativo      cover · versus · checklist · destaque · end
+ *   3. Trilha           trilha-capa · passo (com a trilha atravessando as lâminas) · chegada
+ * Marcação: **negrito**, *itálico* (vira destaque rosé-dourado), _sublinhado_.
  * Tipos de lâmina:
- *   cover  { kicker, kicker2, title }               abertura escura com faixas curvas
- *   card   { num, title, body: [..], dark? }         card de borda ondulada com clipe
- *   caps   { num, title, lead, body }                título gigante em caixa alta, fundo claro
- *   faixa  { num, title, body: [..], word }          faixa de mármore à esquerda com a palavra na vertical
- *   end    { kicker, title, sub }                    fechamento escuro
- *   foto   { photo, kicker, title, sub }             foto inteira na lâmina, texto na base */
+ *   cover / foto { photo, kicker, title, sub? }       foto inteira, texto na base
+ *   mito         { num, quote }                       frase do mito riscada
+ *   verdade      { num, title, sub }                  resposta “na prática”, fundo escuro
+ *   resumo       { title, items: [..], cta }          lista dos mitos riscados
+ *   versus       { topic, left, right }               Protocolo × Raciocínio clínico, lado a lado
+ *   checklist    { kicker, title, items: [..] }       folha com caixinhas marcadas
+ *   destaque     { title, sub }                       frase grande sobre mármore
+ *   end          { kicker, title, sub }               fechamento escuro
+ *   trilha-capa  { kicker, title, steps: [..] }       capa com o mapa dos passos
+ *   passo        { num, title, body, photo? }         passo N de 5, trilha contínua
+ *   chegada      { kicker, title, sub }               fim da trilha */
 module.exports = [
   {
     slug: '01-mitos-tecnologias',
@@ -22,11 +29,15 @@ Eu amo estudar tecnologias. E é justamente por isso que acredito que entusiasmo
 Qual desses mitos você já ouviu por aí? Me conta nos comentários e salve para revisar antes da próxima decisão de compra. 🤍`,
     slides: [
       { type: 'cover', photo: 'fotos/livia-equipamentos.jpg', kicker: 'Antes de investir em uma tecnologia', title: '4 *mitos* que custam caro.' },
-      { type: 'card', num: '01', title: 'quanto mais moderno, melhor', body: ['Um equipamento não se torna um bom investimento simplesmente por ser moderno.', 'Ele precisa fazer sentido para as **demandas reais** da sua prática.'] },
-      { type: 'caps', num: '02', title: 'Tendência não é indicação', lead: 'Se está em alta, eu preciso ter?', body: 'Uma tecnologia em evidência nas redes não é, por si só, indicação de investimento. Entusiasmo e análise precisam caminhar juntos.' },
-      { type: 'foto', photo: 'fotos/equipamento-ponteira.jpg', kicker: 'Mito 03', title: 'Ver não é *dominar.*', sub: 'Competência exige fundamentos, critérios, segurança e, quando necessário, prática supervisionada.' },
-      { type: 'card', dark: true, num: '04', title: 'combinar não é somar', body: ['Combinar tecnologias não significa simplesmente utilizar mais recursos.', 'A associação precisa de **justificativa**. Às vezes, a melhor decisão é não combinar.'] },
-      { type: 'end', kicker: 'Me conta nos comentários', title: 'Qual desses mitos *você já ouviu?*', sub: 'Salve este post para revisar antes da próxima decisão de compra.' }
+      { type: 'mito', num: '01', quote: 'Quanto mais moderno, melhor o investimento.' },
+      { type: 'verdade', num: '01', title: 'Moderno não é *sinônimo* de bom investimento.', sub: 'Um equipamento precisa fazer sentido para as demandas reais da sua prática.' },
+      { type: 'mito', num: '02', quote: 'Se está em alta, eu preciso ter.' },
+      { type: 'verdade', num: '02', title: 'Tendência não é *indicação.*', sub: 'Uma tecnologia em evidência nas redes não é, por si só, indicação de investimento. Entusiasmo e análise precisam caminhar juntos.' },
+      { type: 'mito', num: '03', quote: 'Assisti à demonstração, então sei fazer.' },
+      { type: 'foto', photo: 'fotos/equipamento-ponteira.jpg', kicker: 'Na prática · Mito 03', title: 'Ver não é *dominar.*', sub: 'Competência exige fundamentos, critérios, segurança e, quando necessário, prática supervisionada.' },
+      { type: 'mito', num: '04', quote: 'Combinar tecnologias sempre potencializa.' },
+      { type: 'verdade', num: '04', title: 'Combinar não é *somar.*', sub: 'A associação precisa de justificativa. Às vezes, a melhor decisão é não combinar.' },
+      { type: 'resumo', title: 'Qual desses mitos *você já ouviu?*', items: ['Quanto mais moderno, melhor.', 'Se está em alta, eu preciso ter.', 'Vi a demonstração, sei fazer.', 'Combinar sempre potencializa.'], cta: 'Me conta nos comentários' }
     ]
   },
   {
@@ -43,10 +54,11 @@ Desejo por uma tecnologia não é, automaticamente, indicação para ela. Saber 
 Você costuma perguntar mais sobre o “como” ou sobre o “porquê”? Me conta aqui embaixo.`,
     slides: [
       { type: 'cover', photo: 'fotos/livia-jaleco-ponteira.jpg', kicker: 'Protocolo ou raciocínio clínico?', title: 'Seguir não é *decidir.*' },
-      { type: 'card', num: '01', title: 'o protocolo tem seu lugar', body: ['Ele organiza etapas e dá segurança a quem está aprendendo.', 'Mas ele responde ao **como**. A prática também exige entender o **porquê**.'] },
-      { type: 'caps', num: '02', title: 'Critério antes da conduta', lead: 'Situações clínicas não são idênticas.', body: 'Raciocínio clínico é o que permite avaliar cada caso e escolher um caminho com critério, e não por repetição.' },
-      { type: 'faixa', num: '03', title: 'antes de indicar, eu me pergunto', word: 'avaliação', body: ['O que motivou essa procura?', 'Quais são as necessidades reais do caso?', 'Existe indicação? Quais os limites e os riscos?', '**Isso está dentro da minha habilitação?**'] },
-      { type: 'card', dark: true, num: '04', title: 'desejo não é indicação', body: ['Saber escutar a demanda sem transformar a preferência inicial em **decisão clínica**.', 'É uma das habilidades que eu mais valorizo.'] },
+      { type: 'versus', topic: 'O que responde', left: '*Como* fazer.', right: '*Por que* fazer.' },
+      { type: 'versus', topic: 'Para que serve', left: 'Organiza etapas e dá segurança.', right: 'Avalia cada caso com *critério.*' },
+      { type: 'versus', topic: 'Ponto de partida', left: 'A sequência de execução.', right: 'As necessidades *reais* do caso.' },
+      { type: 'checklist', kicker: 'Antes de indicar', title: 'As 4 perguntas que eu faço:', items: ['O que motivou essa procura?', 'Quais são as necessidades reais do caso?', 'Existe indicação? Quais os limites e os riscos?', 'Isso está dentro da minha habilitação?'] },
+      { type: 'destaque', title: 'Desejo não é *indicação.*', sub: 'Saber escutar a demanda sem transformar a preferência inicial em decisão clínica.' },
       { type: 'end', kicker: 'Mentoria RCE®', title: 'Essa é uma das construções da *Mentoria RCE®*.', sub: 'Você pergunta mais “como” ou “por quê”? Me conta aqui embaixo.' }
     ]
   },
@@ -61,13 +73,13 @@ Carreira não é corrida para colecionar técnicas. É construção.
 
 Salve este plano e comece pelo passo 1. Qual tecnologia está no topo da sua lista de estudos?`,
     slides: [
-      { type: 'cover', kicker: 'Não colecione\ncursos.', kicker2: '5 passos para\ncomeçar.', title: 'Monte um *plano de estudos.*' },
-      { type: 'card', num: '01', title: 'comece pela sua prática', body: ['Liste as demandas que aparecem com frequência no seu atendimento.', 'Elas mostram o que vale **aprofundar primeiro**.'] },
-      { type: 'caps', num: '02', title: 'Confirme sua habilitação', lead: 'Antes da tecnologia, a sua profissão.', body: 'Verifique o que a sua habilitação permite realizar antes de escolher o que estudar.' },
-      { type: 'faixa', num: '03', title: 'um tema por vez', word: 'profundidade', body: ['Fundamentos, indicações, contraindicações e riscos', '**antes de partir para o próximo recurso.**'] },
-      { type: 'foto', photo: 'fotos/equipamento-tela.jpg', kicker: 'Passo 04', title: 'Escolha boas *referências.*', sub: 'Formações com espaço para dúvidas e, quando possível, a chance de acompanhar a prática.' },
-      { type: 'caps', num: '05', title: 'Revise e atualize', lead: 'Tecnologia muda.', body: 'Reserve tempo para a atualização contínua do que você já usa.' },
-      { type: 'end', kicker: 'Salve este plano', title: 'Carreira não é corrida. *É construção.*', sub: 'Comece pelo passo 01. Qual tecnologia está no topo da sua lista?' }
+      { type: 'trilha-capa', kicker: 'Não colecione cursos', title: 'Monte um *plano de estudos.*', steps: ['Comece pela sua prática', 'Confirme sua habilitação', 'Um tema por vez', 'Escolha boas referências', 'Revise e atualize'] },
+      { type: 'passo', num: '1', title: 'Comece pela sua *prática.*', body: 'Liste as demandas que aparecem com frequência no seu atendimento. Elas mostram o que vale aprofundar primeiro.' },
+      { type: 'passo', num: '2', title: 'Confirme sua *habilitação.*', body: 'Antes de escolher uma tecnologia, verifique o que a sua profissão permite realizar.' },
+      { type: 'passo', num: '3', title: 'Um tema *por vez.*', body: 'Fundamentos, indicações, contraindicações e riscos antes de partir para o próximo recurso.' },
+      { type: 'passo', num: '4', photo: 'fotos/equipamento-tela.jpg', title: 'Escolha boas *referências.*', body: 'Formações com espaço para dúvidas e, quando possível, a chance de acompanhar a prática.' },
+      { type: 'passo', num: '5', title: 'Revise e *atualize.*', body: 'Tecnologia muda. Reserve tempo para a atualização contínua do que você já usa.' },
+      { type: 'chegada', kicker: 'Salve este plano', title: 'Carreira não é corrida. *É construção.*', sub: 'Comece pelo passo 1. Qual tecnologia está no topo da sua lista?' }
     ]
   }
 ];
