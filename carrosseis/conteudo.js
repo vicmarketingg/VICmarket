@@ -13,7 +13,7 @@
  *   checklist    { kicker, title, items: [..] }       folha com caixinhas marcadas
  *   destaque     { title, sub }                       frase grande sobre mármore
  *   end          { kicker, title, sub }               fechamento escuro
- *   trilha-capa  { kicker, title, steps: [..] }       capa com o mapa dos passos
+ *   trilha-capa  { kicker, title, steps: [..], photo? } capa com o mapa dos passos
  *   passo        { num, title, body, photo? }         passo N de 5, trilha contínua
  *   chegada      { kicker, title, sub }               fim da trilha */
 module.exports = [
@@ -73,11 +73,11 @@ Carreira não é corrida para colecionar técnicas. É construção.
 
 Salve este plano e comece pelo passo 1. Qual tecnologia está no topo da sua lista de estudos?`,
     slides: [
-      { type: 'trilha-capa', kicker: 'Não colecione cursos', title: 'Monte um *plano de estudos.*', steps: ['Comece pela sua prática', 'Confirme sua habilitação', 'Um tema por vez', 'Escolha boas referências', 'Revise e atualize'] },
+      { type: 'trilha-capa', photo: 'fotos/equipamento-tela.jpg', photoH: 1919, photoY: 330, kicker: 'Não colecione cursos', title: 'Monte um *plano de estudos.*', steps: ['Comece pela sua prática', 'Confirme sua habilitação', 'Um tema por vez', 'Escolha boas referências', 'Revise e atualize'] },
       { type: 'passo', num: '1', title: 'Comece pela sua *prática.*', body: 'Liste as demandas que aparecem com frequência no seu atendimento. Elas mostram o que vale aprofundar primeiro.' },
       { type: 'passo', num: '2', title: 'Confirme sua *habilitação.*', body: 'Antes de escolher uma tecnologia, verifique o que a sua profissão permite realizar.' },
       { type: 'passo', num: '3', title: 'Um tema *por vez.*', body: 'Fundamentos, indicações, contraindicações e riscos antes de partir para o próximo recurso.' },
-      { type: 'passo', num: '4', photo: 'fotos/equipamento-tela.jpg', title: 'Escolha boas *referências.*', body: 'Formações com espaço para dúvidas e, quando possível, a chance de acompanhar a prática.' },
+      { type: 'passo', num: '4', title: 'Escolha boas *referências.*', body: 'Formações com espaço para dúvidas e, quando possível, a chance de acompanhar a prática.' },
       { type: 'passo', num: '5', title: 'Revise e *atualize.*', body: 'Tecnologia muda. Reserve tempo para a atualização contínua do que você já usa.' },
       { type: 'chegada', kicker: 'Salve este plano', title: 'Carreira não é corrida. *É construção.*', sub: 'Comece pelo passo 1. Qual tecnologia está no topo da sua lista?' }
     ]

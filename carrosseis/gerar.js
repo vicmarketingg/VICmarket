@@ -45,6 +45,12 @@ function marbleRect(x, y, w, h, seed) {
     <rect x="${x}" y="${y}" width="${w}" height="${h}" filter="url(#${m})"/>
     <rect x="${x}" y="${y}" width="${w}" height="${h}" filter="url(#${v})" opacity=".75"/>`;
 }
+// Rosé-gold metálico na horizontal, com reflexos ao longo da largura da lâmina (trilha e marcadores).
+function metalH(gid) {
+  return `<linearGradient id="${gid}" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${W}" y2="0">
+    <stop offset="0" stop-color="#A9825F"/><stop offset=".18" stop-color="#F3E1CF"/><stop offset=".36" stop-color="#B08463"/>
+    <stop offset=".55" stop-color="#EBD3BC"/><stop offset=".74" stop-color="#9E7657"/><stop offset=".9" stop-color="#F0DCC7"/><stop offset="1" stop-color="#B08463"/></linearGradient>`;
+}
 // Brilho de quatro pontas.
 function sparkle(x, y, s) {
   const g = id('g');
@@ -129,16 +135,22 @@ function destaque(s, seed) {
 }
 
 /* ---------- Formato 3: trilha de passos ---------- */
-function trilhaCapa(s, seed) {
-  const art = svg(`${glow(`tg${seed}`, '.9', '.1')}${bands(0.08)}`);
-  return `<section class="slide dark trilha-capa">${art}
+function trilhaCapa(s, seed, photo) {
+  const art = photo
+    ? svg(`<image href="${photo}" x="0" y="${-s.photoY || 0}" width="${W}" height="${s.photoH || H}" preserveAspectRatio="xMidYMin slice"/>
+        <linearGradient id="tg${seed}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E1A2C" stop-opacity=".05"/>
+        <stop offset=".26" stop-color="#0E1A2C" stop-opacity=".12"/><stop offset=".4" stop-color="#0E1A2C" stop-opacity=".95"/><stop offset=".6" stop-color="#0E1A2C" stop-opacity=".985"/><stop offset="1" stop-color="#0E1A2C" stop-opacity="1"/></linearGradient>
+        <rect width="${W}" height="${H}" fill="url(#tg${seed})"/>`)
+    : svg(`${glow(`tg${seed}`, '.9', '.1')}${bands(0.08)}`);
+  return `<section class="slide dark trilha-capa ${photo ? 'has-photo' : ''}">${art}
     <div class="content"><p class="pkicker"><i></i>${rich(s.kicker)}</p><h1>${rich(s.title)}</h1>
     <ol>${s.steps.map((t, k) => `<li><i></i><em>${String(k + 1).padStart(2, '0')}</em><span>${rich(t)}</span></li>`).join('')}</ol></div>${meta(true)}</section>`;
 }
 function passo(s, seed, photo, total) {
   const n = Number(s.num);
   const onPhoto = !!photo;
-  const line = onPhoto ? '#E2C6A9' : '#C8A586';
+  const mg = id('mh');
+  const line = `url(#${mg})`;
   const dots = STEP_X.slice(0, total).map((x, k) => (k + 1 === n ? ''
     : `<circle cx="${x}" cy="${pathY(x).toFixed(1)}" r="11" fill="${k + 1 < n ? line : (onPhoto ? '#0E1A2C' : '#FBF8F6')}" stroke="${line}" stroke-width="3"/>`)).join('');
   const x = STEP_X[n - 1], y = pathY(x);
@@ -147,17 +159,20 @@ function passo(s, seed, photo, total) {
        <linearGradient id="sg${seed}" x1="0" y1="0" x2="0" y2="1"><stop offset=".35" stop-color="#0E1A2C" stop-opacity="0"/><stop offset=".62" stop-color="#0E1A2C" stop-opacity=".9"/><stop offset="1" stop-color="#0E1A2C" stop-opacity=".97"/></linearGradient>
        <rect width="${W}" height="${H}" fill="url(#sg${seed})"/>`
     : '';
-  const art = svg(`${bg}<path d="${pathD(0, W)}" fill="none" stroke="${line}" stroke-width="4" stroke-linecap="round"/>${dots}
-    <circle cx="${x}" cy="${y}" r="58" fill="${onPhoto ? '#C8A586' : '#172B45'}" stroke="${line}" stroke-width="4"/>
-    <text x="${x}" y="${y + 19}" text-anchor="middle" font-family="Playfair Display" font-size="56" fill="${onPhoto ? '#0E1A2C' : '#FFFFFF'}">${n}</text>`);
+  const art = svg(`${bg}<defs>${metalH(mg)}</defs><path d="${pathD(0, W)}" fill="none" stroke="${line}" stroke-width="5" stroke-linecap="round"/>${dots}
+    <circle cx="${x}" cy="${y}" r="66" fill="none" stroke="${line}" stroke-width="2" opacity=".8"/>
+    <circle cx="${x}" cy="${y}" r="56" fill="#172B45" stroke="${line}" stroke-width="6"/>
+    <text x="${x}" y="${y + 19}" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="58" fill="#E7CDB4">${n}</text>
+    ${sparkle(x + 82, y - 76, 0.5)}`);
   return `<section class="slide ${onPhoto ? 'dark' : 'light'} passo">${art}
-    <p class="steptag">Passo ${n} de ${total}</p>
+    <p class="steptag"><i></i>Passo ${n} de ${total}</p>
     <div class="content"><h2>${rich(s.title)}</h2><p>${rich(s.body)}</p></div>${meta(onPhoto)}</section>`;
 }
 function chegada(s, seed) {
   const fx = 540, fy = pathY(fx);
-  const art = svg(`${glow(`cg${seed}`, '.5', '.38', 0.3)}<path d="${pathD(0, fx)}" fill="none" stroke="#E2C6A9" stroke-width="4" stroke-linecap="round"/>
-    <circle cx="${fx}" cy="${fy}" r="70" fill="none" stroke="#E2C6A9" stroke-width="3"/>${sparkle(fx, fy, 0.95)}`);
+  const mg = id('mh');
+  const art = svg(`${glow(`cg${seed}`, '.5', '.38', 0.3)}<defs>${metalH(mg)}</defs><path d="${pathD(0, fx)}" fill="none" stroke="url(#${mg})" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="${fx}" cy="${fy}" r="70" fill="none" stroke="url(#${mg})" stroke-width="4"/>${sparkle(fx, fy, 0.95)}`);
   return `<section class="slide dark chegada">${art}
     <div class="content"><p class="pkicker"><i></i>${rich(s.kicker)}</p><h1>${rich(s.title)}</h1><p class="sub">${rich(s.sub)}</p></div>${meta(true)}</section>`;
 }
@@ -246,11 +261,18 @@ ol, ul { list-style:none; }
 .trilha-capa .content { left:110px; right:110px; top:180px; }
 .trilha-capa h1 { font-family:var(--serif); font-weight:400; font-size:120px; line-height:1.0; letter-spacing:-.03em; }
 .trilha-capa ol { position:relative; margin-top:70px; }
-.trilha-capa ol::before { content:''; position:absolute; left:15px; top:42px; bottom:42px; width:2px; background:#C8A586; }
+.trilha-capa ol::before { content:''; position:absolute; left:15px; top:42px; bottom:42px; width:3px; background:linear-gradient(180deg, #F3E1CF, #B08463 30%, #EBD3BC 55%, #9E7657 80%, #E7CDB4); }
 .trilha-capa li { position:relative; display:grid; grid-template-columns:62px 80px 1fr; align-items:center; height:86px; font-size:40px; color:#E6EBF2; }
-.trilha-capa li i { width:32px; height:32px; border-radius:50%; border:3px solid #C8A586; background:#13233A; display:block; }
+.trilha-capa li i { width:34px; height:34px; border-radius:50%; background:radial-gradient(circle, #13233A 46%, transparent 49%), linear-gradient(135deg, #F3E1CF 0%, #C8A586 28%, #8F6B50 50%, #E7CDB4 72%, #A9825F 100%); display:block; }
+.trilha-capa.has-photo .content { top:500px; }
+.trilha-capa.has-photo .pkicker { margin-bottom:18px; }
+.trilha-capa.has-photo h1 { font-size:96px; }
+.trilha-capa.has-photo ol { margin-top:40px; }
+.trilha-capa.has-photo li { height:72px; font-size:38px; }
 .trilha-capa li em { font-family:var(--serif); font-size:40px; }
-.passo .steptag { position:absolute; left:110px; top:200px; font-size:30px; letter-spacing:.22em; text-transform:uppercase; font-weight:600; color:var(--gold-deep); }
+.passo .steptag { position:absolute; left:110px; top:200px; font-size:30px; letter-spacing:.22em; text-transform:uppercase; font-weight:600; color:#B08463; display:flex; align-items:center; gap:22px; }
+.passo .steptag i { width:90px; height:3px; display:block; background:linear-gradient(90deg, #F3E1CF, #B08463 45%, #E7CDB4); }
+.passo.light em { color:#B08463; }
 .passo.dark .steptag { color:#E2C6A9; }
 .passo .content { left:110px; right:110px; top:700px; }
 .passo h2 { font-family:var(--serif); font-weight:400; font-size:92px; line-height:1.03; letter-spacing:-.025em; color:var(--navy); }
@@ -275,7 +297,7 @@ function slideHTML(s, i, c, total) {
     case 'versus': return versus(s);
     case 'checklist': return checklist(s, seed);
     case 'destaque': return destaque(s, seed);
-    case 'trilha-capa': return trilhaCapa(s, seed);
+    case 'trilha-capa': return trilhaCapa(s, seed, photo);
     case 'passo': return passo(s, seed, photo, total);
     case 'chegada': return chegada(s, seed);
     default: throw new Error(`Tipo de lâmina desconhecido: ${s.type}`);
