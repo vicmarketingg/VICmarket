@@ -20,3 +20,9 @@ NODE_PATH=<pasta onde o playwright está instalado> node carrosseis/gerar.js
 ```
 
 Precisa de internet para carregar a fonte Playfair Display; sem ela, ou se algum texto não couber na lâmina, o script para e avisa em vez de gerar imagens erradas.
+
+## Fotos e imagens geradas
+
+As fotos (`carrosseis/fotos/`) e os PNGs gerados não vão para o repositório, porque contêm imagens pessoais da Lívia. Guarde as fotos localmente nessa pasta e rode o gerador para recriar as lâminas.
+
+Fotos usadas hoje: `livia-equipamentos.jpg` (capa do carrossel 1), `equipamento-ponteira.jpg` (carrossel 1, Mito 03), `livia-jaleco-ponteira.jpg` (capa do carrossel 2) e `equipamento-tela.jpg` (carrossel 3, Passo 04).

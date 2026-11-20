@@ -2,7 +2,7 @@
  * Layout editorial de colagem, na identidade da Lívia: azul-marinho, rosé, rosé-dourado, mármore,
  * Playfair Display nos títulos e Jost nos textos de apoio.
  * Uso: NODE_PATH=<pasta com playwright> node carrosseis/gerar.js
- * Opcional: carrosseis/logo.png (logotipo original) e photo: 'fotos/x.jpg' em lâminas cover/faixa.
+ * Opcional: carrosseis/logo.png (logotipo original) e photo: 'fotos/x.jpg' (cover, end e foto: foto inteira na lâmina; faixa: foto na lateral).
  * Saída: carrosseis/<slug>/01.png, 02.png… e legenda.txt */
 const fs = require('fs');
 const path = require('path');
@@ -78,10 +78,18 @@ const meta = (dark) => `<div class="meta ${dark ? 'on-dark' : ''}">
   <span>Dra. Lívia<br>Serpa</span><span>Tecnologias<br>aplicadas</span><span>Sistema<br>RCE®</span><span>${logo ? `<img src="${logo}" alt="Lívia Serpa">` : 'Educação<br>profissional'}</span></div>`;
 
 /* ---------- Layouts ---------- */
-function cover(s, seed, photo) {
-  const bg = photo
-    ? `<image href="${photo}" width="${W}" height="${H}" preserveAspectRatio="xMidYMid slice"/><rect width="${W}" height="${H}" fill="#0E1A2C" opacity=".62"/>`
-    : `<radialGradient id="cg${seed}" cx=".85" cy=".15" r=".6"><stop offset="0" stop-color="#C8A586" stop-opacity=".4"/><stop offset="1" stop-color="#C8A586" stop-opacity="0"/></radialGradient>
+function photoSlide(s, seed, photo) {
+  const art = svg(`<image href="${photo}" width="${W}" height="${H}" preserveAspectRatio="xMidYMid slice"/>
+    <linearGradient id="pg${seed}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0E1A2C" stop-opacity="0"/><stop offset=".6" stop-color="#0E1A2C" stop-opacity="0"/>
+      <stop offset=".85" stop-color="#0E1A2C" stop-opacity=".9"/><stop offset="1" stop-color="#0E1A2C" stop-opacity=".97"/></linearGradient>
+    <rect width="${W}" height="${H}" fill="url(#pg${seed})"/>`);
+  const kicker = s.kicker ? `<p class="pkicker"><i></i>${rich(s.kicker.replace(/\n/g, ' '))}</p>` : '';
+  return `<section class="slide dark photo">${art}
+    <div class="content">${kicker}<h1>${rich(s.title)}</h1>${s.sub ? `<p class="sub">${rich(s.sub)}</p>` : ''}</div>${meta(true)}</section>`;
+}
+function cover(s, seed) {
+  const bg = `<radialGradient id="cg${seed}" cx=".85" cy=".15" r=".6"><stop offset="0" stop-color="#C8A586" stop-opacity=".4"/><stop offset="1" stop-color="#C8A586" stop-opacity="0"/></radialGradient>
        <rect width="${W}" height="${H}" fill="url(#cg${seed})"/>`;
   const art = svg(`${bg}${bands()}
     <line x1="110" y1="418" x2="880" y2="418" stroke="#EBDDE3" stroke-opacity=".75" stroke-width="2"/>
@@ -183,6 +191,17 @@ em { font-style:italic; color:var(--gold-deep); }
 .faixa p { font-size:41px; line-height:1.38; font-weight:400; }
 .faixa p + p { margin-top:22px; }
 
+/* lâmina com foto inteira */
+.photo::after { opacity:.18; }
+.photo .meta { z-index:2; }
+.photo .content { left:110px; right:110px; bottom:230px; z-index:1; }
+.photo .content::before { content:''; position:absolute; z-index:-1; left:-110px; right:-110px; top:-260px; bottom:-240px;
+  background:linear-gradient(180deg, rgba(14,26,44,0) 0%, rgba(14,26,44,.78) 30%, rgba(14,26,44,.92) 70%, rgba(14,26,44,.96) 100%); }
+.pkicker { display:flex; align-items:center; gap:22px; font-size:30px; letter-spacing:.18em; text-transform:uppercase; color:#E2C6A9; margin-bottom:26px; }
+.pkicker i { width:90px; height:2px; background:#E2C6A9; display:block; flex:none; }
+.photo h1 { font-family:var(--serif); font-weight:400; font-size:112px; line-height:1.0; letter-spacing:-.03em; color:#fff; text-shadow:0 2px 24px rgba(8,14,26,.35); }
+.photo .sub { margin-top:30px; font-size:40px; line-height:1.38; font-weight:400; color:#E6EBF2; max-width:860px; }
+
 /* fechamento */
 .end .kicker { left:110px; top:356px; font-size:32px; letter-spacing:.2em; color:#E2C6A9; padding-left:210px; }
 .end .content { left:110px; right:110px; top:470px; }
@@ -194,11 +213,12 @@ function slideHTML(s, i, c) {
   const seed = c * 20 + i + 3;
   const photo = s.photo ? dataUrl(path.join(__dirname, s.photo)) : null;
   switch (s.type) {
-    case 'cover': return cover(s, seed, photo);
+    case 'cover': return photo ? photoSlide(s, seed, photo) : cover(s, seed);
     case 'card': return card(s, seed);
     case 'caps': return caps(s, seed);
     case 'faixa': return faixa(s, seed, photo);
-    case 'end': return end(s, seed);
+    case 'end': return photo ? photoSlide(s, seed, photo) : end(s, seed);
+    case 'foto': if (!photo) throw new Error('Lâmina foto precisa de photo'); return photoSlide(s, seed, photo);
     default: throw new Error(`Tipo de lâmina desconhecido: ${s.type}`);
   }
 }
