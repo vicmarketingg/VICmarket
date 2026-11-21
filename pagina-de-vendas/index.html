@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Os Segredos da Vovó — Lua do Amanhã</title>
+<meta name="description" content="Orações, banhos e rituais tradicionais que as avós usavam para acalmar, fazer dormir e proteger as crianças.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#0b0f1c; --night2:#151c33; --paper:#f8f3ea; --paper2:#efe5d3; --card:#fffdf8;
+    --ink:#17110c; --soft:#4f4033; --gold:#a8833a; --gold2:#d9bd7a; --goldtxt:#7d5f22;
+    --rose:#7d2f3a; --sage:#4f5d46; --cta:#2f7a4a; --cta2:#24603a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Lora',Georgia,serif;color:var(--ink);background:var(--paper);font-size:18px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  img{max-width:100%;height:auto;display:block}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  .narrow{max-width:720px;margin:0 auto}
+  section{padding:72px 0;position:relative}
+  .kicker{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:15px;letter-spacing:.32em;text-transform:uppercase;color:var(--goldtxt);text-align:center}
+  h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(32px,5vw,46px);line-height:1.1;text-align:center;color:var(--rose);margin:10px 0 8px}
+  .orn{display:block;margin:14px auto 34px;width:220px;height:20px;color:var(--gold)}
+  .center{text-align:center}
+  p + p{margin-top:14px}
+
+  /* botão */
+  .cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-family:'Lora',serif;font-weight:600;font-size:19px;letter-spacing:.02em;
+    color:#fff;background:linear-gradient(180deg,#3a9159,var(--cta2));padding:20px 34px;border-radius:999px;box-shadow:0 10px 24px rgba(36,96,58,.35), inset 0 1px 0 rgba(255,255,255,.25);
+    transition:transform .15s ease, box-shadow .15s ease;text-align:center;max-width:100%}
+  .cta:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(36,96,58,.42), inset 0 1px 0 rgba(255,255,255,.25)}
+  .cta svg{width:20px;height:20px;flex:none}
+  .cta-note{font-size:14px;color:var(--soft);margin-top:12px}
+  .dark .cta-note{color:#cfc0a0}
+
+  /* HERO */
+  .hero{background:
+      radial-gradient(circle at 72% 38%, rgba(233,211,154,.16), transparent 34%),
+      radial-gradient(ellipse at 50% 120%, rgba(125,47,58,.35), transparent 55%),
+      linear-gradient(180deg,var(--night) 0%,var(--night2) 70%,#1d1a2c 100%);
+    color:#f6ead2;padding:28px 0 84px;overflow:hidden}
+  .stars{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .brandbar{display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Cormorant Garamond',serif;font-weight:600;letter-spacing:.5em;font-size:14px;color:var(--gold2);position:relative}
+  .brandbar svg{width:26px;height:26px}
+  .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;margin-top:44px;position:relative}
+  .hero .pre{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:var(--gold2)}
+  .hero h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(46px,7.5vw,78px);line-height:.98;letter-spacing:.04em;color:#ecd59b;margin:6px 0 18px;text-shadow:0 0 30px rgba(233,211,154,.2)}
+  .hero h1 small{display:block;font-family:'Pinyon Script',cursive;font-size:.42em;letter-spacing:0;color:var(--gold2);font-weight:400;margin-bottom:-4px}
+  .hero .promise{font-size:21px;line-height:1.55;color:#fbf1dc}
+  .hero .promise b{color:#ecd59b;font-weight:600}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 28px}
+  .chips span{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold2);border:1px solid rgba(217,189,122,.45);padding:5px 13px;border-radius:999px;background:rgba(217,189,122,.06)}
+  .trust{display:flex;flex-wrap:wrap;gap:18px;margin-top:18px;font-size:14px;color:#d8c9a8}
+  .trust span{display:flex;align-items:center;gap:6px}
+  .trust svg{width:16px;height:16px;color:var(--gold2)}
+
+  /* mockup livro */
+  .book{position:relative;perspective:1400px;width:min(330px,78vw);margin:0 auto}
+  .book .glow{position:absolute;inset:-18% -22%;background:radial-gradient(circle,rgba(233,211,154,.28),transparent 62%);filter:blur(6px)}
+  .book .b3d{position:relative;transform:rotateY(-22deg) rotateX(4deg);transform-style:preserve-3d;transition:transform .6s ease}
+  .book:hover .b3d{transform:rotateY(-10deg) rotateX(2deg)}
+  .book img{border-radius:2px 6px 6px 2px;box-shadow:24px 30px 50px rgba(0,0,0,.55), 0 0 0 1px rgba(217,189,122,.25)}
+  .book .spine{position:absolute;top:0;bottom:0;left:0;width:16px;background:linear-gradient(90deg,rgba(0,0,0,.45),rgba(255,255,255,.08) 60%,rgba(0,0,0,.2));border-radius:2px 0 0 2px}
+  .book .pages{position:absolute;top:6px;bottom:6px;right:-12px;width:14px;background:repeating-linear-gradient(90deg,#efe5d3 0 1px,#d9ccb2 1px 2px);transform:rotateY(70deg);transform-origin:left;border-radius:0 3px 3px 0}
+  .seal{position:absolute;right:-14px;top:-14px;width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f3e2b0,#c9a253 55%,#8f6d2c);color:#2a1d0c;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:13px;line-height:1.05;letter-spacing:.06em;box-shadow:0 8px 20px rgba(0,0,0,.4);transform:rotate(12deg)}
+  .seal b{font-size:17px;letter-spacing:.02em;margin:2px 0}
+
+  /* papel */
+  .paper{background:
+      radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.8), transparent 60%),
+      radial-gradient(ellipse at 0% 100%, rgba(217,189,122,.16), transparent 45%),
+      var(--paper)}
+  .paper2{background:linear-gradient(180deg,var(--paper2),var(--paper))}
+
+  /* dor */
+  .pain{font-size:20px}
+  .pain .big{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:clamp(26px,3.6vw,32px);line-height:1.3;color:var(--rose);text-align:center;margin:30px 0 6px}
+
+  /* diálogo interno */
+  .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:6px}
+  .quote{background:var(--card);border:1px solid rgba(168,131,58,.35);border-radius:4px;padding:22px 20px 18px;position:relative;box-shadow:0 6px 18px rgba(90,60,20,.06);
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:21px;line-height:1.35;color:var(--ink)}
+  .quote::before{content:"“";position:absolute;top:-14px;left:14px;font-size:58px;line-height:1;color:var(--gold);font-style:normal}
+  .after-quotes{text-align:center;font-size:20px;margin-top:34px}
+  .after-quotes b{color:var(--rose)}
+
+  /* passos */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .step{text-align:center;padding:30px 22px 26px;background:var(--card);border:1px solid rgba(168,131,58,.35);border-radius:4px;position:relative}
+  .step .n{width:58px;height:58px;margin:-60px auto 14px;border-radius:50%;background:var(--night);color:var(--gold2);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:28px;border:2px solid var(--gold2);box-shadow:0 6px 16px rgba(11,15,28,.3)}
+  .step h3{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:24px;line-height:1.15;margin-bottom:8px}
+  .step p{font-size:16.5px;color:var(--soft)}
+  .steps-wrap{margin-top:36px}
+
+  /* por dentro */
+  .inside{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start}
+  .inside figure{background:#fff;padding:8px;box-shadow:0 14px 34px rgba(60,40,10,.16);border-radius:3px}
+  .inside figure:nth-child(1){transform:rotate(-2deg)}
+  .inside figure:nth-child(3){transform:rotate(2deg)}
+  .inside figcaption{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:17px;text-align:center;color:var(--soft);padding-top:8px}
+
+  /* entregáveis */
+  .deliver{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .item{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1px solid rgba(168,131,58,.3);border-radius:4px;padding:18px 18px}
+  .item .ico{flex:none;width:44px;height:44px;border-radius:50%;background:rgba(168,131,58,.12);color:var(--goldtxt);display:flex;align-items:center;justify-content:center;font-size:22px}
+  .item h4{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:22px;line-height:1.15;margin-bottom:3px}
+  .item p{font-size:16px;color:var(--soft)}
+  .bonus-title{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:28px;text-align:center;color:var(--rose);margin:44px 0 18px}
+  .bonus{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .bonus .item{border:1.5px dashed var(--gold);background:linear-gradient(180deg,#fffaf0,var(--card))}
+  .tag{display:inline-block;font-family:'Lora',serif;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--rose);padding:2px 9px;border-radius:999px;margin-bottom:6px}
+
+  /* para quem */
+  .forwho{list-style:none;display:grid;gap:12px}
+  .forwho li{display:flex;gap:14px;align-items:flex-start;font-size:19px;background:var(--card);border-left:3px solid var(--gold);padding:14px 18px;border-radius:0 4px 4px 0}
+  .forwho li svg{flex:none;width:24px;height:24px;color:var(--cta);margin-top:3px}
+  .forwho-end{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:24px;color:var(--rose);margin-top:26px}
+
+  /* oferta */
+  .offer{background:
+      radial-gradient(circle at 50% 0%, rgba(233,211,154,.18), transparent 50%),
+      linear-gradient(180deg,var(--night) 0%,var(--night2) 100%);color:#f6ead2}
+  .offer h2{color:#ecd59b}
+  .offer .kicker{color:var(--gold2)}
+  .ticket{max-width:560px;margin:0 auto;background:var(--paper);color:var(--ink);border-radius:6px;padding:34px 30px 30px;position:relative;box-shadow:0 30px 70px rgba(0,0,0,.45);outline:1px solid var(--gold);outline-offset:-10px}
+  .ticket .book{width:170px;margin:-150px auto 22px}
+  .ticket .book .seal{display:none}
+  .anchor{list-style:none;margin:6px 0 18px}
+  .anchor li{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px dotted rgba(168,131,58,.6);font-size:17px}
+  .anchor li span:last-child{white-space:nowrap;color:var(--soft)}
+  .total{display:flex;justify-content:space-between;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:22px;margin-top:6px}
+  .total s{color:var(--rose)}
+  .price{text-align:center;margin:24px 0 6px}
+  .price .from{font-size:16px;color:var(--soft)}
+  .price .today{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:22px;color:var(--goldtxt);letter-spacing:.06em;text-transform:uppercase;margin-top:6px}
+  .price .val{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:76px;line-height:1;color:var(--cta2)}
+  .price .val sup{font-size:.4em;vertical-align:.95em;margin-right:4px}
+  .price .inst{font-size:16px;color:var(--soft);margin-top:4px}
+  .ticket .cta{width:100%;margin-top:18px}
+  .pay{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:13px;color:var(--soft)}
+  .pay span{display:flex;align-items:center;gap:5px}
+  .pay svg{width:15px;height:15px;color:var(--sage)}
+  .guarantee{display:flex;gap:18px;align-items:center;max-width:560px;margin:34px auto 0;color:#eadcbc;font-size:16px}
+  .guarantee .g{flex:none;width:84px;height:84px;border-radius:50%;border:2px solid var(--gold2);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--gold2);line-height:1}
+  .guarantee .g b{font-size:32px}
+  .guarantee h4{font-family:'Cormorant Garamond',serif;font-size:22px;color:#ecd59b;margin-bottom:2px}
+
+  /* conversa séria */
+  .serious{font-size:19.5px}
+  .serious .q{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(26px,3.4vw,32px);line-height:1.3;text-align:center;color:var(--ink);margin-bottom:22px}
+  .serious .q em{color:var(--rose)}
+  .letter{background:var(--card);border:1px solid rgba(168,131,58,.35);padding:34px 32px;border-radius:4px;box-shadow:0 10px 30px rgba(90,60,20,.07)}
+  .sign{font-family:'Pinyon Script',cursive;font-size:36px;color:var(--rose);text-align:right;margin-top:16px}
+
+  /* autoridade */
+  .about{display:grid;grid-template-columns:200px 1fr;gap:36px;align-items:center}
+  .about .moonbadge{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 50% 40%,var(--night2),var(--night));display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px var(--paper),0 0 0 7px var(--gold),0 18px 40px rgba(11,15,28,.3)}
+  .about .moonbadge svg{width:120px;height:120px;color:var(--gold2)}
+  .about h3{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:30px;color:var(--rose);margin-bottom:8px}
+
+  /* faq */
+  details{background:var(--card);border:1px solid rgba(168,131,58,.3);border-radius:4px;margin-bottom:12px}
+  summary{cursor:pointer;list-style:none;padding:18px 54px 18px 20px;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:21px;position:relative}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";position:absolute;right:20px;top:50%;transform:translateY(-50%);font-family:'Lora',serif;font-size:24px;color:var(--gold)}
+  details[open] summary::after{content:"–"}
+  details p{padding:0 20px 18px;font-size:16.5px;color:var(--soft)}
+
+  footer{background:var(--night);color:#bfae8d;font-size:14px;padding:40px 0 110px;text-align:center}
+  footer .disc{max-width:680px;margin:14px auto 0;font-size:13px;line-height:1.6;color:#9f9178}
+  footer .brandbar{margin-bottom:6px}
+
+  /* barra fixa mobile */
+  .sticky{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(11,15,28,.96);backdrop-filter:blur(6px);padding:10px 16px;display:none;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid rgba(217,189,122,.35);transform:translateY(110%);transition:transform .3s ease}
+  .sticky.show{transform:none}
+  .sticky .sp{color:#f6ead2;font-size:13px;line-height:1.2}
+  .sticky .sp b{display:block;font-family:'Cormorant Garamond',serif;font-size:24px;color:#ecd59b}
+  .sticky .cta{padding:13px 20px;font-size:16px}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (max-width:860px){
+    body{font-size:17px}
+    section{padding:56px 0}
+    .hero-grid{grid-template-columns:1fr;gap:30px;margin-top:30px;text-align:center}
+    .hero-grid .book{order:-1;width:min(250px,64vw)}
+    .chips,.trust{justify-content:center}
+    .quotes,.steps,.inside{grid-template-columns:1fr}
+    .steps{gap:44px}
+    .inside figure{transform:none!important;max-width:340px;margin:0 auto}
+    .deliver,.bonus{grid-template-columns:1fr}
+    .about{grid-template-columns:1fr;text-align:center}
+    .about .moonbadge{margin:0 auto;width:150px;height:150px}
+    .about .moonbadge svg{width:90px;height:90px}
+    .seal{width:80px;height:80px;font-size:11px;right:-8px}
+    .seal b{font-size:14px}
+    .ticket{padding:30px 20px 24px}
+    .letter{padding:26px 20px}
+    .sticky{display:flex}
+    .guarantee{flex-direction:column;text-align:center}
+  }
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3e2b0"/><stop offset=".45" stop-color="#c9a253"/><stop offset=".7" stop-color="#ecd8a0"/><stop offset="1" stop-color="#9c7a34"/></linearGradient>
+    <symbol id="moon" viewBox="0 0 100 100"><circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="1" opacity=".55"/><path d="M60 18 A33 33 0 1 0 60 82 A26 26 0 1 1 60 18 Z" fill="url(#gf)"/><path d="M74 34 l1.4 3.4 3.4 1.4 -3.4 1.4 -1.4 3.4 -1.4 -3.4 -3.4 -1.4 3.4 -1.4z" fill="url(#gf)"/><path d="M80 56 l.9 2.1 2.1 .9 -2.1 .9 -.9 2.1 -.9 -2.1 -2.1 -.9 2.1 -.9z" fill="url(#gf)"/></symbol>
+    <symbol id="phases" viewBox="0 0 220 20"><g stroke="currentColor" fill="none" stroke-width=".9"><path d="M0 10 H62 M158 10 H220"/><circle cx="72" cy="10" r="4"/><circle cx="91" cy="10" r="5"/><path d="M91 5 A5 5 0 0 1 91 15 A3 5 0 0 0 91 5Z" fill="currentColor"/><circle cx="110" cy="10" r="6.5" fill="currentColor"/><circle cx="129" cy="10" r="5"/><path d="M129 5 A5 5 0 0 0 129 15 A3 5 0 0 1 129 5Z" fill="currentColor"/><circle cx="148" cy="10" r="4"/></g></symbol>
+    <symbol id="check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor" opacity=".14"/><path d="M7 12.5l3.2 3.2L17.5 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 10V7a4 4 0 018 0v3" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z" fill="currentColor"/></symbol>
+    <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<!-- BLOCO 01 — VENDER SOZINHO -->
+<header class="hero">
+  <svg class="stars" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="#f6e2b0" id="starfield"></g></svg>
+  <div class="wrap">
+    <div class="brandbar"><svg><use href="#moon"/></svg>LUA DO AMANHÃ</div>
+    <div class="hero-grid">
+      <div>
+        <div class="pre">Sabedoria que passa de avó para neta</div>
+        <h1><small>os</small>Segredos da Vovó</h1>
+        <p class="promise">As <b>orações, banhos e rituais</b> que as avós usavam para <b>acalmar, fazer dormir e proteger as crianças</b>, reunidos em um caderno que você começa a usar <b>hoje à noite</b>.</p>
+        <div class="chips"><span>Sono</span><span>Calma</span><span>Proteção</span><span>Primeiros passos</span><span>Estudos</span></div>
+        <a class="cta js-checkout" href="#oferta">Quero o caderno da vovó <svg><use href="#arrow"/></svg></a>
+        <div class="trust">
+          <span><svg><use href="#bolt"/></svg>Acesso imediato</span>
+          <span><svg><use href="#lock"/></svg>Compra segura</span>
+          <span><svg><use href="#check"/></svg>Garantia de 7 dias</span>
+        </div>
+      </div>
+      <div class="book">
+        <div class="glow"></div>
+        <div class="b3d"><img src="img/capa.jpg" alt="Capa do e-book Os Segredos da Vovó" width="620" height="874"><div class="spine"></div><div class="pages"></div></div>
+        <div class="seal"><span>EDIÇÃO</span><b>EXCLUSIVA</b><span>DIGITAL</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- BLOCO 03 — DOR LATENTE -->
+<section class="paper">
+  <div class="wrap narrow pain reveal">
+    <div class="kicker">Talvez você esteja vivendo isso</div>
+    <h2>A noite chega e o coração aperta</h2>
+    <svg class="orn"><use href="#phases"/></svg>
+    <p>O bebê não dorme. Chora sem motivo aparente. Troca o dia pela noite. Fica irritado depois de uma visita, e você sente que tem alguma coisa “pesando” sobre ele.</p>
+    <p>Você já balançou, cantou, mudou a rotina, pesquisou na internet de madrugada… e mesmo assim fica aquela sensação de que <b>falta alguma coisa</b>.</p>
+    <p class="big">Antigamente, a vó sabia o que fazer.<br>Uma reza baixinho, um banho de erva, um raminho no lugar certo.</p>
+    <p class="center">O problema é que quase ninguém anotou. E essa sabedoria está se perdendo.</p>
+  </div>
+</section>
+
+<!-- BLOCO 04 — DIÁLOGO INTERNO -->
+<section class="paper2">
+  <div class="wrap">
+    <div class="kicker reveal">Frases que passam pela sua cabeça</div>
+    <h2 class="reveal">Se você já pensou alguma dessas…</h2>
+    <svg class="orn"><use href="#phases"/></svg>
+    <div class="quotes">
+      <div class="quote reveal">Será que botaram olho grande no meu bebê?</div>
+      <div class="quote reveal">Ele chora, chora, e eu não sei mais o que fazer.</div>
+      <div class="quote reveal">Tô um caco. Ele troca o dia pela noite e eu não durmo há semanas.</div>
+      <div class="quote reveal">Minha vó resolvia isso com uma reza. Por que eu nunca perguntei como era?</div>
+      <div class="quote reveal">Depois que fulana pegou ele no colo, ficou todo agitado.</div>
+      <div class="quote reveal">Eu só queria proteger meu filho de tudo de ruim.</div>
+    </div>
+    <p class="after-quotes reveal">…então você vai entender por que <b>este caderno foi feito para você</b>.</p>
+  </div>
+</section>
+
+<!-- BLOCO 05 — PASSO A PASSO -->
+<section class="paper">
+  <div class="wrap">
+    <div class="kicker reveal">Simples como era na casa da vó</div>
+    <h2 class="reveal">Em 3 passos, ainda hoje</h2>
+    <svg class="orn"><use href="#phases"/></svg>
+    <div class="steps steps-wrap">
+      <div class="step reveal"><div class="n">1</div><h3>Escolha o que seu filho precisa</h3><p>Sono, calma, choro, proteção, primeiros passos ou estudos. Cada capítulo vai direto ao ponto.</p></div>
+      <div class="step reveal"><div class="n">2</div><h3>Separe ingredientes simples</h3><p>Camomila, erva-doce, erva-cidreira, alecrim… coisas que você encontra na feira ou no mercado.</p></div>
+      <div class="step reveal"><div class="n">3</div><h3>Faça com carinho e fé</h3><p>A oração vem escrita, palavra por palavra. É só seguir, do jeito que a vovó fazia.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- POR DENTRO -->
+<section class="paper2">
+  <div class="wrap">
+    <div class="kicker reveal">Espie por dentro</div>
+    <h2 class="reveal">Um caderno feito para guardar</h2>
+    <svg class="orn"><use href="#phases"/></svg>
+    <div class="inside">
+      <figure class="reveal"><img src="img/miolo-calma.jpg" alt="Página do capítulo Para trazer calma e afastar o quebranto" loading="lazy" width="874" height="1240"><figcaption>Banho para acalmar</figcaption></figure>
+      <figure class="reveal"><img src="img/miolo-oracao.jpg" alt="Página com a oração tradicional contra o quebranto" loading="lazy" width="874" height="1240"><figcaption>Oração contra o quebranto</figcaption></figure>
+      <figure class="reveal"><img src="img/miolo-protecao.jpg" alt="Página do capítulo Para proteger a criança" loading="lazy" width="874" height="1240"><figcaption>Proteção da criança</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCO 06 — O QUE VAI RECEBER + BÔNUS -->
+<section class="paper">
+  <div class="wrap">
+    <div class="kicker reveal">Tudo o que você recebe</div>
+    <h2 class="reveal">6 capítulos de sabedoria ancestral</h2>
+    <svg class="orn"><use href="#phases"/></svg>
+    <div class="deliver">
+      <div class="item reveal"><div class="ico">❀</div><div><h4>Calma e quebranto</h4><p>O banho de São Cosme e São Damião e a oração tradicional contra o quebranto.</p></div></div>
+      <div class="item reveal"><div class="ico">☾</div><div><h4>Sono tranquilo</h4><p>O ritual do Anjo da Guarda para o recém-nascido e o segredo para quem troca o dia pela noite.</p></div></div>
+      <div class="item reveal"><div class="ico">❀</div><div><h4>Choro e inquietação</h4><p>A folha de saião no vidro e os três galhinhos de erva-cidreira da quarta-feira.</p></div></div>
+      <div class="item reveal"><div class="ico">✦</div><div><h4>Proteção</h4><p>A oração ao Santo Anjo e o vaso de arruda e alecrim na entrada da casa.</p></div></div>
+      <div class="item reveal"><div class="ico">❦</div><div><h4>Primeiros passos e palavras</h4><p>Os três passinhos da sexta-feira e o pedido a São Brás pela voz da criança.</p></div></div>
+      <div class="item reveal"><div class="ico">✎</div><div><h4>Estudos e memória</h4><p>O raminho de alecrim no material escolar e a oração a Santo Tomás de Aquino.</p></div></div>
+    </div>
+    <div class="bonus-title reveal">E ainda leva de presente</div>
+    <div class="bonus">
+      <div class="item reveal"><div class="ico">♪</div><div><span class="tag">Bônus 1</span><h4>As orações em áudio</h4><p>Todas as orações do caderno gravadas com voz calma, para rezar junto ou deixar tocando na hora de dormir.</p></div></div>
+      <div class="item reveal"><div class="ico">☽</div><div><span class="tag">Bônus 2</span><h4>Calendário dos rituais</h4><p>Uma folha para imprimir e colar na geladeira: qual ritual fazer em cada dia da semana e em cada fase da lua.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCO 07 — PARA QUEM SERVE -->
+<section class="paper2">
+  <div class="wrap narrow">
+    <div class="kicker reveal">É para você se…</div>
+    <h2 class="reveal">Este caderno é para você</h2>
+    <svg class="orn"><use href="#phases"/></svg>
+    <ul class="forwho">
+      <li class="reveal"><svg><use href="#check"/></svg>Você é mãe, avó, tia ou madrinha e quer proteger uma criança que ama.</li>
+      <li class="reveal"><svg><use href="#check"/></svg>Seu bebê chora muito, dorme mal ou fica agitado sem motivo aparente.</li>
+      <li class="reveal"><svg><use href="#check"/></svg>Você acredita na força da oração e das tradições de família.</li>
+      <li class="reveal"><svg><use href="#check"/></svg>Você sente saudade de como a sua avó cuidava de todo mundo.</li>
+      <li class="reveal"><svg><use href="#check"/></svg>Você quer deixar esse legado guardado para os seus filhos e netos.</li>
+    </ul>
+    <p class="forwho-end reveal">Se você se viu em pelo menos dois itens,<br>Os Segredos da Vovó foram escritos para você.</p>
+  </div>
+</section>
+
+<!-- BLOCOS 08 + 09 — ANCORAGEM E PREÇO -->
+<section class="offer" id="oferta">
+  <div class="wrap">
+    <div class="kicker">Oferta especial</div>
+    <h2>Leve tudo hoje</h2>
+    <svg class="orn" style="color:var(--gold2);margin-bottom:150px"><use href="#phases"/></svg>
+    <div class="ticket">
+      <div class="book"><div class="b3d"><img src="img/capa.jpg" alt="" width="620" height="874"><div class="spine"></div></div></div>
+      <ul class="anchor">
+        <li><span>Caderno Os Segredos da Vovó (6 capítulos)</span><span>R$ 97,00</span></li>
+        <li><span>Bônus 1 · As orações em áudio</span><span>R$ 47,00</span></li>
+        <li><span>Bônus 2 · Calendário dos rituais</span><span>R$ 27,00</span></li>
+      </ul>
+      <div class="total"><span>Valor total</span><s>R$ 171,00</s></div>
+      <div class="price">
+        <div class="from">De <s>R$ 171,00</s> por apenas</div>
+        <div class="today">Hoje</div>
+        <div class="val"><sup>R$</sup>67</div>
+        <div class="inst">ou em até 9x no cartão</div>
+      </div>
+      <a class="cta js-checkout" href="#">Sim, quero os Segredos da Vovó <svg><use href="#arrow"/></svg></a>
+      <div class="pay">
+        <span><svg><use href="#check"/></svg>Pix</span>
+        <span><svg><use href="#check"/></svg>Cartão de crédito</span>
+        <span><svg><use href="#bolt"/></svg>Acesso imediato</span>
+        <span><svg><use href="#lock"/></svg>Pagamento seguro</span>
+      </div>
+    </div>
+    <div class="guarantee">
+      <div class="g"><b>7</b>DIAS</div>
+      <div><h4>Garantia incondicional de 7 dias</h4>Leia o caderno com calma. Se não for o que você esperava, é só pedir o reembolso dentro de 7 dias e devolvemos 100% do valor.</div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCO 10 — CONVERSA SÉRIA -->
+<section class="paper">
+  <div class="wrap narrow serious">
+    <div class="kicker reveal">Uma conversa sincera</div>
+    <h2 class="reveal">Me responda com o coração</h2>
+    <svg class="orn"><use href="#phases"/></svg>
+    <div class="letter reveal">
+      <p class="q">Quantas noites mais você vai passar <em>em claro</em>, sem saber o que fazer?</p>
+      <p>Você pode continuar pesquisando de madrugada, testando uma coisa aqui e outra ali, se perguntando como a sua avó fazia.</p>
+      <p>Ou pode ter, ainda hoje, o caderno que reúne o que ela sabia: as palavras certas, as ervas certas, o jeito certo, tudo escrito com carinho para você fazer em casa.</p>
+      <p>Custa menos que uma pizza no fim de semana. E é uma sabedoria que fica na sua família para sempre.</p>
+      <p class="sign">com carinho, Lua do Amanhã</p>
+    </div>
+    <div class="center" style="margin-top:34px"><a class="cta js-checkout" href="#oferta">Quero cuidar do meu filho assim <svg><use href="#arrow"/></svg></a></div>
+  </div>
+</section>
+
+<!-- BLOCO 11 — AUTORIDADE -->
+<section class="paper2">
+  <div class="wrap narrow">
+    <div class="about reveal">
+      <div class="moonbadge"><svg><use href="#moon"/></svg></div>
+      <div>
+        <div class="kicker" style="text-align:left">Quem preparou este caderno</div>
+        <h3>Lua do Amanhã</h3>
+        <p>A Lua do Amanhã nasceu para guardar o que as avós ensinavam e que, aos poucos, estava sendo esquecido. Reunimos orações, banhos e rituais da tradição popular brasileira, contados de boca em boca dentro de casa.</p>
+        <p>Cada prática foi organizada com cuidado e respeito, com avisos de segurança pensados para bebês e crianças pequenas, para que você possa viver essa tradição com tranquilidade.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="paper">
+  <div class="wrap narrow">
+    <div class="kicker reveal">Dúvidas frequentes</div>
+    <h2 class="reveal">Perguntas e respostas</h2>
+    <svg class="orn"><use href="#phases"/></svg>
+    <details class="reveal"><summary>Como vou receber o caderno?</summary><p>Logo após a confirmação do pagamento, você recebe o acesso no seu e-mail. Com Pix ou cartão, a liberação é imediata.</p></details>
+    <details class="reveal"><summary>Preciso de ingredientes difíceis de achar?</summary><p>Não. São ervas e itens simples, como camomila, erva-doce, erva-cidreira, alecrim, alface e açúcar, encontrados em feiras, mercados e lojas de produtos naturais.</p></details>
+    <details class="reveal"><summary>As práticas são seguras para bebês?</summary><p>Os banhos são de uso apenas externo e o caderno traz avisos de segurança em cada ritual, como manter copos, ervas e objetos fora do berço e do alcance da criança.</p></details>
+    <details class="reveal"><summary>Isso substitui o pediatra?</summary><p>Não. O caderno preserva práticas espirituais e da tradição popular. Ele caminha junto com o cuidado médico, nunca no lugar dele. Se a criança estiver doente, procure o pediatra.</p></details>
+    <details class="reveal"><summary>Funciona no celular?</summary><p>Sim. Você pode ler no celular, no tablet ou no computador, e também imprimir para guardar.</p></details>
+    <details class="reveal"><summary>E se eu não gostar?</summary><p>Você tem 7 dias de garantia. Se não for para você, é só pedir o reembolso e devolvemos 100% do valor.</p></details>
+    <div class="center" style="margin-top:34px"><a class="cta js-checkout" href="#oferta">Quero o caderno da vovó <svg><use href="#arrow"/></svg></a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brandbar"><svg><use href="#moon"/></svg>LUA DO AMANHÃ</div>
+    <div>© <span id="yr">2026</span> Lua do Amanhã · Todos os direitos reservados</div>
+    <p class="disc">Este produto preserva práticas espirituais e da tradição popular e não substitui acompanhamento médico, pediátrico, psicológico ou qualquer outro cuidado profissional. Os resultados podem variar de pessoa para pessoa.</p>
+  </div>
+</footer>
+
+<div class="sticky" id="sticky">
+  <div class="sp">Os Segredos da Vovó<b>R$ 67</b></div>
+  <a class="cta js-checkout" href="#oferta">Quero agora</a>
+</div>
+
+<script>
+  // >>> Cole aqui o link do checkout (Hotmart, Kiwify, Eduzz...) <<<
+  const CHECKOUT_URL = "";
+
+  if (CHECKOUT_URL) document.querySelectorAll('.js-checkout').forEach(a => a.href = CHECKOUT_URL);
+  else document.querySelectorAll('.js-checkout').forEach(a => { if (a.getAttribute('href') === '#') a.href = '#oferta'; });
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // estrelas do topo
+  const g = document.getElementById('starfield');
+  let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  for (let i = 0; i < 90; i++) {
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('cx', (rnd() * 400).toFixed(1)); c.setAttribute('cy', (rnd() * 300).toFixed(1));
+    c.setAttribute('r', (0.3 + rnd() * 0.9).toFixed(2)); c.setAttribute('opacity', (0.3 + rnd() * 0.7).toFixed(2));
+    g.appendChild(c);
+  }
+
+  // animação de entrada
+  const els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+    els.forEach(el => io.observe(el));
+  } else els.forEach(el => el.classList.add('in'));
+
+  // barra fixa no celular depois do topo
+  const sticky = document.getElementById('sticky'), hero = document.querySelector('.hero'), offer = document.getElementById('oferta');
+  const onScroll = () => {
+    const pastHero = hero.getBoundingClientRect().bottom < 0;
+    const r = offer.getBoundingClientRect(); const inOffer = r.top < innerHeight && r.bottom > 0;
+    sticky.classList.toggle('show', pastHero && !inOffer);
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+</script>
+</body>
+</html>
