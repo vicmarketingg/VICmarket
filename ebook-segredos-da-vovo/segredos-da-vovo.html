@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Segredos da Vovó — Estrela do Amanhã</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+  @page { size: 148mm 210mm; margin: 0; }
+  :root{
+    --paper:#f7efe0; --paper2:#efe2c8; --ink:#3b2a1e; --soft:#6d5643;
+    --gold:#b08a3e; --gold2:#d4b26a; --rose:#9c4a3c; --sage:#5f6f4e;
+    --night:#1f2a44; --night2:#2e3b5c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#ccc}
+  body{font-family:'Lora',Georgia,serif;color:var(--ink);font-size:10.2pt;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{width:148mm;height:210mm;position:relative;overflow:hidden;page-break-after:always;break-after:page;
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(255,255,255,.55), transparent 55%),
+      radial-gradient(ellipse at 90% 95%, rgba(176,138,62,.14), transparent 50%),
+      var(--paper);
+    padding:17mm 15mm 18mm;}
+  .page:last-child{page-break-after:auto;break-after:auto}
+  .frame{position:absolute;inset:7mm;border:0.6pt solid var(--gold);pointer-events:none}
+  .frame::after{content:"";position:absolute;inset:1.6mm;border:0.3pt solid rgba(176,138,62,.55)}
+  .corner{position:absolute;width:11mm;height:11mm;color:var(--gold)}
+  .corner.tl{top:5.2mm;left:5.2mm}.corner.tr{top:5.2mm;right:5.2mm;transform:scaleX(-1)}
+  .corner.bl{bottom:5.2mm;left:5.2mm;transform:scaleY(-1)}.corner.br{bottom:5.2mm;right:5.2mm;transform:scale(-1,-1)}
+  .folio{position:absolute;bottom:10.5mm;left:0;right:0;text-align:center;font-family:'Cormorant Garamond',serif;font-size:9pt;color:var(--soft);letter-spacing:.18em}
+  .folio b{color:var(--gold);font-weight:600;margin:0 .6em}
+
+  .kicker{font-family:'Cormorant Garamond',serif;font-size:8.5pt;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);text-align:center}
+  h1.chap{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:21pt;line-height:1.1;text-align:center;color:var(--rose);margin:2mm 0 1mm}
+  .orn{display:block;margin:2.5mm auto 4mm;width:46mm;height:5mm;color:var(--gold)}
+  h2{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:14pt;color:var(--ink);margin:4mm 0 1.6mm;line-height:1.15}
+  h2 .ico{color:var(--gold);font-weight:400;margin-right:1.5mm}
+  h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:10.5pt;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);margin:2.6mm 0 1mm}
+  p{margin:0 0 1.8mm;text-align:justify;hyphens:auto}
+  ul.need{list-style:none;margin:0 0 2mm;columns:1}
+  ul.need li{padding-left:4.5mm;position:relative;margin-bottom:.6mm}
+  ul.need li::before{content:"❧";position:absolute;left:0;color:var(--gold);font-size:9pt;top:-.2mm}
+  ol.steps{margin:0 0 2mm 4.5mm}
+  ol.steps li{margin-bottom:.8mm;padding-left:1mm}
+  ol.steps li::marker{color:var(--gold);font-family:'Cormorant Garamond',serif;font-weight:700}
+
+  .prayer{margin:2.5mm 4mm 3mm;padding:3.5mm 4mm 3mm;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12pt;line-height:1.38;color:var(--ink);
+    background:rgba(255,255,255,.45);border-top:0.6pt solid var(--gold2);border-bottom:0.6pt solid var(--gold2);position:relative}
+  .prayer::before{content:"✦";position:absolute;top:-2.4mm;left:50%;transform:translateX(-50%);background:var(--paper);padding:0 1.5mm;color:var(--gold);font-style:normal;font-size:8pt}
+  .say{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:11.5pt;color:var(--rose);text-align:center;margin:1.5mm 3mm 2.5mm;line-height:1.35}
+  .note{margin:2.5mm 0;padding:2.6mm 3.2mm;border-left:2pt solid var(--sage);background:rgba(95,111,78,.09);font-size:8.8pt;line-height:1.45}
+  .note b{color:var(--sage);letter-spacing:.06em}
+  .note.warm{border-color:var(--rose);background:rgba(156,74,60,.07)}
+  .note.warm b{color:var(--rose)}
+  .lead{font-size:10.6pt}
+  .dropcap::first-letter{font-family:'Cormorant Garamond',serif;float:left;font-size:34pt;line-height:.85;padding:1mm 1.6mm 0 0;color:var(--rose);font-weight:600}
+  .center{text-align:center}
+  .tight p{margin-bottom:1.3mm}
+  .tight{font-size:9.7pt;line-height:1.5;padding-top:15mm}
+  .tight .orn{margin:1.5mm auto 2.5mm}
+  .tight .prayer{font-size:11.2pt;line-height:1.3;padding:3mm 4mm 2.5mm}
+  .tight h2{margin-top:3mm}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
+
+  /* CAPA */
+  .cover{background:
+      radial-gradient(circle at 50% 30%, rgba(212,178,106,.28), transparent 45%),
+      radial-gradient(ellipse at 50% 120%, rgba(156,74,60,.35), transparent 60%),
+      linear-gradient(180deg,var(--night) 0%, var(--night2) 62%, #4a3a48 100%);
+    color:#f6ead2;padding:0;text-align:center}
+  .cover .frame{border-color:var(--gold2)} .cover .frame::after{border-color:rgba(212,178,106,.5)}
+  .cover .corner{color:var(--gold2)}
+  .stars{position:absolute;inset:0}
+  .cover-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:20mm 14mm 16mm}
+  .brand{font-family:'Cormorant Garamond',serif;font-size:9pt;letter-spacing:.5em;color:var(--gold2);margin-top:2mm}
+  .bigstar{width:30mm;height:30mm;margin:9mm auto 3mm;color:var(--gold2);filter:drop-shadow(0 0 6px rgba(212,178,106,.6))}
+  .cover h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:40pt;letter-spacing:.06em;line-height:.95;color:#fbf1dc}
+  .cover h1 small{display:block;font-family:'Pinyon Script',cursive;font-weight:400;font-size:22pt;letter-spacing:0;color:var(--gold2);margin-bottom:-1mm}
+  .cover .sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13.5pt;line-height:1.3;margin:6mm 4mm 3mm;color:#f1e3c6}
+  .cover .tag{font-size:8.8pt;color:#d9c9a8;font-style:italic}
+  .cover .pillars{margin-top:auto;font-family:'Cormorant Garamond',serif;font-size:10pt;letter-spacing:.16em;color:var(--gold2);text-transform:uppercase}
+  .cover .ed{margin-top:3mm;font-size:7.5pt;letter-spacing:.35em;color:#bfae8d}
+  .rule{width:38mm;height:.6pt;background:linear-gradient(90deg,transparent,var(--gold2),transparent);margin:3mm auto}
+
+  /* ÍNDICE */
+  .toc{list-style:none;margin:4mm 2mm}
+  .toc li{display:flex;align-items:baseline;font-family:'Cormorant Garamond',serif;font-size:12.5pt;margin-bottom:2.4mm}
+  .toc li span.t{flex:none}
+  .toc li span.d{flex:1;border-bottom:0.6pt dotted var(--gold);margin:0 2mm;transform:translateY(-1mm)}
+  .toc li span.n{color:var(--rose);font-weight:600}
+
+  /* FECHO */
+  .closing{background:linear-gradient(180deg,var(--paper) 0%, var(--paper2) 100%)}
+  .sign{font-family:'Pinyon Script',cursive;font-size:24pt;color:var(--rose);text-align:center;margin-top:4mm}
+</style>
+</head>
+<body>
+
+<!-- SVG reutilizáveis -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="corner" viewBox="0 0 40 40"><path d="M2 38 V10 Q2 2 10 2 H38" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 30 Q8 8 30 8" fill="none" stroke="currentColor" stroke-width=".7"/><circle cx="10" cy="10" r="2.2" fill="currentColor"/><path d="M14 4 q4 4 0 8 q-4 -4 0 -8z M4 14 q4 4 8 0 q-4 -4 -8 0z" fill="currentColor" opacity=".7"/></symbol>
+    <symbol id="orn" viewBox="0 0 200 20"><path d="M0 10 H78 M122 10 H200" stroke="currentColor" stroke-width=".8"/><path d="M78 10 q11 -9 22 0 q11 9 22 0" fill="none" stroke="currentColor" stroke-width="1"/><path d="M100 3 l2.2 5 5 .6 -3.8 3.4 1.1 5 -4.5 -2.6 -4.5 2.6 1.1 -5 -3.8 -3.4 5 -.6z" fill="currentColor"/><circle cx="70" cy="10" r="1.6" fill="currentColor"/><circle cx="130" cy="10" r="1.6" fill="currentColor"/></symbol>
+    <symbol id="star" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width=".8" opacity=".6"/><circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width=".4" opacity=".5"/><path d="M50 8 L57 41 L90 50 L57 59 L50 92 L43 59 L10 50 L43 41 Z" fill="currentColor"/><path d="M50 24 L54 46 L76 50 L54 54 L50 76 L46 54 L24 50 L46 46 Z" fill="#1f2a44" opacity=".35"/><path d="M28 28 L50 50 L72 28 M28 72 L50 50 L72 72" stroke="currentColor" stroke-width=".6" opacity=".7"/></symbol>
+  </defs>
+</svg>
+
+<!-- 1. CAPA -->
+<section class="page cover">
+  <svg class="stars" viewBox="0 0 148 210" preserveAspectRatio="none">
+    <g fill="#f6e2b0">
+      <circle cx="18" cy="22" r=".5"/><circle cx="34" cy="40" r=".35"/><circle cx="126" cy="26" r=".55"/><circle cx="112" cy="48" r=".3"/>
+      <circle cx="22" cy="78" r=".4"/><circle cx="132" cy="86" r=".45"/><circle cx="12" cy="120" r=".35"/><circle cx="138" cy="130" r=".3"/>
+      <circle cx="28" cy="150" r=".45"/><circle cx="120" cy="160" r=".4"/><circle cx="60" cy="18" r=".3"/><circle cx="92" cy="14" r=".4"/>
+      <circle cx="44" cy="64" r=".25"/><circle cx="104" cy="70" r=".25"/><circle cx="16" cy="178" r=".3"/><circle cx="132" cy="184" r=".35"/>
+    </g>
+  </svg>
+  <div class="frame"></div>
+  <svg class="corner tl"><use href="#corner"/></svg><svg class="corner tr"><use href="#corner"/></svg>
+  <svg class="corner bl"><use href="#corner"/></svg><svg class="corner br"><use href="#corner"/></svg>
+  <div class="cover-inner">
+    <div class="brand">ESTRELA DO AMANHÃ</div>
+    <svg class="bigstar"><use href="#star"/></svg>
+    <h1><small>Os</small>SEGREDOS<br>DA VOVÓ</h1>
+    <div class="rule"></div>
+    <p class="sub">Orações, banhos e rituais tradicionais para proteger e acompanhar as crianças</p>
+    <p class="tag">Sabedoria transmitida de geração em geração.</p>
+    <div class="pillars">Sono · Calma · Proteção · Desenvolvimento · Estudos</div>
+    <div class="ed">EDIÇÃO DIGITAL · SABEDORIA ANCESTRAL</div>
+  </div>
+</section>
+
+<!-- 2. LEGADO -->
+<section class="page">
+  <div class="frame"></div>
+  <svg class="corner tl"><use href="#corner"/></svg><svg class="corner tr"><use href="#corner"/></svg>
+  <svg class="corner bl"><use href="#corner"/></svg><svg class="corner br"><use href="#corner"/></svg>
+  <div class="kicker">Apresentação</div>
+  <h1 class="chap">Um legado que passa<br>de geração em geração</h1>
+  <svg class="orn"><use href="#orn"/></svg>
+  <p class="lead dropcap">Existem conhecimentos que não nasceram na internet nem foram aprendidos em cursos.</p>
+  <p>Nasceram dentro de casa: nas palavras das avós, nas orações pronunciadas baixinho, nas ervas cuidadosamente escolhidas e naquelas pequenas tradições que uma geração ensinava à seguinte.</p>
+  <p>Durante muito tempo, esses conhecimentos foram transmitidos de boca em boca. Este caderno reúne parte desse legado, especialmente dedicado às crianças.</p>
+  <p>Aqui você encontrará orações, banhos e rituais tradicionais relacionados ao sono, à tranquilidade, ao choro, à proteção, ao quebranto, aos primeiros passos e aos estudos.</p>
+  <p class="say" style="margin-top:3mm">Realize cada prática com carinho, respeito e fé.</p>
+  <div class="note">
+    <b>ANTES DE COMEÇAR</b><br>
+    Este caderno preserva práticas espirituais e da tradição popular. Não substitui acompanhamento médico, pediátrico, psicológico, fonoaudiológico ou qualquer outro cuidado profissional.<br><br>
+    Quando se tratar de bebês e crianças pequenas, mantenha ervas, recipientes, roupas e outros objetos fora do alcance delas e do espaço de sono.
+  </div>
+  <div class="folio">·<b>2</b>·</div>
+</section>
+
+<!-- 3. SUMÁRIO -->
+<section class="page">
+  <div class="frame"></div>
+  <svg class="corner tl"><use href="#corner"/></svg><svg class="corner tr"><use href="#corner"/></svg>
+  <svg class="corner bl"><use href="#corner"/></svg><svg class="corner br"><use href="#corner"/></svg>
+  <div class="kicker">Neste caderno</div>
+  <h1 class="chap">Sumário</h1>
+  <svg class="orn"><use href="#orn"/></svg>
+  <ul class="toc">
+    <li><span class="t">Um legado que passa de geração em geração</span><span class="d"></span><span class="n">2</span></li>
+    <li><span class="t">Para trazer calma e afastar o quebranto</span><span class="d"></span><span class="n">4</span></li>
+    <li><span class="t">Rituais para um sono tranquilo</span><span class="d"></span><span class="n">5</span></li>
+    <li><span class="t">Para acalmar o choro e a inquietação</span><span class="d"></span><span class="n">6</span></li>
+    <li><span class="t">Para proteger a criança</span><span class="d"></span><span class="n">7</span></li>
+    <li><span class="t">Para os primeiros passos e as primeiras palavras</span><span class="d"></span><span class="n">8</span></li>
+    <li><span class="t">Para os estudos e a memória</span><span class="d"></span><span class="n">9</span></li>
+    <li><span class="t">Palavras finais da vovó</span><span class="d"></span><span class="n">10</span></li>
+  </ul>
+  <p class="say" style="margin-top:8mm">“O que se faz com amor<br>chega antes de ser pedido.”</p>
+  <p class="center" style="font-size:8.5pt;color:var(--soft)">— ditado de avó</p>
+  <div class="folio">·<b>3</b>·</div>
+</section>
+
+<!-- 4. CALMA E QUEBRANTO -->
+<section class="page tight">
+  <div class="frame"></div>
+  <svg class="corner tl"><use href="#corner"/></svg><svg class="corner tr"><use href="#corner"/></svg>
+  <svg class="corner bl"><use href="#corner"/></svg><svg class="corner br"><use href="#corner"/></svg>
+  <div class="kicker">Capítulo I</div>
+  <h1 class="chap">Para trazer calma<br>e afastar o quebranto</h1>
+  <svg class="orn"><use href="#orn"/></svg>
+  <h2><span class="ico">❀</span>Banho tradicional para acalmar a criança</h2>
+  <div class="twocol">
+    <div>
+      <h3>Você vai precisar</h3>
+      <ul class="need">
+        <li>½ colher de sopa de erva-doce;</li>
+        <li>½ colher de sopa de erva-cidreira;</li>
+        <li>½ colher de sopa de camomila;</li>
+        <li>1 folha de alface;</li>
+        <li>Um pouquinho de guaraná.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Como preparar</h3>
+      <ol class="steps">
+        <li>Prepare uma infusão com a erva-doce, a erva-cidreira e a camomila.</li>
+        <li>Acrescente a folha de alface.</li>
+        <li>Já em temperatura adequada para a pele, acrescente simbolicamente um pouquinho de guaraná.</li>
+      </ol>
+    </div>
+  </div>
+  <p>Dedique o banho a <b>São Cosme e São Damião</b>, pedindo bom descanso, tranquilidade e calma para a criança. Utilize a preparação somente de maneira externa.</p>
+  <h2><span class="ico">✝</span>Oração tradicional contra o quebranto</h2>
+  <div class="prayer">
+    Com Deus eu me deito,<br>com Deus me levanto.<br>Peço a Deus<br>que retire esse pranto.<br>
+    Te benzo em nome de Deus<br>e de todos os santos.<br>Com minha mão direita,<br>eu te levanto.
+  </div>
+  <p class="center" style="font-size:9pt;color:var(--soft)"><i>Ao terminar, faça o sinal da cruz sobre a criança.</i></p>
+  <div class="folio">·<b>4</b>·</div>
+</section>
+
+<!-- 5. SONO -->
+<section class="page tight">
+  <div class="frame"></div>
+  <svg class="corner tl"><use href="#corner"/></svg><svg class="corner tr"><use href="#corner"/></svg>
+  <svg class="corner bl"><use href="#corner"/></svg><svg class="corner br"><use href="#corner"/></svg>
+  <div class="kicker">Capítulo II</div>
+  <h1 class="chap">Rituais para<br>um sono tranquilo</h1>
+  <svg class="orn"><use href="#orn"/></svg>
+  <h2><span class="ico">☾</span>Para ajudar o recém-nascido a dormir</h2>
+  <p>Depois do banho habitual, a tradição indica realizar um banho externo preparado com erva-doce.</p>
+  <p>Em seguida, pegue uma folha lisa de alface e escreva nela o nome do bebê. Coloque a folha dentro de um copo com água mineral sem gás e açúcar. Enquanto prepara o ritual, diga:</p>
+  <p class="say">“Anjo da Guarda, traga o sono para (nome do bebê).<br>Que ele descanse em paz e tranquilidade.”</p>
+  <p>Tradicionalmente, o copo era colocado embaixo do berço, na direção da cabeça do bebê.</p>
+  <div class="note warm"><b>POR SEGURANÇA:</b> mantenha o copo em uma superfície estável, longe do berço e completamente fora do alcance do bebê.</div>
+  <h2><span class="ico">☾</span>Para a criança que troca o dia pela noite</h2>
+  <ol class="steps">
+    <li>Pegue uma peça de roupa clara da criança.</li>
+    <li>Prepare um chá de camomila tradicionalmente adoçado com mel e coloque-o em um recipiente de vidro.</li>
+    <li>Deixe a roupa na preparação durante a noite.</li>
+    <li>No dia seguinte, lave muito bem até retirar completamente a preparação e deixe secar.</li>
+    <li>À noite, vire a roupa do avesso. A tradição indica colocá-la debaixo do travesseiro.</li>
+  </ol>
+  <div class="note warm"><b>IMPORTANTE:</b> para bebês e crianças pequenas, mantenha a roupa fora do berço e do espaço de sono.</div>
+  <div class="folio">·<b>5</b>·</div>
+</section>
+
+<!-- 6. CHORO -->
+<section class="page tight">
+  <div class="frame"></div>
+  <svg class="corner tl"><use href="#corner"/></svg><svg class="corner tr"><use href="#corner"/></svg>
+  <svg class="corner bl"><use href="#corner"/></svg><svg class="corner br"><use href="#corner"/></svg>
+  <div class="kicker">Capítulo III</div>
+  <h1 class="chap">Para acalmar o choro<br>e a inquietação</h1>
+  <svg class="orn"><use href="#orn"/></svg>
+  <h2><span class="ico">❀</span>Para acalmar a criança que chora</h2>
+  <h3>Você vai precisar</h3>
+  <ul class="need">
+    <li>1 folha inteira e bonita de saião;</li>
+    <li>1 vidro com tampa;</li>
+    <li>Água e açúcar.</li>
+  </ul>
+  <p>Escreva o nome da criança sobre a folha. Coloque-a dentro do vidro com água bastante açucarada. Antes de fechar o recipiente, aproxime-o dos lábios e pronuncie em voz alta:</p>
+  <p class="say">“Não estou congelando meu filho. Estou paralisando o choro para que tenha uma vida tranquila.”</p>
+  <p>Feche o vidro e guarde-o no congelador.</p>
+  <div class="note"><b>IMPORTANTE:</b> as palavras devem ser pronunciadas em voz alta.</div>
+  <h2><span class="ico">❀</span>Para acalmar um bebê chorão</h2>
+  <p>Em uma <b>quarta-feira</b>, separe três galhinhos de erva-cidreira. Tradicionalmente, os galhinhos eram colocados perto do local onde o bebê dorme e trocados todas as quartas-feiras. Ao fazer isso, peça:</p>
+  <p class="say">“Que a calma chegue, que o choro vá embora<br>e que (nome) encontre tranquilidade.”</p>
+  <div class="note warm"><b>POR SEGURANÇA:</b> deixe os galhinhos em um vaso ou prato alto, perto do quarto, mas fora do berço e do alcance do bebê.</div>
+  <div class="folio">·<b>6</b>·</div>
+</section>
+
+<!-- 7. PROTEÇÃO -->
+<section class="page tight">
+  <div class="frame"></div>
+  <svg class="corner tl"><use href="#corner"/></svg><svg class="corner tr"><use href="#corner"/></svg>
+  <svg class="corner bl"><use href="#corner"/></svg><svg class="corner br"><use href="#corner"/></svg>
+  <div class="kicker">Capítulo IV</div>
+  <h1 class="chap">Para proteger<br>a criança</h1>
+  <svg class="orn"><use href="#orn"/></svg>
+  <h2><span class="ico">✦</span>Oração ao Santo Anjo da Guarda</h2>
+  <p>Reze todas as noites, com a mão sobre a cabecinha da criança, ou ensine-a a rezar junto assim que ela aprender a falar.</p>
+  <div class="prayer">
+    Santo Anjo do Senhor,<br>meu zeloso guardador,<br>se a ti me confiou a piedade divina,<br>
+    sempre me rege, me guarda,<br>me governa e me ilumina.<br>Amém.
+  </div>
+  <h2><span class="ico">✦</span>Vaso de arruda e alecrim na entrada da casa</h2>
+  <p>As avós plantavam arruda e alecrim perto da porta para que nenhum mau-olhado entrasse junto com as visitas. Plante as mudas em um mesmo vaso e, ao regá-las pela primeira vez, diga:</p>
+  <p class="say">“Que tudo o que entrar por esta porta venha em paz<br>e que (nome) cresça protegido e cercado de amor.”</p>
+  <p>Diz a tradição que, se a arruda murchar de repente, ela “segurou” algo ruim. Troque a muda e agradeça.</p>
+  <div class="note warm"><b>POR SEGURANÇA:</b> a arruda pode irritar a pele e não deve ser ingerida. Mantenha o vaso em local alto, fora do alcance das crianças e dos animais.</div>
+  <div class="folio">·<b>7</b>·</div>
+</section>
+
+<!-- 8. PRIMEIROS PASSOS -->
+<section class="page tight">
+  <div class="frame"></div>
+  <svg class="corner tl"><use href="#corner"/></svg><svg class="corner tr"><use href="#corner"/></svg>
+  <svg class="corner bl"><use href="#corner"/></svg><svg class="corner br"><use href="#corner"/></svg>
+  <div class="kicker">Capítulo V</div>
+  <h1 class="chap">Para os primeiros passos<br>e as primeiras palavras</h1>
+  <svg class="orn"><use href="#orn"/></svg>
+  <h2><span class="ico">❦</span>Para a criança firmar os pezinhos</h2>
+  <p>Em uma manhã de sol, de preferência numa <b>sexta-feira</b>, segure a criança pelas mãos e ajude-a a dar três passinhos sobre o chão da casa, indo em direção à porta. A cada passo, diga:</p>
+  <p class="say">“Um passo para a frente, com Deus.<br>Dois passos para a frente, com Nossa Senhora.<br>Três passos para a frente, com o Anjo da Guarda.<br>Que (nome) caminhe firme pela vida.”</p>
+  <p>Repita por três sextas-feiras seguidas, sempre com paciência e alegria, sem pressa.</p>
+  <h2><span class="ico">❦</span>Para soltar a língua da criança</h2>
+  <p>As avós contavam histórias, cantavam cantigas de roda e conversavam com a criança olhando nos olhos, todos os dias. No fim da conversa, faça uma pequena cruz com o polegar sobre os lábios dela e diga:</p>
+  <p class="say">“São Brás, abençoai a voz de (nome),<br>para que fale bonito e diga sempre a verdade.”</p>
+  <div class="note"><b>LEMBRE-SE:</b> cada criança tem seu tempo. Se houver atraso para andar ou falar, converse com o pediatra; a fé caminha junto com o cuidado profissional.</div>
+  <div class="folio">·<b>8</b>·</div>
+</section>
+
+<!-- 9. ESTUDOS -->
+<section class="page tight">
+  <div class="frame"></div>
+  <svg class="corner tl"><use href="#corner"/></svg><svg class="corner tr"><use href="#corner"/></svg>
+  <svg class="corner bl"><use href="#corner"/></svg><svg class="corner br"><use href="#corner"/></svg>
+  <div class="kicker">Capítulo VI</div>
+  <h1 class="chap">Para os estudos<br>e a memória</h1>
+  <svg class="orn"><use href="#orn"/></svg>
+  <h2><span class="ico">✎</span>Raminho de alecrim no material escolar</h2>
+  <p>O alecrim é a erva da memória e da alegria. Seque um raminho e coloque-o dentro de um envelope de papel. Guarde o envelope no estojo ou na mochila da criança e diga:</p>
+  <p class="say">“Alecrim que alegra e clareia,<br>abre a mente de (nome) para aprender<br>e guardar tudo o que for bom.”</p>
+  <p>Troque o raminho no início de cada bimestre ou antes de provas importantes.</p>
+  <h2><span class="ico">✎</span>Oração antes dos estudos</h2>
+  <p>Ensine a criança a rezar antes de fazer as lições, com as mãos sobre o caderno. É uma oração tradicionalmente pedida a <b>Santo Tomás de Aquino</b>, padroeiro dos estudantes:</p>
+  <div class="prayer">
+    Santo Tomás de Aquino,<br>dai-me inteligência para compreender,<br>memória para guardar,<br>
+    facilidade para aprender<br>e graça para me expressar.<br>Amém.
+  </div>
+  <div class="note"><b>DICA DA VOVÓ:</b> um cantinho de estudos arrumado, um horário fixo e um elogio sincero valem tanto quanto qualquer simpatia.</div>
+  <div class="folio">·<b>9</b>·</div>
+</section>
+
+<!-- 10. FECHO -->
+<section class="page closing">
+  <div class="frame"></div>
+  <svg class="corner tl"><use href="#corner"/></svg><svg class="corner tr"><use href="#corner"/></svg>
+  <svg class="corner bl"><use href="#corner"/></svg><svg class="corner br"><use href="#corner"/></svg>
+  <div class="kicker">Para guardar no coração</div>
+  <h1 class="chap">Palavras finais<br>da vovó</h1>
+  <svg class="orn"><use href="#orn"/></svg>
+  <p class="lead dropcap">Nenhuma oração é pequena quando é feita por quem ama. As ervas, as palavras e os gestos deste caderno são apenas caminhos: o que realmente protege uma criança é a presença, o colo e o carinho de quem cuida dela.</p>
+  <p>Guarde estas práticas, use-as com fé e, quando chegar a hora, ensine-as a quem vier depois. É assim que um legado continua vivo: passando de mão em mão, de coração em coração.</p>
+  <div class="prayer" style="margin-top:5mm">
+    Que cada criança desta casa<br>durma em paz, cresça com saúde,<br>caminhe protegida<br>e aprenda com alegria.<br>Amém.
+  </div>
+  <div class="sign">com carinho, a Vovó</div>
+  <svg style="display:block;width:14mm;height:14mm;margin:4mm auto 0;color:var(--gold)"><use href="#star"/></svg>
+  <p class="center" style="font-family:'Cormorant Garamond',serif;letter-spacing:.4em;font-size:8pt;color:var(--soft);margin-top:2mm">ESTRELA DO AMANHÃ</p>
+  <div class="folio">·<b>10</b>·</div>
+</section>
+
+</body>
+</html>
