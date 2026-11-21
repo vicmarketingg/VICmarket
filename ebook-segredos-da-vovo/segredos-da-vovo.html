@@ -2,14 +2,15 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<title>Segredos da Vovó — Estrela do Amanhã</title>
+<title>Segredos da Vovó — Lua do Amanhã</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
 <style>
   @page { size: 148mm 210mm; margin: 0; }
   :root{
-    --paper:#f7efe0; --paper2:#efe2c8; --ink:#3b2a1e; --soft:#6d5643;
-    --gold:#b08a3e; --gold2:#d4b26a; --rose:#9c4a3c; --sage:#5f6f4e;
-    --night:#1f2a44; --night2:#2e3b5c;
+    --paper:#f8f3ea; --paper2:#efe5d3; --ink:#2a211b; --soft:#7a6a5a;
+    --gold:#a8833a; --gold2:#d9bd7a; --rose:#7d2f3a; --sage:#4f5d46;
+    --night:#0b0f1c; --night2:#151c33;
+    --foil:linear-gradient(100deg,#9c7a34 0%,#e9d39a 28%,#b8913f 52%,#f3e2b0 74%,#a8833a 100%);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{background:#ccc}
@@ -21,7 +22,7 @@
       var(--paper);
     padding:17mm 15mm 18mm;}
   .page:last-child{page-break-after:auto;break-after:auto}
-  .frame{position:absolute;inset:7mm;border:0.6pt solid var(--gold);pointer-events:none}
+  .frame{position:absolute;inset:7mm;border:0.45pt solid var(--gold);pointer-events:none}
   .frame::after{content:"";position:absolute;inset:1.6mm;border:0.3pt solid rgba(176,138,62,.55)}
   .corner{position:absolute;width:11mm;height:11mm;color:var(--gold)}
   .corner.tl{top:5.2mm;left:5.2mm}.corner.tr{top:5.2mm;right:5.2mm;transform:scaleX(-1)}
@@ -29,8 +30,8 @@
   .folio{position:absolute;bottom:10.5mm;left:0;right:0;text-align:center;font-family:'Cormorant Garamond',serif;font-size:9pt;color:var(--soft);letter-spacing:.18em}
   .folio b{color:var(--gold);font-weight:600;margin:0 .6em}
 
-  .kicker{font-family:'Cormorant Garamond',serif;font-size:8.5pt;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);text-align:center}
-  h1.chap{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:21pt;line-height:1.1;text-align:center;color:var(--rose);margin:2mm 0 1mm}
+  .kicker{font-family:'Cormorant Garamond',serif;font-size:8pt;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);text-align:center}
+  h1.chap{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:22pt;line-height:1.08;letter-spacing:.01em;text-align:center;color:var(--rose);margin:2mm 0 1mm}
   .orn{display:block;margin:2.5mm auto 4mm;width:46mm;height:5mm;color:var(--gold)}
   h2{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:14pt;color:var(--ink);margin:4mm 0 1.6mm;line-height:1.15}
   h2 .ico{color:var(--gold);font-weight:400;margin-right:1.5mm}
@@ -63,21 +64,22 @@
 
   /* CAPA */
   .cover{background:
-      radial-gradient(circle at 50% 30%, rgba(212,178,106,.28), transparent 45%),
-      radial-gradient(ellipse at 50% 120%, rgba(156,74,60,.35), transparent 60%),
-      linear-gradient(180deg,var(--night) 0%, var(--night2) 62%, #4a3a48 100%);
+      radial-gradient(circle at 50% 31%, rgba(233,211,154,.20), transparent 32%),
+      radial-gradient(ellipse at 50% 115%, rgba(125,47,58,.30), transparent 55%),
+      linear-gradient(180deg,var(--night) 0%, var(--night2) 60%, #1d1a2c 100%);
     color:#f6ead2;padding:0;text-align:center}
   .cover .frame{border-color:var(--gold2)} .cover .frame::after{border-color:rgba(212,178,106,.5)}
   .cover .corner{color:var(--gold2)}
   .stars{position:absolute;inset:0}
   .cover-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:20mm 14mm 16mm}
-  .brand{font-family:'Cormorant Garamond',serif;font-size:9pt;letter-spacing:.5em;color:var(--gold2);margin-top:2mm}
-  .bigstar{width:30mm;height:30mm;margin:9mm auto 3mm;color:var(--gold2);filter:drop-shadow(0 0 6px rgba(212,178,106,.6))}
-  .cover h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:40pt;letter-spacing:.06em;line-height:.95;color:#fbf1dc}
-  .cover h1 small{display:block;font-family:'Pinyon Script',cursive;font-weight:400;font-size:22pt;letter-spacing:0;color:var(--gold2);margin-bottom:-1mm}
+  .brand{font-family:'Cormorant Garamond',serif;font-size:8.5pt;letter-spacing:.6em;color:var(--gold2);margin-top:2mm}
+  .bigstar{width:34mm;height:34mm;margin:10mm auto 5mm;color:var(--gold2);filter:drop-shadow(0 0 6px rgba(212,178,106,.6))}
+  .cover h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:38pt;letter-spacing:.12em;line-height:1;color:#e6cd8f;text-shadow:0 0 14px rgba(233,211,154,.25)}
+  .cover h1 small{display:block;font-family:'Pinyon Script',cursive;font-weight:400;font-size:22pt;letter-spacing:0;color:var(--gold2);margin-bottom:1mm;letter-spacing:0}
+  .cover p{text-align:center}
   .cover .sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13.5pt;line-height:1.3;margin:6mm 4mm 3mm;color:#f1e3c6}
   .cover .tag{font-size:8.8pt;color:#d9c9a8;font-style:italic}
-  .cover .pillars{margin-top:auto;font-family:'Cormorant Garamond',serif;font-size:10pt;letter-spacing:.16em;color:var(--gold2);text-transform:uppercase}
+  .cover .pillars{margin-top:auto;font-family:'Cormorant Garamond',serif;font-size:9pt;letter-spacing:.12em;white-space:nowrap;color:var(--gold2);text-transform:uppercase}
   .cover .ed{margin-top:3mm;font-size:7.5pt;letter-spacing:.35em;color:#bfae8d}
   .rule{width:38mm;height:.6pt;background:linear-gradient(90deg,transparent,var(--gold2),transparent);margin:3mm auto}
 
@@ -99,8 +101,9 @@
 <svg width="0" height="0" style="position:absolute">
   <defs>
     <symbol id="corner" viewBox="0 0 40 40"><path d="M2 38 V10 Q2 2 10 2 H38" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 30 Q8 8 30 8" fill="none" stroke="currentColor" stroke-width=".7"/><circle cx="10" cy="10" r="2.2" fill="currentColor"/><path d="M14 4 q4 4 0 8 q-4 -4 0 -8z M4 14 q4 4 8 0 q-4 -4 -8 0z" fill="currentColor" opacity=".7"/></symbol>
-    <symbol id="orn" viewBox="0 0 200 20"><path d="M0 10 H78 M122 10 H200" stroke="currentColor" stroke-width=".8"/><path d="M78 10 q11 -9 22 0 q11 9 22 0" fill="none" stroke="currentColor" stroke-width="1"/><path d="M100 3 l2.2 5 5 .6 -3.8 3.4 1.1 5 -4.5 -2.6 -4.5 2.6 1.1 -5 -3.8 -3.4 5 -.6z" fill="currentColor"/><circle cx="70" cy="10" r="1.6" fill="currentColor"/><circle cx="130" cy="10" r="1.6" fill="currentColor"/></symbol>
+    <symbol id="orn" viewBox="0 0 200 20"><path d="M0 10 H78 M122 10 H200" stroke="currentColor" stroke-width=".8"/><path d="M78 10 q11 -9 22 0 q11 9 22 0" fill="none" stroke="currentColor" stroke-width="1"/><path d="M103 2.5 A7.5 7.5 0 1 0 103 17.5 A6 6 0 1 1 103 2.5Z" fill="currentColor"/><circle cx="70" cy="10" r="1.6" fill="currentColor"/><circle cx="130" cy="10" r="1.6" fill="currentColor"/></symbol>
     <symbol id="star" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width=".8" opacity=".6"/><circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width=".4" opacity=".5"/><path d="M50 8 L57 41 L90 50 L57 59 L50 92 L43 59 L10 50 L43 41 Z" fill="currentColor"/><path d="M50 24 L54 46 L76 50 L54 54 L50 76 L46 54 L24 50 L46 46 Z" fill="#1f2a44" opacity=".35"/><path d="M28 28 L50 50 L72 28 M28 72 L50 50 L72 72" stroke="currentColor" stroke-width=".6" opacity=".7"/></symbol>
+<symbol id="moon" viewBox="0 0 100 100"><defs><linearGradient id="gf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3e2b0"/><stop offset=".45" stop-color="#c9a253"/><stop offset=".7" stop-color="#ecd8a0"/><stop offset="1" stop-color="#9c7a34"/></linearGradient></defs><circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width=".5" opacity=".55"/><circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width=".3" stroke-dasharray="1 2.2" opacity=".6"/><path d="M60 18 A33 33 0 1 0 60 82 A26 26 0 1 1 60 18 Z" fill="url(#gf)"/><path d="M74 34 l1.4 3.4 3.4 1.4 -3.4 1.4 -1.4 3.4 -1.4 -3.4 -3.4 -1.4 3.4 -1.4z" fill="url(#gf)"/><path d="M80 56 l.9 2.1 2.1 .9 -2.1 .9 -.9 2.1 -.9 -2.1 -2.1 -.9 2.1 -.9z" fill="url(#gf)"/><path d="M68 66 l.7 1.6 1.6 .7 -1.6 .7 -.7 1.6 -.7 -1.6 -1.6 -.7 1.6 -.7z" fill="url(#gf)"/></symbol>
   </defs>
 </svg>
 
@@ -118,14 +121,14 @@
   <svg class="corner tl"><use href="#corner"/></svg><svg class="corner tr"><use href="#corner"/></svg>
   <svg class="corner bl"><use href="#corner"/></svg><svg class="corner br"><use href="#corner"/></svg>
   <div class="cover-inner">
-    <div class="brand">ESTRELA DO AMANHÃ</div>
-    <svg class="bigstar"><use href="#star"/></svg>
-    <h1><small>Os</small>SEGREDOS<br>DA VOVÓ</h1>
+    <div class="brand">LUA DO AMANHÃ</div>
+    <svg class="bigstar"><use href="#moon"/></svg>
+    <h1><small>os</small>SEGREDOS<br>DA VOVÓ</h1>
     <div class="rule"></div>
     <p class="sub">Orações, banhos e rituais tradicionais para proteger e acompanhar as crianças</p>
     <p class="tag">Sabedoria transmitida de geração em geração.</p>
     <div class="pillars">Sono · Calma · Proteção · Desenvolvimento · Estudos</div>
-    <div class="ed">EDIÇÃO DIGITAL · SABEDORIA ANCESTRAL</div>
+    <div class="ed">EDIÇÃO EXCLUSIVA · ACERVO ANCESTRAL</div>
   </div>
 </section>
 
@@ -341,8 +344,8 @@
     Que cada criança desta casa<br>durma em paz, cresça com saúde,<br>caminhe protegida<br>e aprenda com alegria.<br>Amém.
   </div>
   <div class="sign">com carinho, a Vovó</div>
-  <svg style="display:block;width:14mm;height:14mm;margin:4mm auto 0;color:var(--gold)"><use href="#star"/></svg>
-  <p class="center" style="font-family:'Cormorant Garamond',serif;letter-spacing:.4em;font-size:8pt;color:var(--soft);margin-top:2mm">ESTRELA DO AMANHÃ</p>
+  <svg style="display:block;width:16mm;height:16mm;margin:4mm auto 0;color:var(--gold)"><use href="#moon"/></svg>
+  <p class="center" style="font-family:'Cormorant Garamond',serif;letter-spacing:.4em;font-size:8pt;color:var(--soft);margin-top:2mm">LUA DO AMANHÃ</p>
   <div class="folio">·<b>10</b>·</div>
 </section>
 
