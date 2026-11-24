@@ -1,0 +1,258 @@
+<title>Linha Editorial da Sollange</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Jost:wght@400;500;600&display=swap">
+<style>
+/* Layout: coluna de leitura larga; cada semana é um bloco com os dias em cartões; cores vinho e dourado da marca */
+:root{
+  --vinho:#3A0A15; --vinho-2:#5E1222; --fundo:#1E040B; --ouro:#E9C98A; --ouro-2:#C9A257;
+  --creme:#FFF8F0; --texto:#F3E6D8; --suave:#C9AFA2; --linha:rgba(233,201,138,.32);
+  --display:"Playfair Display",Georgia,"Times New Roman",serif; --corpo:Jost,"Helvetica Neue",Arial,sans-serif;
+  color-scheme:dark;
+}
+html,body{background:var(--fundo)}
+body{color:var(--texto);font:400 16px/1.6 var(--corpo);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 72px}
+.wrap{max-width:1040px;margin:0 auto}
+a{color:var(--ouro)}
+.eyebrow{font:600 12px var(--corpo);letter-spacing:.24em;text-transform:uppercase;color:var(--ouro);margin:0}
+h1{font:500 clamp(36px,6.4vw,62px)/1.04 var(--display);color:var(--creme);margin:14px 0 14px;text-wrap:balance}
+h1 em,h2 em{color:var(--ouro);font-style:italic}
+h2{font:500 clamp(26px,4vw,38px)/1.12 var(--display);color:var(--creme);margin:8px 0 10px;text-wrap:balance}
+h3{font:500 20px/1.3 var(--display);color:var(--creme);margin:0;text-wrap:balance}
+p{margin:0}
+.topo{padding-block:56px 30px;border-bottom:1px solid var(--linha)}
+.lead{max-width:64ch;font-size:17px}
+nav.menu{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+nav.menu a{font:500 13px var(--corpo);text-decoration:none;border:1px solid var(--linha);border-radius:999px;padding:7px 14px}
+nav.menu a:hover,nav.menu a:focus-visible{background:rgba(233,201,138,.12);outline:none}
+section{padding-top:56px;scroll-margin-top:12px}
+section > .eyebrow + h2{margin-top:6px}
+.sub{color:var(--suave);max-width:64ch}
+/* frase-mãe */
+.mae{margin-top:28px;padding:28px;border-radius:18px;background:linear-gradient(145deg,#F3D9A0,var(--ouro-2) 60%,#A9813C);color:var(--vinho)}
+.mae p{font:italic 500 clamp(22px,3.4vw,32px)/1.25 var(--display)}
+.mae span{display:block;margin-top:10px;font:600 12px var(--corpo);letter-spacing:.2em;text-transform:uppercase}
+/* grelhas */
+.grid{display:grid;gap:14px;margin-top:22px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.card{border:1px solid var(--linha);border-radius:16px;padding:20px;background:rgba(94,18,34,.35);min-width:0}
+.card .k{font:600 11.5px var(--corpo);letter-spacing:.18em;text-transform:uppercase;color:var(--ouro)}
+.card h3{margin-top:6px}
+.card p{margin-top:8px;font-size:15px}
+.card .prog{margin-top:10px;font-size:13.5px;color:var(--suave)}
+/* ritmo */
+.ritmo{display:grid;gap:10px;margin-top:22px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.dia{border-radius:14px;padding:16px;border:1px solid var(--linha)}
+.dia b{display:block;font:600 12px var(--corpo);letter-spacing:.18em;text-transform:uppercase;color:var(--ouro)}
+.dia strong{display:block;font:500 18px/1.25 var(--display);color:var(--creme);margin-top:6px}
+.dia small{display:block;margin-top:6px;color:var(--suave);font-size:13.5px}
+.dia.venda{background:linear-gradient(145deg,#F3D9A0,var(--ouro-2) 60%,#A9813C);border:none}
+.dia.venda b,.dia.venda strong,.dia.venda small{color:var(--vinho)}
+/* estratégia */
+.frases{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:10px}
+.frases li{font:italic 400 clamp(18px,2.6vw,22px)/1.35 var(--display);color:var(--creme);padding:14px 18px;border-left:2px solid var(--ouro);background:rgba(233,201,138,.06);border-radius:0 12px 12px 0}
+.nota{margin-top:16px;font-size:14px;color:var(--suave);max-width:70ch}
+/* semanas */
+.semana{margin-top:22px;border:1px solid var(--linha);border-radius:20px;overflow:hidden}
+.semana-head{padding:22px 22px 18px;background:linear-gradient(160deg,var(--vinho-2),var(--vinho));display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;justify-content:space-between}
+.semana-head h3{font-size:24px}
+.semana-head .tema{color:var(--texto);font-size:14.5px;max-width:60ch}
+.tag{display:inline-block;font:600 11.5px var(--corpo);letter-spacing:.14em;text-transform:uppercase;color:var(--vinho);background:var(--ouro);border-radius:999px;padding:5px 12px}
+.dias{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--linha)}
+.d{background:var(--fundo);padding:18px 20px;min-width:0}
+.d .quando{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.d .quando b{font:600 12px var(--corpo);letter-spacing:.16em;text-transform:uppercase;color:var(--ouro)}
+.d .quando span{font-size:12px;color:var(--suave);text-align:right}
+.d h4{font:500 18px/1.3 var(--display);color:var(--creme);margin:8px 0 6px;text-wrap:balance}
+.d p{font-size:14.5px}
+.d .leg{margin-top:8px;font-size:14px;color:var(--suave)}
+.d .leg::before{content:"Legenda: ";color:var(--ouro);font-weight:600}
+.d .mat{margin-top:6px;font-size:13.5px;color:var(--suave)}
+.d .mat::before{content:"Material: ";color:var(--ouro);font-weight:600}
+.d.v{background:#260611}
+.d.v .quando b::after{content:" · venda";color:var(--ouro)}
+/* vídeos */
+.videos{display:grid;gap:14px;margin-top:22px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.video{border-radius:16px;padding:22px;border:1px solid var(--linha);background:rgba(94,18,34,.35);min-width:0}
+.video .k{font:600 11.5px var(--corpo);letter-spacing:.18em;text-transform:uppercase;color:var(--ouro)}
+.video h3{margin-top:6px}
+.video dl{margin:12px 0 0;display:grid;gap:8px}
+.video dt{font:600 12px var(--corpo);color:var(--ouro);letter-spacing:.06em}
+.video dd{margin:0;font-size:14.5px}
+/* tabelas */
+.tabela{overflow-x:auto;margin-top:20px}
+table{width:100%;border-collapse:collapse;min-width:620px;font-size:14.5px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--linha);vertical-align:top}
+th{font:600 12px var(--corpo);letter-spacing:.14em;text-transform:uppercase;color:var(--ouro)}
+td b{color:var(--creme)}
+.check{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:8px}
+.check li{padding-left:28px;position:relative}
+.check li::before{content:"";position:absolute;left:0;top:4px;width:16px;height:16px;border:1.5px solid var(--ouro);border-radius:4px}
+.cta-link{display:inline-block;margin-top:18px;font:600 13px var(--corpo);letter-spacing:.14em;text-transform:uppercase;color:var(--vinho);background:var(--ouro);padding:12px 22px;border-radius:999px;text-decoration:none}
+footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--linha);color:var(--suave);font-size:13px;text-align:center}
+</style>
+
+<div class="wrap">
+<header class="topo">
+  <p class="eyebrow">24 de novembro a 25 de dezembro · @sollangealmadabinha</p>
+  <h1>Linha editorial da <em>Sollange</em></h1>
+  <p class="lead">23 publicações em cinco semanas, cinco por semana, com um tema por semana e venda todos os dias, em intensidades diferentes. Tudo parte de uma ideia só.</p>
+  <nav class="menu">
+    <a href="#base">A base</a><a href="#estrategia">Não esperes por janeiro</a><a href="#calendario">Calendário</a><a href="#videos">Vídeos</a><a href="#stories">Stories e materiais</a><a href="#portugal">Exemplos de Portugal</a>
+  </nav>
+  <div class="mae"><p>“A identidade vem antes da estratégia.”</p><span>A frase-mãe de todos os conteúdos</span></div>
+</header>
+
+<section id="base">
+  <p class="eyebrow">A base</p>
+  <h2>Cinco pilares, <em>uma voz</em></h2>
+  <p class="sub">Português de Portugal, próximo e acolhedor, sempre na primeira pessoa. Frases curtas, sem jargão, sem promessas milagrosas.</p>
+  <div class="grid">
+    <div class="card"><p class="k">Pilar 1</p><h3>Autoconhecimento</h3><p>Padrões, crenças, culpa e autocuidado.</p><p class="prog">Essência · O Corpo Revela · Mentoria Voz &amp; Essência</p></div>
+    <div class="card"><p class="k">Pilar 2</p><h3>Voz e posicionamento</h3><p>Falar sem medo, limites e dizer não.</p><p class="prog">Mentoria VOZ · Mentoria Voz &amp; Essência</p></div>
+    <div class="card"><p class="k">Pilar 3</p><h3>Mulher, carreira e negócio</h3><p>Equilíbrio, cansaço, recomeço e decisões.</p><p class="prog">Soberana · Empreender com Equilíbrio · Reinventa-te · Direção</p></div>
+    <div class="card"><p class="k">Pilar 4</p><h3>Liderança humana</h3><p>Equipas, comunicação no trabalho e empresas.</p><p class="prog">Mentoria Humaniza para Líderes e Equipas</p></div>
+    <div class="card"><p class="k">Pilar 5</p><h3>Prova e bastidores</h3><p>Testemunhos, sessões, eventos e o dia a dia dela.</p><p class="prog">Todos os programas</p></div>
+  </div>
+  <h3 style="margin-top:36px">O ritmo da semana</h3>
+  <div class="ritmo">
+    <div class="dia"><b>Segunda</b><strong>Carrossel educativo</strong><small>Pergunta e resposta. Venda suave no último slide.</small></div>
+    <div class="dia"><b>Terça</b><strong>Reels dela a falar</strong><small>Ligação e alcance. Termina com um convite.</small></div>
+    <div class="dia"><b>Quarta</b><strong>Reels com frase</strong><small>15 segundos, a frase no ecrã, ela num momento natural.</small></div>
+    <div class="dia"><b>Quinta</b><strong>Testemunhos</strong><small>Prova: “Ela não esperou por janeiro. E tu?”</small></div>
+    <div class="dia venda"><b>Sexta</b><strong>Carrossel do programa</strong><small>Venda direta: “Não esperes por janeiro. Link na bio.”</small></div>
+  </div>
+</section>
+
+<section id="estrategia">
+  <p class="eyebrow">Estratégia de venda</p>
+  <h2>Não esperes <em>por janeiro</em></h2>
+  <p class="sub">O ano está a acabar e janeiro não vai mudar a vida de ninguém sozinho. O objetivo é que a pessoa comece um programa em dezembro, em vez de adiar para o “ano novo”.</p>
+  <ul class="frases">
+    <li>“Quantas vezes já disseste ‘em janeiro começo’?”</li>
+    <li>“Achas que janeiro é para descansar, mas voltas a trabalhar como sempre.”</li>
+    <li>“Janeiro não muda a tua vida. As tuas decisões mudam.”</li>
+    <li>“Quando é que vais parar de adiar o que é teu?”</li>
+    <li>“Começa agora e chega a janeiro já em movimento.”</li>
+  </ul>
+  <p class="nota">Antes de anunciar urgência (por exemplo, vagas para começar em dezembro), confirmar com a Sollange que é real.</p>
+</section>
+
+<section id="calendario">
+  <p class="eyebrow">Calendário</p>
+  <h2>Dia a dia, <em>semana a semana</em></h2>
+  <p class="sub">Os textos completos de cada carrossel, slide a slide, estão na página <a href="https://claude.ai/artifact/BdVGL8PBYghcw8zTzZwDB2">Carrosséis da Sollange</a>.</p>
+
+  <div class="semana">
+    <div class="semana-head"><h3>Semana 1 · Voltar a ti</h3><span class="tag">24–29/11</span><p class="tema">Não há nada de errado contigo, há padrões. Termina com os nove programas.</p></div>
+    <div class="dias">
+      <div class="d"><div class="quando"><b>Ter 24/11</b><span>Carrossel · pronto</span></div><h4>“É egoísmo pensar em mim?”</h4><p>7 slides de pergunta e resposta.</p><p class="leg">a do ficheiro legenda-egoismo.txt</p></div>
+      <div class="d"><div class="quando"><b>Qua 25/11</b><span>Reels com frase</span></div><h4>“Não há nada de errado contigo. Existem padrões.”</h4><p class="mat">ela a olhar pela janela, com calma</p></div>
+      <div class="d"><div class="quando"><b>Qui 26/11</b><span>Reels</span></div><h4>Porque faço o que faço</h4><p>Vídeo 1. Termina com “conhece os meus programas no link da bio”.</p><p class="leg">Há uma razão para eu fazer este trabalho. E talvez tenha a ver contigo.</p></div>
+      <div class="d v"><div class="quando"><b>Sex 27/11</b><span>Carrossel</span></div><h4>“Qual é o programa certo para ti?”</h4><p>9 slides: um sentimento, um programa.</p><p class="leg">Em qual destes te reconheces? Não esperes por janeiro para começar. Link na bio.</p></div>
+      <div class="d"><div class="quando"><b>Sáb e dom</b><span>Stories</span></div><h4>Momentos leves</h4><p>Sem venda. Domingo: enquete “Que tema queres ver na próxima semana?”</p></div>
+    </div>
+  </div>
+
+  <div class="semana">
+    <div class="semana-head"><h3>Semana 2 · Voz e limites</h3><span class="tag">30/11–4/12</span><p class="tema">Dizer não, falar sem medo e posicionar-se. Mentoria VOZ e Mentoria Voz &amp; Essência.</p></div>
+    <div class="dias">
+      <div class="d"><div class="quando"><b>Seg 30/11</b><span>Carrossel</span></div><h4>“Porque é que digo que sim quando quero dizer não?”</h4><p class="leg">Quantas vezes disseste que sim esta semana a algo que não querias? Guarda esta publicação para a próxima vez.</p></div>
+      <div class="d"><div class="quando"><b>Ter 1/12</b><span>Reels</span></div><h4>O medo de falar</h4><p>Vídeo 2.</p><p class="leg">O medo de falar não é falta de capacidade. Tem uma origem, e dá para trabalhar.</p></div>
+      <div class="d"><div class="quando"><b>Qua 2/12</b><span>Reels com frase</span></div><h4>“Um não dito com amor também é um sim para ti.”</h4><p class="mat">ela a fechar o portátil e a sair</p></div>
+      <div class="d"><div class="quando"><b>Qui 3/12</b><span>Carrossel</span></div><h4>Antes e depois da Mentoria VOZ</h4><p>Com o print da mentorada, sem nome.</p><p class="leg">Confiança, empoderamento e clareza. Foram estas as três palavras que ela escolheu.</p></div>
+      <div class="d v"><div class="quando"><b>Sex 4/12</b><span>Carrossel</span></div><h4>“A Mentoria VOZ é para ti se…”</h4><p class="leg">Muito além de falar em público. Não esperes por janeiro para encontrares a tua voz. Link na bio.</p></div>
+    </div>
+  </div>
+
+  <div class="semana">
+    <div class="semana-head"><h3>Semana 3 · Mulher, carreira e negócio</h3><span class="tag">7–11/12</span><p class="tema">Cansaço, culpa e equilíbrio entre negócio e vida. Mentoria Empreender com Equilíbrio.</p></div>
+    <div class="dias">
+      <div class="d"><div class="quando"><b>Seg 7/12</b><span>Carrossel</span></div><h4>“Porque é que sinto culpa quando descanso?”</h4><p class="leg">Se esta é a quarta semana em que dizes ‘para a semana descanso’, esta publicação é para ti.</p></div>
+      <div class="d"><div class="quando"><b>Ter 8/12</b><span>Reels</span></div><h4>Empreender sem te perderes</h4><p>Vídeo 3.</p><p class="leg">O teu negócio pode crescer sem consumir a tua vida.</p></div>
+      <div class="d"><div class="quando"><b>Qua 9/12</b><span>Reels com frase</span></div><h4>“Janeiro não muda a tua vida. As tuas decisões mudam.”</h4><p class="mat">ela a escrever no caderno ou na agenda</p></div>
+      <div class="d"><div class="quando"><b>Qui 10/12</b><span>Carrossel</span></div><h4>O que mudou para elas</h4><p>Três frases de mentoradas, sem nomes.</p><p class="leg">Empreender com equilíbrio não é um sonho. São escolhas, uma de cada vez.</p></div>
+      <div class="d v"><div class="quando"><b>Sex 11/12</b><span>Carrossel</span></div><h4>“A Mentoria Empreender com Equilíbrio é para ti se…”</h4><p class="leg">Achas que janeiro vai ser para descansar, mas vais voltar a trabalhar como sempre. Começa já. Link na bio.</p></div>
+    </div>
+  </div>
+
+  <div class="semana">
+    <div class="semana-head"><h3>Semana 4 · Corpo, padrões e liderança</h3><span class="tag">14–18/12</span><p class="tema">O que o corpo revela e como os padrões aparecem nas equipas. Humaniza e portas de entrada.</p></div>
+    <div class="dias">
+      <div class="d"><div class="quando"><b>Seg 14/12</b><span>Carrossel</span></div><h4>“O que é que o meu corpo diz sobre mim?”</h4><p class="leg">Já reparaste no que o teu corpo faz quando te sentes insegura? Conta-me nos comentários.</p></div>
+      <div class="d"><div class="quando"><b>Ter 15/12</b><span>Reels</span></div><h4>Liderar pessoas</h4><p>Vídeo 4.</p><p class="leg">Liderar pessoas começa por compreender pessoas. Incluindo a ti.</p></div>
+      <div class="d"><div class="quando"><b>Qua 16/12</b><span>Reels com frase</span></div><h4>“Padrões não se julgam. Compreendem-se.”</h4><p class="mat">ela a caminhar ao ar livre</p></div>
+      <div class="d"><div class="quando"><b>Qui 17/12</b><span>Carrossel</span></div><h4>5 sinais de que a tua equipa precisa de mais humanidade</h4><p class="leg">Partilha com quem lidera uma equipa.</p></div>
+      <div class="d v"><div class="quando"><b>Sex 18/12</b><span>Carrossel</span></div><h4>Três portas de entrada</h4><p>Essência, Direção e O Corpo Revela.</p><p class="leg">Não precisas de começar por seis meses. Podes dar um passo ainda antes de janeiro. Link na bio.</p></div>
+    </div>
+  </div>
+
+  <div class="semana">
+    <div class="semana-head"><h3>Semana 5 · Fecho do ano</h3><span class="tag">21–25/12</span><p class="tema">Balanço de 2026 e quem queres ser em 2027. Mentoria Soberana.</p></div>
+    <div class="dias">
+      <div class="d"><div class="quando"><b>Seg 21/12</b><span>Carrossel</span></div><h4>“5 perguntas para fazeres antes de 2027”</h4><p class="leg">Guarda e responde com calma, de preferência num caderno.</p></div>
+      <div class="d"><div class="quando"><b>Ter 22/12</b><span>Reels</span></div><h4>Quem queres ser em 2027</h4><p>Vídeo 5.</p><p class="leg">Antes de definires metas, define quem queres ser.</p></div>
+      <div class="d v"><div class="quando"><b>Qua 23/12</b><span>Carrossel</span></div><h4>A identidade vem antes da estratégia</h4><p>Mentoria Soberana.</p><p class="leg">Quantas vezes já disseste ‘em janeiro começo’? Se 2027 tem de ser diferente, começa agora, por dentro. Link na bio.</p></div>
+      <div class="d"><div class="quando"><b>Qui 24/12</b><span>Post</span></div><h4>Mensagem de Natal</h4><p>Foto dela com uma mensagem curta escrita por ela.</p><p class="leg">Que este Natal te encontre mais perto de ti. Obrigada por este ano.</p></div>
+      <div class="d"><div class="quando"><b>Sex 25/12</b><span>Post ou vídeo</span></div><h4>Gratidão</h4><p>Momentos do ano, sem expor quem não autorizou.</p><p class="leg">Cada mulher que confiou em mim este ano fez parte desta história. Feliz Natal.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="videos">
+  <p class="eyebrow">Para a Sollange gravar</p>
+  <h2>Cinco direcionamentos, <em>sem guião</em></h2>
+  <p class="sub">São o ponto de partida para ela gravar à vontade, com as palavras dela. 30 a 60 segundos, na vertical, com luz natural.</p>
+  <div class="videos">
+    <div class="video"><p class="k">Vídeo 1 · 26/11</p><h3>Porque faço o que faço</h3><dl><dt>Começar com</dt><dd>“Há uma razão para eu fazer este trabalho…”</dd><dt>Falar sobre</dt><dd>O que a levou a este caminho; o que mais a toca nas sessões; porque a identidade vem antes da estratégia.</dd><dt>Terminar com</dt><dd>“Se sentes que está na hora de voltares a ti, conhece os meus programas no link da bio.”</dd></dl></div>
+    <div class="video"><p class="k">Vídeo 2 · 1/12</p><h3>O medo de falar</h3><dl><dt>Começar com</dt><dd>“Se a tua voz falha quando mais precisas, ouve isto.”</dd><dt>Falar sobre</dt><dd>De onde vem o medo de falar; o exemplo de uma mentorada, sem nomes; o que muda quando se trabalha a origem.</dd><dt>Terminar com</dt><dd>“A tua voz merece ser ouvida.”</dd></dl></div>
+    <div class="video"><p class="k">Vídeo 3 · 8/12</p><h3>Empreender sem te perderes</h3><dl><dt>Começar com</dt><dd>“O teu negócio cresceu, mas tu ficaste para trás?”</dd><dt>Falar sobre</dt><dd>A culpa de descansar; o que vê nas empreendedoras que acompanha; um gesto simples para esta semana.</dd><dt>Terminar com</dt><dd>“Constrói o teu negócio sem perderes a tua vida.”</dd></dl></div>
+    <div class="video"><p class="k">Vídeo 4 · 15/12</p><h3>Liderar pessoas</h3><dl><dt>Começar com</dt><dd>“A maior parte dos problemas numa equipa não é técnica.”</dd><dt>Falar sobre</dt><dd>Comunicação, emoções e confiança no trabalho; o líder que carrega tudo sozinho; o que muda quando a equipa se conhece.</dd><dt>Terminar com</dt><dd>“Liderar pessoas começa por compreender pessoas.”</dd></dl></div>
+    <div class="video"><p class="k">Vídeo 5 · 22/12</p><h3>Quem queres ser em 2027</h3><dl><dt>Começar com</dt><dd>“Antes de escreveres as tuas metas para o próximo ano, faz-te esta pergunta.”</dd><dt>Falar sobre</dt><dd>Porque as metas falham quando não estão alinhadas com quem somos; uma pergunta que ela usa nas sessões; o que deseja às seguidoras.</dd><dt>Terminar com</dt><dd>“A identidade vem antes da estratégia.”</dd></dl></div>
+  </div>
+  <p class="nota">Vídeos com clientes ou pacientes só com autorização por escrito, e de preferência sem mostrar o rosto.</p>
+</section>
+
+<section id="stories">
+  <p class="eyebrow">Todos os dias</p>
+  <h2>Stories e <em>materiais</em></h2>
+  <div class="tabela"><table>
+    <thead><tr><th>Dia</th><th>Stories</th></tr></thead>
+    <tbody>
+      <tr><td><b>Segunda</b></td><td>Caixa de perguntas sobre o tema da semana</td></tr>
+      <tr><td><b>Terça</b></td><td>Bastidores: preparação de sessão, café, caderno</td></tr>
+      <tr><td><b>Quarta</b></td><td>Enquete “Já te aconteceu?” com o tema da semana</td></tr>
+      <tr><td><b>Quinta</b></td><td>Um testemunho ou print, sem nomes</td></tr>
+      <tr><td><b>Sexta</b></td><td>Link da página e “Qual é o programa certo para ti?”</td></tr>
+      <tr><td><b>Fim de semana</b></td><td>Momentos pessoais e leves, sem venda</td></tr>
+    </tbody>
+  </table></div>
+  <h3 style="margin-top:30px">A pedir à Sollange</h3>
+  <ul class="check">
+    <li>5 vídeos dos direcionamentos, um por semana, até à segunda-feira anterior</li>
+    <li>Fotos novas para as capas de segunda, uma por semana</li>
+    <li>Fotos a trabalhar: sessão, computador, caderno</li>
+    <li>2 ou 3 fotos de eventos com autorização de quem aparece</li>
+    <li>Mensagem pessoal de Natal (24/12), escrita por ela</li>
+    <li>Autorizações por escrito para vídeos com clientes</li>
+  </ul>
+</section>
+
+<section id="portugal">
+  <p class="eyebrow">Para usar como gancho</p>
+  <h2>Exemplos <em>de Portugal</em></h2>
+  <p class="sub">Figuras públicas que já falaram destes temas. Servem para abrir um conteúdo (“Talvez tenhas visto que…”), nunca como se apoiassem o trabalho dela. Confirmar a data e as palavras antes de publicar, e não usar fotografias delas.</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Pessoa</th><th>O que contou</th><th>Onde encaixa</th><th>Fonte</th></tr></thead>
+    <tbody>
+      <tr><td><b>António Raminhos</b>, humorista</td><td>Vive com ansiedade e TOC e recusa que a doença o defina</td><td>Homens e saúde emocional</td><td><a href="https://observador.pt/especiais/raminhos-e-o-transtorno-obsessivo-compulsivo-ja-quase-nao-saia-de-casa-com-medo-de-tocar-nas-coisas/">Observador</a></td></tr>
+      <tr><td><b>Marcelo Serrado</b>, ator</td><td>Pânico, ansiedade e burnout: “Não é frescura” (fev. 2026)</td><td>Homens que pedem ajuda; culpa de parar</td><td><a href="https://portal6.com.br/2026/02/24/marcelo-serrado-detalha-crises-de-ansiedade-panico-e-burnout-nao-e-frescura/">Portal 6</a></td></tr>
+      <tr><td><b>Paula Neves</b>, atriz</td><td>Fala da ansiedade e de fazer terapia</td><td>Ir à terapia sem vergonha</td><td><a href="https://www.flash.pt/the-mag/detalhe/arrepiante-estrelas-portuguesas-e-internacionais-contam-momentos-dramaticos-que-viveram-e-como-passaram-a-dar-importancia-a-saude-mental">Flash</a></td></tr>
+      <tr><td><b>Fátima Lopes</b>, apresentadora</td><td>Debate sobre o burnout como problema de saúde pública</td><td>Semana do equilíbrio</td><td><a href="https://www.sabpsicologia.com/blog/dialogos-sobre-burnout/">SAB Psicologia</a></td></tr>
+      <tr><td><b>Filipa Jardim da Silva</b>, psicóloga</td><td>Síndrome da impostora; assume-se “ex-impostora”</td><td>Mentoria VOZ</td><td><a href="https://activa.pt/emocoes/2025-05-22-sindrome-da-impostora-quando-nos-sentimos-uma-fraude/">Activa</a></td></tr>
+      <tr><td><b>Congresso Nacional</b> de Saúde Mental no Trabalho</td><td>Porto, 12/11/2026, sobre burnout e liderança</td><td>Mentoria Humaniza</td><td><a href="https://fep.porto.ucp.pt/en/events/4th-national-congress-mental-health-workplace-65786">Católica Porto</a></td></tr>
+    </tbody>
+  </table></div>
+  <a class="cta-link" href="https://claude.ai/artifact/BdVGL8PBYghcw8zTzZwDB2">Ler os carrosséis slide a slide</a>
+</section>
+
+<footer>Sollange Almada Binha · Mentoria, terapia e desenvolvimento pessoal e profissional · @sollangealmadabinha</footer>
+</div>

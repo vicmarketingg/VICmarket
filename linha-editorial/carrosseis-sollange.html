@@ -1,0 +1,205 @@
+<title>Carrosséis da Sollange</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Jost:wght@400;500;600&display=swap">
+<style>
+/* Layout: uma coluna de leitura; cada carrossel é uma fila de slides 4:5 que se desliza na horizontal, como no Instagram */
+:root{
+  --vinho:#3A0A15; --vinho-2:#5E1222; --fundo:#1E040B; --ouro:#E9C98A; --ouro-2:#C9A257;
+  --creme:#FFF8F0; --texto:#F3E6D8; --suave:#C9AFA2; --linha:rgba(233,201,138,.35);
+  --display:"Playfair Display",Georgia,"Times New Roman",serif; --corpo:Jost,"Helvetica Neue",Arial,sans-serif;
+  color-scheme:dark;
+}
+html,body{background:var(--fundo)}
+body{color:var(--texto);font:400 16px/1.55 var(--corpo);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1100px;margin:0 auto}
+header.topo{padding-block:56px 32px;border-bottom:1px solid var(--linha)}
+.eyebrow{font:600 12px var(--corpo);letter-spacing:.24em;text-transform:uppercase;color:var(--ouro)}
+h1{font:500 clamp(34px,6vw,58px)/1.05 var(--display);color:var(--creme);margin:14px 0 12px;text-wrap:balance}
+h1 em{color:var(--ouro);font-style:italic}
+.intro{max-width:62ch;color:var(--texto)}
+nav.semanas{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+nav.semanas a{font:500 13px var(--corpo);letter-spacing:.06em;color:var(--ouro);text-decoration:none;border:1px solid var(--linha);border-radius:999px;padding:7px 14px}
+nav.semanas a:hover,nav.semanas a:focus-visible{background:rgba(233,201,138,.12);outline:none}
+section.semana{padding-top:48px;scroll-margin-top:16px}
+h2{font:500 clamp(26px,4vw,36px)/1.15 var(--display);color:var(--creme);margin:6px 0 4px}
+h2 + p{color:var(--suave);margin:0}
+article.car{margin-top:32px}
+.car-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+.data{font:600 12px var(--corpo);letter-spacing:.18em;text-transform:uppercase;color:var(--vinho);background:var(--ouro);padding:5px 12px;border-radius:999px}
+h3{font:500 22px/1.25 var(--display);color:var(--creme);margin:0;text-wrap:balance;min-width:0}
+.tipo{font-size:13px;color:var(--suave)}
+.fila{display:flex;gap:14px;overflow-x:auto;padding:16px 2px 14px;scroll-snap-type:x mandatory}
+.fila::-webkit-scrollbar{height:8px}.fila::-webkit-scrollbar-thumb{background:var(--linha);border-radius:8px}
+.slide{flex:0 0 260px;max-width:100%;aspect-ratio:4/5;scroll-snap-align:start;position:relative;border-radius:14px;padding:22px 20px 34px;display:flex;flex-direction:column;justify-content:center;gap:10px;
+  background:radial-gradient(ellipse at 20% 0%,var(--vinho-2),var(--vinho) 55%,var(--fundo) 100%);border:1px solid var(--linha);overflow:hidden}
+.slide.capa{background:linear-gradient(160deg,var(--vinho-2),var(--fundo));border-color:var(--ouro)}
+.slide.cta{background:linear-gradient(145deg,#F3D9A0,var(--ouro-2) 60%,#A9813C);border:none}
+.slide .n{position:absolute;top:12px;left:16px;font:600 11px var(--corpo);letter-spacing:.14em;color:var(--suave)}
+.slide.cta .n{color:var(--vinho)}
+.q{font:500 19px/1.25 var(--display);color:var(--creme);text-wrap:balance}
+.capa .q{font-size:24px}
+.q em{color:var(--ouro)}
+.r{font:400 14.5px/1.5 var(--corpo);color:var(--texto)}
+.r b{color:var(--ouro);font-weight:600}
+.slide.cta .q,.slide.cta .r{color:var(--vinho)}
+.slide.cta .r b{color:var(--vinho)}
+.at{position:absolute;bottom:12px;left:0;right:0;text-align:center;font:500 10.5px var(--corpo);letter-spacing:.1em;color:var(--ouro)}
+.slide.cta .at{color:var(--vinho)}
+.dica{font-size:13px;color:var(--suave);margin-top:4px}
+@media (max-width:480px){.slide{flex-basis:78vw}}
+@media (prefers-reduced-motion:no-preference){.fila{scroll-behavior:smooth}}
+</style>
+
+<div class="wrap">
+<header class="topo">
+  <p class="eyebrow">Linha editorial · 24/11 a 25/12</p>
+  <h1>Carrosséis da <em>Sollange</em></h1>
+  <p class="intro">Os 13 carrosséis do calendário, slide a slide, para leres antes do design final. Desliza cada fila para o lado, como no Instagram. O último slide de cada um, em dourado, é a chamada para ação.</p>
+  <nav class="semanas" id="nav"></nav>
+</header>
+<main id="app"></main>
+</div>
+
+<script>
+const S = [
+ {id:"semana-1",nome:"Semana 1 · Voltar a ti",sub:"24 a 29 de novembro",cars:[
+  {data:"Ter 24/11",titulo:"É egoísmo pensar em mim?",tipo:"Pergunta e resposta · pronto",slides:[
+   ["“É egoísmo <em>pensar em mim?</em>”",""],
+   ["“Porque é que sinto culpa quando cuido de mim?”","Porque aprendeste que o teu valor estava apenas em servir. Cuidar dos outros foi o lugar onde te <b>sentiste mais amada.</b>"],
+   ["“Cuidar de mim é deixar de cuidar dos outros?”","Não. É deixar de te <b>abandonar</b> enquanto cuidas de todos."],
+   ["“Como é que eu sei que não estou a cuidar de mim?”","Quando andas sempre cansada e dizes que sim sem pensar. E quando <b>já não sabes o que te faz feliz.</b>"],
+   ["“Por onde começo?”","Começa por pequenos gestos: uma pausa por dia, um «não» sem justificações e a pergunta <b>“de que é que preciso hoje?”</b>"],
+   ["“E se os outros não compreenderem?”","Alguns não vão compreender. E está tudo bem. Quem te ama <b>aprende a amar-te inteira.</b>"],
+   ["Cuidar de ti não é egoísmo. É autorresponsabilidade.","Guarda esta publicação e partilha-a com uma mulher que precise de ouvir isto.","cta"]]},
+  {data:"Sex 27/11",titulo:"Qual é o programa certo para ti?",tipo:"Programas · venda",slides:[
+   ["Nove programas, <em>uma visão:</em> construir de dentro para fora.","Desliza e descobre o teu."],
+   ["Tens resultados, mas sentes que te afastaste de ti?","→ <b>Mentoria Soberana</b>"],
+   ["Tens medo de falar e de te expor?","→ <b>Mentoria VOZ</b>"],
+   ["Calas-te para não desagradar?","→ <b>Mentoria Voz &amp; Essência</b>"],
+   ["O negócio está a consumir a tua vida?","→ <b>Mentoria Empreender com Equilíbrio</b>"],
+   ["Queres mudar de carreira ou recomeçar?","→ <b>Mentoria Reinventa-te</b>"],
+   ["Lideras uma equipa e queres uma liderança mais humana?","→ <b>Mentoria Humaniza</b>"],
+   ["Queres dar um primeiro passo?","→ <b>Essência</b>, <b>Direção</b> ou <b>O Corpo Revela</b>"],
+   ["Em qual te reconheceste?","Não esperes por janeiro para começar. <b>Link na bio.</b>","cta"]]}
+ ]},
+ {id:"semana-2",nome:"Semana 2 · Voz e limites",sub:"30 de novembro a 4 de dezembro",cars:[
+  {data:"Seg 30/11",titulo:"Porque é que digo que sim quando quero dizer não?",tipo:"Pergunta e resposta",slides:[
+   ["“Porque é que digo que sim quando <em>quero dizer não?</em>”",""],
+   ["“Porque é que me custa tanto dizer não?”","Porque aprendeste que <b>agradar era a forma de seres aceite.</b>"],
+   ["“Dizer não faz de mim má pessoa?”","Não. Um não dito com respeito protege a relação, <b>e protege-te a ti.</b>"],
+   ["“E se a pessoa se zangar?”","A reação do outro <b>diz mais sobre ele</b> do que sobre ti."],
+   ["“Como é que começo?”","Com um não pequeno, sem justificações longas. <b>“Hoje não consigo”</b> já é uma frase completa."],
+   ["“E se eu sentir culpa?”","Vais sentir, no início. A culpa não quer dizer que fizeste mal. <b>Quer dizer que fizeste diferente.</b>"],
+   ["Cada sim que dás aos outros não pode ser um não a ti.","Se te reconheces, a <b>Mentoria Voz &amp; Essência</b> foi feita para isto. Link na bio.","cta"]]},
+  {data:"Qui 3/12",titulo:"Antes e depois da Mentoria VOZ",tipo:"Testemunho",slides:[
+   ["“Não conseguia defender as minhas ideias <em>com confiança.</em>”","Uma mentorada da Mentoria VOZ."],
+   ["Antes","“A minha maior dificuldade era falar sobre aquilo que queria, sobretudo em conversas profissionais.”"],
+   ["Durante","“Percebi que <b>tenho valor</b> e que a minha opinião importa.”"],
+   ["Depois","“Hoje consigo afirmar os meus limites e expor a minha opinião <b>sem culpa</b>, mesmo em situações de pressão.”"],
+   ["[ print da mensagem ]","O print completo, sem nome."],
+   ["Em três palavras:","<b>Confiança, empoderamento e clareza.</b>"],
+   ["Ela não esperou por janeiro. E tu?","<b>Link na bio.</b>","cta"]]},
+  {data:"Sex 4/12",titulo:"A Mentoria VOZ é para ti se…",tipo:"Programa · venda",slides:[
+   ["A tua voz falha <em>quando mais precisas?</em>","Muito além de falar em público."],
+   ["Preparas tudo e, na hora, a voz falha ou a mente fica em branco.",""],
+   ["Ficas em silêncio nas reuniões, mesmo quando tens algo importante a dizer.",""],
+   ["Evitas apresentações e situações de exposição que fariam crescer a tua carreira.",""],
+   ["O que trabalhamos","A origem pessoal, familiar e social da insegurança · consciência corporal e presença · padrões comportamentais · crenças limitadoras."],
+   ["Como funciona","8 sessões individuais · 6 meses para utilizar · exercícios guiados · questionário de autoavaliação · online e presencial · <b>inclui oferta da leitura corporal</b>"],
+   ["Não esperes por janeiro para encontrares a tua voz.","<b>Link na bio.</b>","cta"]]}
+ ]},
+ {id:"semana-3",nome:"Semana 3 · Mulher, carreira e negócio",sub:"7 a 11 de dezembro",cars:[
+  {data:"Seg 7/12",titulo:"Porque é que sinto culpa quando descanso?",tipo:"Pergunta e resposta",slides:[
+   ["“Porque é que sinto culpa <em>quando descanso?</em>”",""],
+   ["“Porque é que parar parece falhar?”","Porque aprendeste que o teu valor estava <b>no que produzes.</b>"],
+   ["“Se eu parar, tudo desaba?”","O que desaba quando paras não estava bem construído. <b>E pode ser reconstruído.</b>"],
+   ["“Como sei que estou no limite?”","Quando <b>até o descanso te cansa</b>, e o fim de semana já não chega."],
+   ["“Mas eu tenho tanto para fazer…”","Vais ter sempre. A pergunta é: <b>quanto tempo ainda vais deixar-te para depois?</b>"],
+   ["“Por onde começo?”","Uma pausa marcada na agenda, <b>como uma reunião contigo.</b> E cumpre-a."],
+   ["Descansar não é falhar. É manutenção.","Se te reconheces, a <b>Mentoria Empreender com Equilíbrio</b> foi feita para isto. Link na bio.","cta"]]},
+  {data:"Qui 10/12",titulo:"O que mudou para elas",tipo:"Testemunhos",slides:[
+   ["“Estava cansada, perdida e <em>sempre a falhar</em> em alguma coisa.”","O que mudou para estas empreendedoras."],
+   ["“Sendo mãe, esposa e estudante, percebi que <b>planear horários e definir prioridades</b> é essencial para manter o equilíbrio.”",""],
+   ["“Consegui organizar-me, pôr as ideias em prática e <b>comecei uma nova consultoria</b> com as ideias que tive.”",""],
+   ["“Estava com muito na cabeça e ajudaste-me a <b>esclarecer e a organizar as ideias.</b>”","Logo a seguir à sessão, contactou a pessoa que aceitou ser sua sócia."],
+   ["“Hoje percebo que os meus padrões influenciam <b>o meu posicionamento profissional.</b>”",""],
+   ["Empreender com equilíbrio não é um sonho.","São escolhas, <b>uma de cada vez.</b>"],
+   ["Elas não esperaram por janeiro.","<b>Link na bio.</b>","cta"]]},
+  {data:"Sex 11/12",titulo:"A Mentoria Empreender com Equilíbrio é para ti se…",tipo:"Programa · venda",slides:[
+   ["Achas que janeiro vai ser <em>para descansar?</em>","Spoiler: vais voltar a trabalhar como sempre."],
+   ["Vives permanentemente cansada.",""],
+   ["Sentes culpa por descansar.",""],
+   ["Sentes que estás sempre a falhar em alguma área da tua vida.",""],
+   ["O que trabalhamos","Organização, tempo e prioridades · equilíbrio emocional e gestão da pressão · negócio, família, limites e delegação · autocuidado e rotinas sustentáveis."],
+   ["Como funciona","5 sessões individuais · 3 videoaulas · exercícios guiados · questionário de autoavaliação · 3 meses para utilizar · online e presencial"],
+   ["Constrói o teu negócio sem perderes a tua vida.","Começa já, não em janeiro. <b>Link na bio.</b>","cta"]]}
+ ]},
+ {id:"semana-4",nome:"Semana 4 · Corpo, padrões e liderança",sub:"14 a 18 de dezembro",cars:[
+  {data:"Seg 14/12",titulo:"O que é que o meu corpo diz sobre mim?",tipo:"Pergunta e resposta",slides:[
+   ["“O que é que o meu corpo <em>diz sobre mim?</em>”",""],
+   ["“O corpo guarda emoções?”","Sim. A tua postura, as tuas expressões e as tuas reações <b>contam a tua história emocional.</b>"],
+   ["“Porque é que reajo de formas que não compreendo?”","Porque o corpo aprendeu a defender-se <b>antes de tu teres palavras</b> para o que sentias."],
+   ["“O que são mecanismos de defesa?”","Formas que encontraste para sobreviver. Um dia protegeram-te; <b>hoje podem estar a limitar-te.</b>"],
+   ["“Dá para mudar?”","Primeiro compreende-se, depois muda-se. <b>Sem julgamento.</b>"],
+   ["O teu corpo não é o problema.","<b>É a pista.</b>"],
+   ["Queres perceber o que o teu corpo revela?","<b>O Corpo Revela:</b> 2 sessões individuais. Link na bio.","cta"]]},
+  {data:"Qui 17/12",titulo:"5 sinais de que a tua equipa precisa de mais humanidade",tipo:"Empresas · Humaniza",slides:[
+   ["5 sinais de que a tua equipa precisa de <em>mais humanidade.</em>","Para quem lidera pessoas."],
+   ["1","As reuniões são em silêncio, mas os corredores estão cheios de conversas."],
+   ["2","Há conflitos que todos veem e ninguém resolve."],
+   ["3","A equipa anda sempre cansada, mesmo nos meses calmos."],
+   ["4","As pessoas boas saem sem que percebas porquê."],
+   ["5","O líder carrega tudo sozinho e já não tem tempo para liderar."],
+   ["A maior parte dos problemas numa equipa não é técnica.","<b>É humana.</b>"],
+   ["Mentoria Humaniza para Líderes e Equipas","3 sessões de 4 horas · exercícios guiados · questionário de autoavaliação · 1 mês para utilizar · emissão de certificados. <b>Link na bio.</b>","cta"]]},
+  {data:"Sex 18/12",titulo:"Três portas de entrada para conheceres o meu trabalho",tipo:"Programas · venda",slides:[
+   ["Não precisas de começar <em>por seis meses.</em>","Podes começar por um passo."],
+   ["Essência","Antes de mudares a tua vida, começa por compreender-te. 3 videoaulas, exercícios e <b>1 sessão de terapia.</b>"],
+   ["Direção","Clareza para decidir, coragem para agir. 3 videoaulas, exercícios e <b>1 sessão de coaching.</b>"],
+   ["O Corpo Revela","O teu corpo guarda a tua história. <b>2 sessões individuais</b> de análise corporal."],
+   ["Qual é a tua?","<b>Essência</b> se queres conhecer-te, <b>Direção</b> se queres decidir, <b>O Corpo Revela</b> se queres compreender os teus padrões."],
+   ["Um passo agora vale mais do que um plano perfeito em janeiro.","<b>Link na bio.</b>","cta"]]}
+ ]},
+ {id:"semana-5",nome:"Semana 5 · Fecho do ano",sub:"21 a 25 de dezembro",cars:[
+  {data:"Seg 21/12",titulo:"5 perguntas para fazeres antes de 2027",tipo:"Reflexão",slides:[
+   ["5 perguntas para fazeres <em>antes de 2027.</em>","Guarda e responde com calma, de preferência num caderno."],
+   ["“O que me deu mais orgulho este ano?”","Não só o que conquistaste. <b>Também o que aguentaste.</b>"],
+   ["“O que carreguei que não era meu?”","Culpas, expectativas, <b>responsabilidades dos outros.</b>"],
+   ["“A que é que disse sim quando queria dizer não?”","Cada resposta é <b>um limite que te falta.</b>"],
+   ["“O que quero deixar em 2026?”","Um hábito, uma crença, <b>uma forma de te tratares.</b>"],
+   ["“Quem quero ser no próximo ano?”","Antes das metas, <b>a identidade.</b>"],
+   ["Quantas vezes já disseste ‘em janeiro começo’?","Se queres fazer este caminho comigo, <b>o link está na bio.</b>","cta"]]},
+  {data:"Qua 23/12",titulo:"A identidade vem antes da estratégia",tipo:"Mentoria Soberana · venda",slides:[
+   ["Tens resultados, mas sentes que <em>te afastaste de ti?</em>","A identidade vem antes da estratégia."],
+   ["Tens resultados, mas sentes dúvida, insatisfação ou falta de direção.",""],
+   ["As emoções, a comunicação ou as relações no trabalho pesam mais do que deviam.",""],
+   ["Sabes que algo precisa de mudar e queres fazê-lo com acompanhamento sério.",""],
+   ["O que trabalhamos","A Roda da Vida · emoções, comunicação e relações no trabalho · objetivos para cada área · os bloqueios que te impedem de avançar."],
+   ["Como funciona","6 meses para utilizar · 10 sessões individuais · exercícios guiados · questionário de autoavaliação · online e presencial"],
+   ["Janeiro não muda a tua vida. As tuas decisões mudam.","Começa a <b>Mentoria Soberana</b> ainda este ano. Link na bio.","cta"]]}
+ ]}
+];
+
+const nav=document.getElementById('nav'), app=document.getElementById('app');
+S.forEach(sem=>{
+  const a=document.createElement('a'); a.href='#'+sem.id; a.textContent=sem.nome.split(' · ')[0]; nav.appendChild(a);
+  const sec=document.createElement('section'); sec.className='semana'; sec.id=sem.id;
+  sec.innerHTML=`<p class="eyebrow">${sem.sub}</p><h2>${sem.nome.split(' · ')[1]}</h2><p>${sem.cars.length} carross${sem.cars.length>1?'éis':'el'}</p>`;
+  sem.cars.forEach(c=>{
+    const art=document.createElement('article'); art.className='car';
+    const total=c.slides.length;
+    art.innerHTML=`<div class="car-head"><span class="data">${c.data}</span><h3>${c.titulo}</h3><span class="tipo">${c.tipo} · ${total} slides</span></div>`;
+    const fila=document.createElement('div'); fila.className='fila'; fila.tabIndex=0; fila.setAttribute('aria-label','Slides de '+c.titulo.replace(/<[^>]+>/g,''));
+    c.slides.forEach((s,i)=>{
+      const d=document.createElement('div');
+      d.className='slide'+(i===0?' capa':'')+(s[2]==='cta'?' cta':'');
+      d.innerHTML=`<span class="n">${i+1}/${total}</span><p class="q">${s[0]}</p>${s[1]?`<p class="r">${s[1]}</p>`:''}<span class="at">@sollangealmadabinha</span>`;
+      fila.appendChild(d);
+    });
+    art.appendChild(fila);
+    const dica=document.createElement('p'); dica.className='dica'; dica.textContent='Desliza para o lado para ver todos os slides.'; art.appendChild(dica);
+    sec.appendChild(art);
+  });
+  app.appendChild(sec);
+});
+</script>
