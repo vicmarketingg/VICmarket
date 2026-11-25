@@ -1,98 +1,18 @@
-<!DOCTYPE html><html lang="pt-PT"><head><meta charset="utf-8"><title>Carrossel infinito — programas</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Jost:wght@400;500;600&family=Pinyon+Script&display=swap">
-<style>
-*{box-sizing:border-box;margin:0}
+<!DOCTYPE html><html lang="pt-PT"><head><meta charset="utf-8"><title>Carrossel infinito</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Jost:wght@400;500;600&family=Pinyon+Script&display=swap"><style>*{box-sizing:border-box;margin:0}
 body{background:#111}
-#pano{position:relative;width:9720px;height:1350px;overflow:hidden;font-family:Jost,Arial,sans-serif;color:#FFF8F0;
- background:radial-gradient(ellipse 900px 700px at 2400px 200px,rgba(110,22,40,.9),transparent 70%),radial-gradient(ellipse 900px 700px at 5000px 300px,rgba(110,22,40,.85),transparent 70%),radial-gradient(ellipse 900px 700px at 7800px 250px,rgba(110,22,40,.85),transparent 70%),linear-gradient(90deg,#2A0610,#3A0A15 25%,#2A0610 50%,#3A0A15 75%,#2A0610)}
+#pano{position:relative;height:1350px;overflow:hidden;font-family:Jost,Arial,sans-serif;color:#FFF8F0;background:linear-gradient(90deg,#2A0610,#3A0A15 25%,#2A0610 50%,#3A0A15 75%,#2A0610)}
 .abs{position:absolute}
 .pf{font-family:"Playfair Display",Georgia,serif}
 em{font-style:italic;color:#E9C98A}
-.q{font:500 62px/1.14 "Playfair Display",Georgia,serif;color:#FFF8F0}
-.r{font:400 40px/1.45 Jost;color:#F6ECE0}
+b{font-weight:600;color:#E9C98A}
+.q{font:500 58px/1.14 "Playfair Display",Georgia,serif;color:#FFF8F0}
+.r{font:400 38px/1.45 Jost;color:#F6ECE0}
 .k{font:600 20px Jost;letter-spacing:.24em;text-transform:uppercase;color:#E9C98A}
-.linha{width:80px;height:3px;background:#E9C98A;margin:36px 0}
-.nome{font:500 46px/1.15 "Playfair Display",Georgia,serif;color:#E9C98A}
-.fmt{font:400 28px/1.45 Jost;color:#E3D2C2;margin-top:10px}
-.foto{position:absolute;object-fit:cover;border:3px solid #E9C98A;box-shadow:0 40px 80px rgba(0,0,0,.55);z-index:3}
+.linha{width:80px;height:3px;background:#E9C98A;margin:34px 0}
+.nome{font:500 44px/1.15 "Playfair Display",Georgia,serif;color:#E9C98A}
+.fmt{font:400 27px/1.45 Jost;color:#E3D2C2;margin-top:10px}
+.bg{position:absolute;top:0;height:1350px;object-fit:cover;z-index:1;-webkit-mask-image:linear-gradient(90deg,transparent,#000 24%,#000 76%,transparent);mask-image:linear-gradient(90deg,transparent,#000 24%,#000 76%,transparent)}
+.sombra{position:absolute;top:0;height:1350px;z-index:1;background:linear-gradient(180deg,rgba(26,3,10,.35),rgba(26,3,10,0) 25%,rgba(26,3,10,0) 70%,rgba(26,3,10,.85))}
+.txt{position:absolute;z-index:4;text-shadow:0 2px 18px rgba(0,0,0,.35)}
 .rod{position:absolute;bottom:56px;width:1080px;text-align:center;font:500 22px Jost;letter-spacing:.12em;color:#E9C98A;z-index:9}
-.seta{position:absolute;bottom:56px;font:600 18px Jost;letter-spacing:.24em;text-transform:uppercase;color:#E9C98A;z-index:9}
-</style></head><body><div id="pano">
-<svg class="abs" style="left:0;top:0;z-index:2" width="9720" height="1350" fill="none"><path d="M 560 1185 L 960 1185 C 1120 1185, 1150 1060, 1080 1060 C 1010 1060, 1040 1185, 1200 1185 L 2040 1185 C 2200 1185, 2230 1060, 2160 1060 C 2090 1060, 2120 1185, 2280 1185 L 3120 1185 C 3280 1185, 3310 1060, 3240 1060 C 3170 1060, 3200 1185, 3360 1185 L 4200 1185 C 4360 1185, 4390 1060, 4320 1060 C 4250 1060, 4280 1185, 4440 1185 L 5280 1185 C 5440 1185, 5470 1060, 5400 1060 C 5330 1060, 5360 1185, 5520 1185 L 6360 1185 C 6520 1185, 6550 1060, 6480 1060 C 6410 1060, 6440 1185, 6600 1185 L 7440 1185 C 7600 1185, 7630 1060, 7560 1060 C 7490 1060, 7520 1185, 7680 1185 L 8520 1185 C 8680 1185, 8710 1060, 8640 1060 C 8570 1060, 8600 1185, 8760 1185 L 9220 1185" stroke="#E9C98A" stroke-width="3" opacity=".75"/></svg>
-
-<img class="abs" src="capa.jpg" style="left:0;top:0;width:1080px;height:1350px;object-fit:cover;object-position:50% 45%;z-index:1">
-<div class="abs" style="left:0;top:0;width:1080px;height:1350px;z-index:1;background:linear-gradient(180deg,rgba(26,3,10,0) 35%,rgba(58,10,21,.82) 60%,rgba(26,3,10,.97) 92%),linear-gradient(90deg,rgba(0,0,0,0) 80%,rgba(42,6,16,.9))"></div>
-<div class="abs" style="left:84px;width:900px;bottom:250px;z-index:4">
-<p style="font:400 66px 'Pinyon Script',cursive;color:#E9C98A">qual é o teu?</p>
-<h1 class="pf" style="font-size:96px;font-weight:500;line-height:1.04;margin-top:6px">Nove programas, <em>uma visão.</em></h1>
-<p class="r" style="margin-top:22px">Construir de dentro para fora.</p>
-</div>
-
-<div class="abs" style="left:1160px;top:220px;width:560px;z-index:4">
-<p class="k">É para ti se…</p>
-<p class="q" style="margin-top:26px">Tens resultados, mas sentes que <em>te afastaste de ti?</em></p>
-<div class="linha"></div>
-<p class="nome">Mentoria Soberana</p>
-<p class="fmt">6 meses · 10 sessões individuais · online e presencial</p>
-</div>
-<img class="foto" src="f1.jpg" style="left:1780px;top:170px;width:760px;height:900px;object-position:60% 40%">
-
-<div class="abs" style="left:2600px;top:220px;width:560px;z-index:4">
-<p class="k">É para ti se…</p>
-<p class="q" style="margin-top:26px">Tens medo de falar e <em>de te expor?</em></p>
-<div class="linha"></div>
-<p class="nome">Mentoria VOZ</p>
-<p class="fmt">8 sessões · 6 meses · inclui leitura corporal</p>
-</div>
-
-<div class="abs" style="left:3320px;top:220px;width:560px;z-index:4">
-<p class="k">É para ti se…</p>
-<p class="q" style="margin-top:26px">Calas-te para <em>não desagradar?</em></p>
-<div class="linha"></div>
-<p class="nome">Mentoria Voz &amp; Essência</p>
-<p class="fmt">6 sessões · 3 meses · online e presencial</p>
-</div>
-<img class="foto" src="f2.jpg" style="left:3940px;top:170px;width:760px;height:900px;object-position:12% 50%">
-
-<div class="abs" style="left:4760px;top:220px;width:560px;z-index:4">
-<p class="k">É para ti se…</p>
-<p class="q" style="margin-top:26px">O negócio está a <em>consumir a tua vida?</em></p>
-<div class="linha"></div>
-<p class="nome">Mentoria Empreender com Equilíbrio</p>
-<p class="fmt">5 sessões · 3 videoaulas · 3 meses</p>
-</div>
-
-<div class="abs" style="left:5480px;top:220px;width:560px;z-index:4">
-<p class="k">É para ti se…</p>
-<p class="q" style="margin-top:26px">Queres mudar de carreira <em>ou recomeçar?</em></p>
-<div class="linha"></div>
-<p class="nome">Mentoria Reinventa-te</p>
-<p class="fmt">5 sessões · exercícios guiados · 3 meses</p>
-</div>
-<img class="foto" src="f3.jpg" style="left:6100px;top:170px;width:760px;height:900px;object-position:50% 45%">
-
-<div class="abs" style="left:6920px;top:220px;width:560px;z-index:4">
-<p class="k">É para ti se…</p>
-<p class="q" style="margin-top:26px">Lideras uma equipa e queres <em>uma liderança mais humana?</em></p>
-<div class="linha"></div>
-<p class="nome">Mentoria Humaniza</p>
-<p class="fmt">3 sessões de 4 horas · emissão de certificados</p>
-</div>
-
-<div class="abs" style="left:7640px;top:220px;width:560px;z-index:4">
-<p class="k">Para dares o primeiro passo</p>
-<p class="q" style="margin-top:26px">Queres começar <em>por um passo?</em></p>
-<div class="linha"></div>
-<p class="nome">Essência</p><p class="fmt" style="margin-bottom:22px">conhecer-te · 1 sessão de terapia</p>
-<p class="nome">Direção</p><p class="fmt" style="margin-bottom:22px">decidir · 1 sessão de coaching</p>
-<p class="nome">O Corpo Revela</p><p class="fmt">compreender padrões · 2 sessões</p>
-</div>
-<img class="foto" src="f4.jpg" style="left:8260px;top:170px;width:760px;height:900px;object-position:50% 30%">
-
-<div class="abs" style="left:9080px;top:240px;width:560px;z-index:4">
-<p class="pf" style="font-size:72px;font-weight:500;line-height:1.08">Em qual te <em>reconheceste?</em></p>
-<div class="linha"></div>
-<p class="r">Não esperes por janeiro para começar.</p>
-<span style="display:inline-block;margin-top:40px;font:600 24px Jost;letter-spacing:.16em;text-transform:uppercase;color:#3A0A15;background:linear-gradient(135deg,#F3D9A0,#C9A257 55%,#A9813C);padding:20px 38px;border-radius:999px">Link na bio</span>
-</div>
-<p class="rod" style="left:0px">@sollangealmadabinha</p><p class="rod" style="left:1080px">@sollangealmadabinha</p><p class="rod" style="left:2160px">@sollangealmadabinha</p><p class="rod" style="left:3240px">@sollangealmadabinha</p><p class="rod" style="left:4320px">@sollangealmadabinha</p><p class="rod" style="left:5400px">@sollangealmadabinha</p><p class="rod" style="left:6480px">@sollangealmadabinha</p><p class="rod" style="left:7560px">@sollangealmadabinha</p><p class="rod" style="left:8640px">@sollangealmadabinha</p><p class="seta" style="left:840px">Desliza →</p><p class="seta" style="left:1920px">Desliza →</p><p class="seta" style="left:3000px">Desliza →</p><p class="seta" style="left:4080px">Desliza →</p><p class="seta" style="left:5160px">Desliza →</p><p class="seta" style="left:6240px">Desliza →</p><p class="seta" style="left:7320px">Desliza →</p><p class="seta" style="left:8400px">Desliza →</p></div></body></html>
+.seta{position:absolute;bottom:56px;font:600 18px Jost;letter-spacing:.24em;text-transform:uppercase;color:#E9C98A;z-index:9}</style></head><body><div id="pano" style="width:9720px"><svg class="abs" style="left:0;top:0;z-index:3" width="9720" height="1350" fill="none"><path d="M 560 1190 L 960 1190 C 1120 1190, 1150 1065, 1080 1065 C 1010 1065, 1040 1190, 1200 1190 L 2040 1190 C 2200 1190, 2230 1065, 2160 1065 C 2090 1065, 2120 1190, 2280 1190 L 3120 1190 C 3280 1190, 3310 1065, 3240 1065 C 3170 1065, 3200 1190, 3360 1190 L 4200 1190 C 4360 1190, 4390 1065, 4320 1065 C 4250 1065, 4280 1190, 4440 1190 L 5280 1190 C 5440 1190, 5470 1065, 5400 1065 C 5330 1065, 5360 1190, 5520 1190 L 6360 1190 C 6520 1190, 6550 1065, 6480 1065 C 6410 1065, 6440 1190, 6600 1190 L 7440 1190 C 7600 1190, 7630 1065, 7560 1065 C 7490 1065, 7520 1190, 7680 1190 L 8520 1190 C 8680 1190, 8710 1065, 8640 1065 C 8570 1065, 8600 1190, 8760 1190 L 9220 1190" stroke="#E9C98A" stroke-width="3" opacity=".8"/></svg><img class="abs" src="capa.jpg" style="left:0;top:0;width:1080px;height:1350px;object-fit:cover;object-position:50% 45%;z-index:1"><div class="abs" style="left:0;top:0;width:1080px;height:1350px;z-index:1;background:linear-gradient(180deg,rgba(26,3,10,.05) 35%,rgba(58,10,21,.82) 60%,rgba(26,3,10,.97) 92%),linear-gradient(90deg,rgba(0,0,0,0) 82%,rgba(42,6,16,.95))"></div><div class="txt" style="left:84px;width:900px;bottom:250px"><p style="font:400 66px 'Pinyon Script',cursive;color:#E9C98A">qual é o teu?</p><h1 class="pf" style="font-size:96px;font-weight:500;line-height:1.04;margin-top:6px">Nove programas, <em>uma visão.</em></h1><p class="r" style="margin-top:22px">Construir de dentro para fora.</p></div><div class="txt" style="left:1160px;top:230px;width:460px"><p class="k">É para ti se…</p><p class="q" style="margin-top:26px">Tens resultados, mas sentes que <em>te afastaste de ti?</em></p><div class="linha"></div><p class="nome">Mentoria Soberana</p><p class="fmt">6 meses · 10 sessões individuais · online e presencial</p></div><img class="bg" src="f1.jpg" style="left:1660px;width:1000px;object-position:62% 40%"><div class="sombra" style="left:1660px;width:1000px"></div><div class="txt" style="left:2760px;top:230px;width:420px"><p class="k">É para ti se…</p><p class="q" style="margin-top:26px">Tens medo de falar e <em>de te expor?</em></p><div class="linha"></div><p class="nome">Mentoria VOZ</p><p class="fmt">8 sessões · 6 meses · inclui leitura corporal</p></div><div class="txt" style="left:3320px;top:230px;width:460px"><p class="k">É para ti se…</p><p class="q" style="margin-top:26px">Calas-te para <em>não desagradar?</em></p><div class="linha"></div><p class="nome">Mentoria Voz &amp; Essência</p><p class="fmt">6 sessões · 3 meses · online e presencial</p></div><img class="bg" src="f2.jpg" style="left:3820px;width:1000px;object-position:10% 50%"><div class="sombra" style="left:3820px;width:1000px"></div><div class="txt" style="left:4920px;top:230px;width:420px"><p class="k">É para ti se…</p><p class="q" style="margin-top:26px">O negócio está a <em>consumir a tua vida?</em></p><div class="linha"></div><p class="nome">Mentoria Empreender com Equilíbrio</p><p class="fmt">5 sessões · 3 videoaulas · 3 meses</p></div><div class="txt" style="left:5480px;top:230px;width:460px"><p class="k">É para ti se…</p><p class="q" style="margin-top:26px">Queres mudar de carreira <em>ou recomeçar?</em></p><div class="linha"></div><p class="nome">Mentoria Reinventa-te</p><p class="fmt">5 sessões · exercícios guiados · 3 meses</p></div><img class="bg" src="f3.jpg" style="left:5980px;width:1000px;object-position:55% 45%"><div class="sombra" style="left:5980px;width:1000px"></div><div class="txt" style="left:7080px;top:230px;width:420px"><p class="k">É para ti se…</p><p class="q" style="margin-top:26px">Lideras uma equipa e queres <em>uma liderança mais humana?</em></p><div class="linha"></div><p class="nome">Mentoria Humaniza</p><p class="fmt">3 sessões de 4 horas · emissão de certificados</p></div><div class="txt" style="left:7640px;top:200px;width:460px"><p class="k">Para dares o primeiro passo</p><p class="q" style="margin-top:26px">Queres começar <em>por um passo?</em></p><div class="linha"></div><p class="nome">Essência</p><p class="fmt" style="margin-bottom:20px">conhecer-te · 1 sessão de terapia</p><p class="nome">Direção</p><p class="fmt" style="margin-bottom:20px">decidir · 1 sessão de coaching</p><p class="nome">O Corpo Revela</p><p class="fmt">compreender padrões · 2 sessões</p></div><img class="bg" src="f4.jpg" style="left:8140px;width:1000px;object-position:50% 30%"><div class="sombra" style="left:8140px;width:1000px"></div><div class="txt" style="left:9240px;top:240px;width:420px"><p class="pf" style="font-size:68px;font-weight:500;line-height:1.08">Em qual te <em>reconheceste?</em></p><div class="linha"></div><p class="r">Não esperes por janeiro para começar.</p><span style="display:inline-block;margin-top:36px;font:600 24px Jost;letter-spacing:.16em;text-transform:uppercase;color:#3A0A15;background:linear-gradient(135deg,#F3D9A0,#C9A257 55%,#A9813C);padding:20px 38px;border-radius:999px;text-shadow:none">Link na bio</span></div><p class="rod" style="left:0px">@sollangealmadabinha</p><p class="rod" style="left:1080px">@sollangealmadabinha</p><p class="rod" style="left:2160px">@sollangealmadabinha</p><p class="rod" style="left:3240px">@sollangealmadabinha</p><p class="rod" style="left:4320px">@sollangealmadabinha</p><p class="rod" style="left:5400px">@sollangealmadabinha</p><p class="rod" style="left:6480px">@sollangealmadabinha</p><p class="rod" style="left:7560px">@sollangealmadabinha</p><p class="rod" style="left:8640px">@sollangealmadabinha</p><p class="seta" style="left:840px">Desliza →</p><p class="seta" style="left:1920px">Desliza →</p><p class="seta" style="left:3000px">Desliza →</p><p class="seta" style="left:4080px">Desliza →</p><p class="seta" style="left:5160px">Desliza →</p><p class="seta" style="left:6240px">Desliza →</p><p class="seta" style="left:7320px">Desliza →</p><p class="seta" style="left:8400px">Desliza →</p></div></body></html>
