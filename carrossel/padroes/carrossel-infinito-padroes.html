@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="pt-PT"><head><meta charset="utf-8"><title>Carrossel infinito — padrões</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Jost:wght@400;500;600&family=Pinyon+Script&display=swap">
+<style>
+*{box-sizing:border-box;margin:0}
+body{background:#111}
+#pano{position:relative;width:7560px;height:1350px;overflow:hidden;font-family:Jost,Arial,sans-serif;color:#FFF8F0;
+ background:radial-gradient(ellipse 900px 700px at 1900px 200px,rgba(110,22,40,.9),transparent 70%),radial-gradient(ellipse 900px 700px at 4300px 300px,rgba(110,22,40,.85),transparent 70%),radial-gradient(ellipse 900px 700px at 6600px 250px,rgba(110,22,40,.85),transparent 70%),linear-gradient(90deg,#2A0610,#3A0A15 30%,#2A0610 55%,#3A0A15 80%,#2A0610)}
+.abs{position:absolute}
+.pf{font-family:"Playfair Display",Georgia,serif}
+em{font-style:italic;color:#E9C98A}
+b{font-weight:600;color:#E9C98A}
+.q{font:500 62px/1.14 "Playfair Display",Georgia,serif;color:#FFF8F0}
+.r{font:400 40px/1.45 Jost;color:#F6ECE0}
+.k{font:600 20px Jost;letter-spacing:.24em;text-transform:uppercase;color:#E9C98A}
+.linha{width:80px;height:3px;background:#E9C98A;margin:36px 0}
+.foto{position:absolute;object-fit:cover;border:3px solid #E9C98A;box-shadow:0 40px 80px rgba(0,0,0,.55);z-index:3}
+.rod{position:absolute;bottom:56px;width:1080px;text-align:center;font:500 22px Jost;letter-spacing:.12em;color:#E9C98A;z-index:9}
+.seta{position:absolute;bottom:56px;font:600 18px Jost;letter-spacing:.24em;text-transform:uppercase;color:#E9C98A;z-index:9}
+</style></head><body>
+<div id="pano">
+<!-- linha dourada contínua com laços: o padrão que se repete -->
+<svg class="abs" style="left:0;top:0;z-index:2" width="7560" height="1350" fill="none"><path d="M 560 1185 L 960 1185 C 1120 1185, 1150 1060, 1080 1060 C 1010 1060, 1040 1185, 1200 1185 L 2040 1185 C 2200 1185, 2230 1060, 2160 1060 C 2090 1060, 2120 1185, 2280 1185 L 3120 1185 C 3280 1185, 3310 1060, 3240 1060 C 3170 1060, 3200 1185, 3360 1185 L 4200 1185 C 4360 1185, 4390 1060, 4320 1060 C 4250 1060, 4280 1185, 4440 1185 L 5280 1185 C 5440 1185, 5470 1060, 5400 1060 C 5330 1060, 5360 1185, 5520 1185 L 6360 1185 C 6520 1185, 6550 1060, 6480 1060 C 6410 1060, 6440 1185, 6600 1185 L 7000 1185" stroke="#E9C98A" stroke-width="3" opacity=".75"/></svg>
+
+<!-- 1 CAPA -->
+<img class="abs" src="foto32.jpg" style="left:0;top:0;width:1080px;height:1350px;object-fit:cover;object-position:50% 45%;z-index:1">
+<div class="abs" style="left:0;top:0;width:1080px;height:1350px;z-index:1;background:linear-gradient(180deg,rgba(26,3,10,.05) 35%,rgba(58,10,21,.82) 60%,rgba(26,3,10,.97) 92%),linear-gradient(90deg,rgba(0,0,0,0) 80%,rgba(42,6,16,.9))"></div>
+<div class="abs" style="left:84px;width:900px;bottom:250px;z-index:4">
+<p style="font:400 70px 'Pinyon Script',cursive;color:#E9C98A">já te perguntaste…</p>
+<h1 class="pf" style="font-size:100px;font-weight:500;line-height:1.04;margin-top:6px">“Porque é que repito sempre <em>os mesmos erros?</em>”</h1>
+</div>
+
+<!-- 2 texto | foto 33 entre o 2 e o 3 -->
+<div class="abs" style="left:1160px;top:200px;width:560px;z-index:4">
+<p class="k">Padrões</p>
+<p class="q" style="margin-top:26px">“Porque é que acabo sempre no <em>mesmo tipo de situação?</em>”</p>
+<div class="linha"></div>
+<p class="r">Porque não são erros: <b>são padrões.</b> E um padrão repete-se até ser compreendido.</p>
+</div>
+<img class="foto" src="foto33.jpg" style="left:1780px;top:170px;width:760px;height:900px;object-position:60% 40%">
+
+<!-- 3 texto -->
+<div class="abs" style="left:2600px;top:240px;width:560px;z-index:4">
+<p class="k">A origem</p>
+<p class="q" style="margin-top:26px">“De onde vêm <em>os meus padrões?</em>”</p>
+<div class="linha"></div>
+<p class="r">Da tua história: da educação, dos exemplos que tiveste e do que precisaste <b>para te sentires segura.</b></p>
+</div>
+
+<!-- 4 texto | foto 34 entre o 4 e o 5 -->
+<div class="abs" style="left:3320px;top:240px;width:560px;z-index:4">
+<p class="k">Responsabilidade</p>
+<p class="q" style="margin-top:26px">“Então a culpa <em>é minha?</em>”</p>
+<div class="linha"></div>
+<p class="r">Não é culpa. É responsabilidade. Agora que vês o padrão, <b>podes escolher diferente.</b></p>
+</div>
+<img class="foto" src="foto34.jpg" style="left:3940px;top:170px;width:760px;height:900px;object-position:12% 50%">
+
+<!-- 5 texto -->
+<div class="abs" style="left:4760px;top:220px;width:580px;z-index:4">
+<p class="k">Como reconhecer</p>
+<p class="q" style="margin-top:26px">“Como é que reconheço <em>um padrão?</em>”</p>
+<div class="linha"></div>
+<p class="r">A situação muda.<br>As pessoas mudam.</p>
+<p class="pf" style="font-size:52px;font-style:italic;color:#E9C98A;margin-top:18px;line-height:1.2">Mas o final é sempre igual.</p>
+</div>
+
+<!-- 6 texto | foto 35 entre o 6 e o 7 -->
+<div class="abs" style="left:5480px;top:260px;width:560px;z-index:4">
+<p class="k">A mudança</p>
+<p class="q" style="margin-top:26px">“Dá para <em>mudar?</em>”</p>
+<div class="linha"></div>
+<p class="r">Sim. Primeiro compreende-se, depois muda-se. <b>Sem julgamento.</b></p>
+</div>
+<img class="foto" src="foto35.jpg" style="left:6100px;top:170px;width:760px;height:900px;object-position:50% 45%">
+
+<!-- 7 CTA -->
+<div class="abs" style="left:6920px;top:200px;width:560px;z-index:4">
+<p class="pf" style="font-size:66px;font-weight:500;line-height:1.1">Não há nada de errado contigo.</p>
+<p class="pf" style="font-size:66px;font-weight:500;line-height:1.1;font-style:italic;color:#E9C98A;margin-top:10px">Existem padrões.</p>
+<div class="linha"></div>
+<p class="r">Se queres compreender os teus, a <b>Essência</b> é o primeiro passo.</p>
+<span style="display:inline-block;margin-top:40px;font:600 24px Jost;letter-spacing:.16em;text-transform:uppercase;color:#3A0A15;background:linear-gradient(135deg,#F3D9A0,#C9A257 55%,#A9813C);padding:20px 38px;border-radius:999px">Link na bio</span>
+</div>
+<p class="rod" style="left:0px">@sollangealmadabinha</p><p class="rod" style="left:1080px">@sollangealmadabinha</p><p class="rod" style="left:2160px">@sollangealmadabinha</p><p class="rod" style="left:3240px">@sollangealmadabinha</p><p class="rod" style="left:4320px">@sollangealmadabinha</p><p class="rod" style="left:5400px">@sollangealmadabinha</p><p class="rod" style="left:6480px">@sollangealmadabinha</p><p class="seta" style="left:840px">Desliza →</p><p class="seta" style="left:1920px">Desliza →</p><p class="seta" style="left:3000px">Desliza →</p><p class="seta" style="left:4080px">Desliza →</p><p class="seta" style="left:5160px">Desliza →</p><p class="seta" style="left:6240px">Desliza →</p>
+</div></body></html>
